@@ -17,7 +17,7 @@ let
     hash = "sha256-5VZBGe1v6MLdEtP5xEs6H3p2kwFBEQ9Tqkxd2LOxglc=";
   };
 
-  zigDeps = callPackage "${src}/vendor/libghostty-vt/build.zig.zon.nix" {
+  zigDeps = callPackage ./build.zig.zon.nix {
     name = "${pname}-libghostty-vt-zig-deps-${version}";
   };
 in
