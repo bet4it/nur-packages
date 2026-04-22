@@ -1,0 +1,280 @@
+diff --git a/src/components/codex/items/EventItem.tsx b/src/components/codex/items/EventItem.tsx
+index 6f44311..ff66f4c 100644
+--- a/src/components/codex/items/EventItem.tsx
++++ b/src/components/codex/items/EventItem.tsx
+@@ -81,15 +81,16 @@ export const renderEvent = (event: ServerNotification, context?: RenderEventCont
+       getDiffViewerProps={getDiffViewerProps}
+     />
+   );
+-  switch (event.method) {
++  const rawEvent = event as any;
++  switch (rawEvent.method as string) {
+     case 'error':
+-      return <Badge>{event.params.error.message}</Badge>;
++      return <Badge>{rawEvent.params.error.message}</Badge>;
+     case 'item/started':
+-      let { item: startedItem } = event.params;
++      let { item: startedItem } = rawEvent.params;
+       switch (startedItem.type) {
+         case 'userMessage': {
+-          const threadId = event.params.threadId;
+-          const turnId = event.params.turnId;
++          const threadId = rawEvent.params.threadId;
++          const turnId = rawEvent.params.turnId;
+           const rollbackTurns = getRollbackTurnsForTurn(context, turnId);
+ 
+           return (
+@@ -103,7 +104,7 @@ export const renderEvent = (event: ServerNotification, context?: RenderEventCont
+         case 'commandExecution':
+           return (
+             <div>
+-              {startedItem.commandActions.map((a: CommandAction, i) => (
++              {startedItem.commandActions.map((a: CommandAction, i: number) => (
+                 <CommandActionItem key={i} action={a} />
+               ))}
+             </div>
+@@ -117,7 +118,7 @@ export const renderEvent = (event: ServerNotification, context?: RenderEventCont
+           return null;
+       }
+     case 'item/completed':
+-      let { item } = event.params;
++      let { item } = rawEvent.params;
+       switch (item.type) {
+         case 'agentMessage':
+           return <AgentMessageItem text={item.text} />;
+@@ -137,23 +138,23 @@ export const renderEvent = (event: ServerNotification, context?: RenderEventCont
+           );
+       }
+     case 'turn/completed':
+-      if (event.params.turn.status === 'interrupted') {
++      if (rawEvent.params.turn.status === 'interrupted') {
+         return (
+           <div>
+-            <Badge variant="destructive">{event.params.turn.status}</Badge>
++            <Badge variant="destructive">{rawEvent.params.turn.status}</Badge>
+           </div>
+         );
+       }
+ 
+-      const fileChangeItems = event.params.turn.items.filter(
+-        (turnItem): turnItem is Extract<typeof turnItem, { type: 'fileChange' }> =>
++      const fileChangeItems = rawEvent.params.turn.items.filter(
++        (turnItem: any): turnItem is Extract<typeof turnItem, { type: 'fileChange' }> =>
+           turnItem.type === 'fileChange' && turnItem.changes.length > 0
+       );
+ 
+       const aggregatedChanges =
+         fileChangeItems.length > 0
+-          ? aggregateFileChanges(fileChangeItems.flatMap((it) => it.changes))
+-          : aggregateTurnChangesFromContext(event.params.turn.id, context);
++          ? aggregateFileChanges(fileChangeItems.flatMap((it: any) => it.changes))
++          : aggregateTurnChangesFromContext(rawEvent.params.turn.id, context);
+ 
+       if (aggregatedChanges.length === 0) return null;
+ 
+@@ -163,13 +164,13 @@ export const renderEvent = (event: ServerNotification, context?: RenderEventCont
+         </div>
+       );
+     case 'turn/plan/updated':
+-      return <TurnPlan plan={event.params.plan} explanation={event.params.explanation} />;
++      return <TurnPlan plan={rawEvent.params.plan} explanation={rawEvent.params.explanation} />;
+     case 'item/agentMessage/delta':
+-      return <AgentMessageItem text={event.params.delta} />;
++      return <AgentMessageItem text={rawEvent.params.delta} />;
+     case 'item/reasoning/textDelta':
+       return (
+         <div className="rounded-md border border-muted bg-muted/20 px-2 py-1 text-sm text-muted-foreground">
+-          <Markdown value={event.params.delta} />
++          <Markdown value={rawEvent.params.delta} />
+         </div>
+       );
+     case 'item/fileChange/outputDelta':
+@@ -178,7 +179,7 @@ export const renderEvent = (event: ServerNotification, context?: RenderEventCont
+       return (
+         <div className="rounded-md border border-slate-300/80 bg-slate-100/40 px-2 py-1 text-xs text-slate-700">
+           <span className="mr-2 font-medium">terminal input</span>
+-          <code className="whitespace-pre-wrap break-all">{event.params.stdin}</code>
++          <code className="whitespace-pre-wrap break-all">{rawEvent.params.stdin}</code>
+         </div>
+       );
+     case 'thread/tokenUsage/updated':
+@@ -194,7 +195,7 @@ export const renderEvent = (event: ServerNotification, context?: RenderEventCont
+ 
+     default:
+       return (
+-        <CollapsedJsonItem label={event.method} value={event.params} />
++        <CollapsedJsonItem label={rawEvent.method} value={rawEvent.params} />
+       );
+   }
+ };
+diff --git a/src/services/codexService.ts b/src/services/codexService.ts
+index 3762fe8..5491d38 100644
+--- a/src/services/codexService.ts
++++ b/src/services/codexService.ts
+@@ -37,7 +37,7 @@ const sandboxModeToPolicy = (mode: SandboxMode, networkAccess: boolean): Sandbox
+   const fullReadOnlyAccess: ReadOnlyAccess = { type: 'fullAccess' };
+   switch (mode) {
+     case 'read-only':
+-      return { type: 'readOnly', access: fullReadOnlyAccess, networkAccess };
++      return { type: 'readOnly', access: fullReadOnlyAccess, networkAccess } as SandboxPolicy;
+     case 'workspace-write':
+       return {
+         type: 'workspaceWrite',
+@@ -46,9 +46,9 @@ const sandboxModeToPolicy = (mode: SandboxMode, networkAccess: boolean): Sandbox
+         networkAccess,
+         excludeTmpdirEnvVar: false,
+         excludeSlashTmp: false,
+-      };
++      } as SandboxPolicy;
+     case 'danger-full-access':
+-      return { type: 'dangerFullAccess' };
++      return { type: 'dangerFullAccess' } as SandboxPolicy;
+   }
+ };
+ 
+@@ -106,15 +106,13 @@ export const codexService = {
+       const params: ThreadListParams = {
+         cursor: null,
+         limit: 20,
++        sortKey,
+         modelProviders: null,
++        sourceKinds: null,
++        archived,
+       };
+       const response = await threadList(
+-        {
+-          ...params,
+-          sortKey,
+-          archived,
+-          sourceKinds: null,
+-        } as ThreadListParams,
++        params,
+         cwd
+       );
+       console.log('[CodexService] listThreads response:', response);
+@@ -142,17 +140,12 @@ export const codexService = {
+       const params: ThreadListParams = {
+         cursor: threadListNextCursor,
+         limit: 20,
++        sortKey,
+         modelProviders: null,
++        sourceKinds: null,
++        archived: false,
+       };
+-      const response = await threadList(
+-        {
+-          ...params,
+-          sortKey,
+-          archived: false,
+-          sourceKinds: null,
+-        } as ThreadListParams,
+-        cwd
+-      );
++      const response = await threadList(params, cwd);
+       console.log('[CodexService] listThreads (nextCursor) response:', response);
+       const workingDirThreads = response.data.map((t) => codexService.normalizeThreadItem(t));
+       const nextCursor =
+@@ -249,7 +242,7 @@ export const codexService = {
+           console.warn('[CodexService] Failed to prepare thread worktree, fallback to workspace cwd', error);
+         }
+       }
+-      const params: ThreadStartParams = {
++      const params = {
+         model,
+         modelProvider,
+         cwd: threadCwd,
+@@ -267,17 +260,17 @@ export const codexService = {
+         },
+         experimentalRawEvents: true,
+         persistExtendedHistory: true,
+-      };
++      } as unknown as ThreadStartParams;
+       let response;
+       try {
+-        response = await threadStart(params);
++        response = await (threadStart as any)(params);
+       } catch (error) {
+         if (!isExperimentalRawEventsCapabilityError(error)) {
+           throw error;
+         }
+ 
+         // Fallback for servers that do not expose experimental API capability.
+-        response = await threadStart({
++        response = await (threadStart as any)({
+           ...params,
+           experimentalRawEvents: false,
+         });
+@@ -306,7 +299,7 @@ export const codexService = {
+     const { model, modelProvider } = useConfigStore.getState();
+     try {
+       const resumeCwd = resolveThreadCwd(threadId);
+-      const response = await threadResume({
++      const response = await (threadResume as any)({
+         threadId,
+         history: null,
+         path: null,
+@@ -356,7 +349,7 @@ export const codexService = {
+         reasoningEffort,
+         webSearchRequest,
+       } = useConfigStore.getState();
+-      const params: ThreadForkParams = {
++      const params = {
+         threadId,
+         path: null,
+         model,
+@@ -375,8 +368,8 @@ export const codexService = {
+         baseInstructions: null,
+         developerInstructions: null,
+         persistExtendedHistory: true,
+-      };
+-      const response = await threadFork(params);
++      } as unknown as ThreadForkParams;
++      const response = await (threadFork as any)(params);
+       const forkedThreadId = response.thread.id;
+       const historicalEvents = convertThreadHistoryToEvents(response.thread);
+       const normalized = codexService.normalizeThreadItem(response.thread);
+@@ -464,7 +457,7 @@ export const codexService = {
+ 
+       const effectiveMode = collaborationModeOverride ?? collaborationMode;
+       const collaborationModeParam: CollaborationMode = {
+-        mode: effectiveMode,
++        mode: effectiveMode as CollaborationMode['mode'],
+         settings: {
+           model: model || '',
+           reasoning_effort: reasoningEffort ?? null,
+@@ -472,7 +465,7 @@ export const codexService = {
+         },
+       };
+ 
+-      const response = await turnStart({
++      const response = await (turnStart as any)({
+         threadId,
+         input: userInputs,
+         cwd: resolveThreadCwd(threadId),
+@@ -481,6 +474,7 @@ export const codexService = {
+         model: model || null,
+         effort: reasoningEffort ?? null,
+         summary: null,
++        personality: null,
+         outputSchema: null,
+         collaborationMode: collaborationModeParam,
+       });
+diff --git a/src/stores/codex/useCodexStore.ts b/src/stores/codex/useCodexStore.ts
+index 1ee7be5..e261a14 100644
+--- a/src/stores/codex/useCodexStore.ts
++++ b/src/stores/codex/useCodexStore.ts
+@@ -169,9 +169,12 @@ export const useCodexStore = create<CodexStore>((set) => ({
+       };
+ 
+       let threadStatusMap = state.threadStatusMap;
+-      if (event.method === 'thread/status/changed') {
++      if ((event.method as string) === 'thread/status/changed') {
+         // Authoritative: use the exact status from the server
+-        threadStatusMap = { ...threadStatusMap, [threadId]: event.params.status };
++        threadStatusMap = {
++          ...threadStatusMap,
++          [threadId]: ((event as unknown) as { params: { status: ThreadStatus } }).params.status,
++        };
+       } else if (event.method === 'turn/started') {
+         // Fallback: synthesize active status until thread/status/changed arrives
+         threadStatusMap = {

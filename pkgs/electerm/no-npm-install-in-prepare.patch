@@ -1,0 +1,35 @@
+diff --git a/build/bin/prepare.js b/build/bin/prepare.js
+index 9e06173..f8e3f9a 100644
+--- a/build/bin/prepare.js
++++ b/build/bin/prepare.js
+@@ -48,8 +48,8 @@ require('fs').writeFileSync(
+   )
+ )
+ 
+-exec(`cd work/app && npm i --omit=dev && cd ${cwd}`)
+-rm('-rf', 'work/app/node_modules/.bin')
++// exec(`cd work/app && npm i --omit=dev && cd ${cwd}`)
++// rm('-rf', 'work/app/node_modules/.bin')
+ // Remove axios browser/ESM builds and unnecessary files (keep only lib/ and node CJS)
+ rm('-rf', 'work/app/node_modules/axios/dist/esm')
+ rm('-rf', 'work/app/node_modules/axios/dist/browser')
+@@ -95,11 +95,11 @@ rm('-rf', 'work/app/node_modules/node-pty/lib/*.test.js.map')
+ rm('-rf', 'work/app/node_modules/node-pty/lib/testUtils.test.js')
+ rm('-rf', 'work/app/node_modules/node-pty/lib/testUtils.test.js.map')
+ 
+-// yarn auto clean
+-cp('-r', 'build/bin/.yarnclean', 'work/app/')
+-exec(`cd work/app && yarn generate-lock-entry > yarn.lock && yarn autoclean --force && cd ${cwd}`)
+-rm('-rf', 'work/app/.yarnclean')
+-rm('-rf', 'work/app/package-lock.json')
+-rm('-rf', 'work/app/yarn.lock')
+-require('./clean-empty-folders').main()
++// // yarn auto clean
++// cp('-r', 'build/bin/.yarnclean', 'work/app/')
++// exec(`cd work/app && yarn generate-lock-entry > yarn.lock && yarn autoclean --force && cd ${cwd}`)
++// rm('-rf', 'work/app/.yarnclean')
++// rm('-rf', 'work/app/package-lock.json')
++// rm('-rf', 'work/app/yarn.lock')
++// require('./clean-empty-folders').main()
+ 
+ const endTime = +new Date()

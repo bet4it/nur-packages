@@ -7,7 +7,9 @@
 # commands such as:
 #     nix-build -A mypackage
 
-{ pkgs ? import <nixpkgs> { } }:
+{
+  pkgs ? import <nixpkgs> { },
+}:
 
 {
   # The `lib`, `overlays`, `nixosModules`, `homeModules`,
@@ -19,7 +21,6 @@
   # flakeModules = { }; # flake-parts modules
   overlays = import ./overlays; # nixpkgs overlays
 
-  example-package = pkgs.callPackage ./pkgs/example-package { };
-  # some-qt5-package = pkgs.libsForQt5.callPackage ./pkgs/some-qt5-package { };
-  # ...
+  # Keep the package set in ./pkgs so it can be shared by flakes and overlays.
 }
+// import ./pkgs/default.nix { inherit pkgs; }

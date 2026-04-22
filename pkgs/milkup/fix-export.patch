@@ -1,0 +1,81 @@
+diff --git a/src/main/ipcBridge.ts b/src/main/ipcBridge.ts
+index e85330d..80599b7 100644
+--- a/src/main/ipcBridge.ts
++++ b/src/main/ipcBridge.ts
+@@ -614,6 +614,9 @@ export function registerIpcHandleHandlers() {
+       // 保证代码块完整显示
+       const preventCutOffStyle = `
+         <style>
++          @page {
++            margin: 0;
++          }
+           pre {
+             page-break-inside: avoid;
+           }
+@@ -634,6 +637,11 @@ export function registerIpcHandleHandlers() {
+             width: 0px;
+             flex: 1;
+           }
++          .electron-export-container .milkup-container,
++          .electron-export-container .milkup-editor {
++            min-height: auto !important;
++            height: auto !important;
++          }
+         </style>
+       `;
+       const cssKey = await sender.insertCSS(preventCutOffStyle);
+@@ -653,15 +661,20 @@ export function registerIpcHandleHandlers() {
+             container.style.position = 'absolute';
+             container.style.top = '0';
+             container.style.left = '0';
+-            container.style.width = '100vw';
+-            container.style.padding = '20px';
++            container.style.width = '100%';
++            container.style.padding = '40px';
+             container.style.boxSizing = 'border-box';
+             container.style.visibility = 'visible'; 
+             container.appendChild(clone);
+   
+-            // 隐藏 body 其他内容
+-            document.body.style.visibility = 'hidden';
++            // 隐藏 body 其他内容，避免原页面占位影响分页
++            const originalBodyChildren = Array.from(document.body.children);
++            originalBodyChildren.forEach(child => {
++              child.setAttribute('data-export-original-display', child.style.display);
++              child.style.display = 'none';
++            });
+             document.body.appendChild(container);
++            window.__originalBodyChildren = originalBodyChildren;
+           })();
+         `);
+       try {
+@@ -670,7 +683,7 @@ export function registerIpcHandleHandlers() {
+           printBackground: true,
+           pageSize,
+           margins: {
+-            marginType: "printableArea",
++            marginType: "default",
+           },
+           scale,
+         });
+@@ -690,11 +703,18 @@ export function registerIpcHandleHandlers() {
+         return Promise.reject(error);
+       } finally {
+         // 4. 清理页面
+-        sender.executeJavaScript(`
++        await sender.executeJavaScript(`
+                   (function() {
+                     const container = document.querySelector('.electron-export-container');
+                     if (container) container.remove();
+-                    document.body.style.visibility = 'visible';
++                    if (window.__originalBodyChildren) {
++                      window.__originalBodyChildren.forEach(child => {
++                        const originalDisplay = child.getAttribute('data-export-original-display');
++                        child.style.display = originalDisplay || '';
++                        child.removeAttribute('data-export-original-display');
++                      });
++                      delete window.__originalBodyChildren;
++                    }
+                   })();
+                 `);
+         // 移除插入的样式
