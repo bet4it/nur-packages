@@ -77,7 +77,7 @@ stdenv.mkDerivation (finalAttrs: {
 
     dontFixup = true;
 
-    outputHash = "sha256-YpPqg0J/rUUoPmWabD77bVCBofUw7J/yHZlJk1VlOIY=";
+    outputHash = "sha256-Mdp3uBsOTKg08THN+l1RoZrwpMOVuuvf+mVOB9pNBkU=";
     outputHashAlgo = "sha256";
     outputHashMode = "recursive";
   };
