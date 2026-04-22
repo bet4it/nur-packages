@@ -107,7 +107,7 @@ rustPlatform.buildRustPackage {
   buildAndTestSubdir = "src-tauri";
 
   cargoLock = {
-    lockFile = "${preparedSrc}/src-tauri/Cargo.lock";
+    lockFile = ./Cargo.lock;
     outputHashes = {
       "fix-path-env-0.0.0" = "sha256-UygkxJZoiJlsgp8PLf1zaSVsJZx1GGdQyTXqaFv3oGk=";
     };

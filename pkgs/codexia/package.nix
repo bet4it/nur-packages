@@ -80,7 +80,7 @@ rustPlatform.buildRustPackage {
   patches = [ ./fix-build-0.28.3.patch ];
 
   cargoLock = {
-    lockFile = "${src}/src-tauri/Cargo.lock";
+    lockFile = ./Cargo.lock;
     outputHashes = {
       "agent-insights-0.1.4" = "sha256-JjeXHgP1X5GiY2/g3dbPRN27PznzH2Y8fecqkOiKqFE=";
       "claude-agent-sdk-rs-0.6.4" = "sha256-ah0Pgb3itTdHB8d0q3rDjh5smsl9hLTyEL0QcUdVpAU=";
