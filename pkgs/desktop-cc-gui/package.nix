@@ -40,6 +40,7 @@ let
 
     nodejs = nodejs_20;
     npmDepsHash = "sha256-5ksLBFbeoiS7RDYZT+ruBSersA5C+s3Xc+nnzIBqukM=";
+    npmDepsFetcherVersion = 2;
     dontNpmBuild = true;
     npmFlags = [
       "--ignore-scripts"
