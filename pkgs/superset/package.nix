@@ -55,12 +55,15 @@ stdenv.mkDerivation (finalAttrs: {
     buildPhase = ''
       runHook preBuild
 
+      export HOME=$TMPDIR
+      export CI=1
       export BUN_INSTALL_CACHE_DIR=$(mktemp -d)
       export npm_config_nodedir=${electron.headers}
 
       bun install \
         --frozen-lockfile \
         --ignore-scripts \
+        --no-cache \
         --no-progress
 
       runHook postBuild
@@ -72,12 +75,18 @@ stdenv.mkDerivation (finalAttrs: {
       mkdir -p $out
       find . -type d -name node_modules -exec cp -R --parents {} $out \;
 
+      # Bun can emit mode bits that differ across hosts; normalize them so the
+      # fixed-output hash only reflects file contents and dependency layout.
+      find $out -type d -print0 | xargs -0 chmod 555
+      find $out -type f -print0 | xargs -0 chmod 444
+      find $out -path "*/node_modules/.bin/*" -type f -print0 | xargs -0 chmod 555
+
       runHook postInstall
     '';
 
     dontFixup = true;
 
-    outputHash = "sha256-Mdp3uBsOTKg08THN+l1RoZrwpMOVuuvf+mVOB9pNBkU=";
+    outputHash = "sha256-cTspTkiZn6vOEjWzKEZ5mKA0+uDTyyGIYgZe5CpDKNA=";
     outputHashAlgo = "sha256";
     outputHashMode = "recursive";
   };
