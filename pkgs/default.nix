@@ -18,7 +18,6 @@
   qbit = pkgs.callPackage ./qbit/package.nix { };
   shell360 = pkgs.callPackage ./shell360/package.nix { };
   spacecake = pkgs.callPackage ./spacecake/package.nix { };
-  superset = pkgs.callPackage ./superset/package.nix { };
   termix = pkgs.callPackage ./termix/package.nix { };
   tokenicode = pkgs.callPackage ./tokenicode/package.nix { };
 }
