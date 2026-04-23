@@ -1,12 +1,10 @@
 {
   lib,
-  stdenv,
+  buildNpmPackage,
   fetchFromGitHub,
   rustPlatform,
   cargo-tauri,
   nodejs_20,
-  pnpm_10,
-  cacert,
   llvmPackages,
   pkg-config,
   cmake,
@@ -35,54 +33,26 @@ let
     hash = "sha256-nfjKdJk0EBJuB9n8idpCEmxaeYnde77gr1oF3rV+G5Y=";
   };
 
-  # Similar to the Bun-based Tauri packages in this repo and to nixpkgs packages
-  # that prebuild frontend dependencies separately: prepare a fixed-output source
-  # tree with npm dependencies already installed, then let cargo-tauri build from it.
-  preparedSrc = stdenv.mkDerivation {
+  preparedSrc = buildNpmPackage {
     pname = "${pname}-prepared-src";
     inherit version;
     src = rawSrc;
 
-    impureEnvVars = lib.fetchers.proxyImpureEnvVars ++ [
-      "GIT_PROXY_COMMAND"
-      "SOCKS_SERVER"
+    nodejs = nodejs_20;
+    npmDepsHash = "sha256-5ksLBFbeoiS7RDYZT+ruBSersA5C+s3Xc+nnzIBqukM=";
+    dontNpmBuild = true;
+    npmFlags = [
+      "--ignore-scripts"
+      "--legacy-peer-deps"
     ];
-
-    nativeBuildInputs = [
-      nodejs_20
-      pnpm_10
-      writableTmpDirAsHomeHook
-    ];
-
-    dontConfigure = true;
-    dontFixup = true;
 
     postPatch = ''
       substituteInPlace package.json \
         --replace-fail '"@codemirror/search": "^6.6.0",' '"@codemirror/search": "^6.6.0", "@codemirror/autocomplete": "^6.20.0", "@codemirror/commands": "^6.10.2", "@codemirror/lint": "^6.9.3",' \
         --replace-fail '"@xterm/xterm": "^5.5.0",' '"@xterm/xterm": "^5.5.0", "antd": "^6.3.1",' \
         --replace-fail '"remark-gfm": "^4.0.1",' '"remark-gfm": "^4.0.1", "remark-breaks": "^4.0.0",'
-    '';
 
-    buildPhase = ''
-      runHook preBuild
-
-      export HOME=$TMPDIR
-      export NODE_ENV=development
-      export PNPM_HOME=$(mktemp -d)
-      export NIX_SSL_CERT_FILE=${cacert}/etc/ssl/certs/ca-bundle.crt
-      export SSL_CERT_FILE=$NIX_SSL_CERT_FILE
-      export NODE_EXTRA_CA_CERTS=$NIX_SSL_CERT_FILE
-
-      pnpm import
-      pnpm install \
-        --ignore-scripts \
-        --frozen-lockfile \
-        --package-import-method copy \
-        --fetch-retries 5 \
-        --network-concurrency 8
-
-      runHook postBuild
+      cp ${./package-lock.json} package-lock.json
     '';
 
     installPhase = ''
@@ -93,10 +63,6 @@ let
 
       runHook postInstall
     '';
-
-    outputHash = "sha256-OeAFd32XJGQwA9piZeDT2KfbxpSztX0HXaUDuWhDELE=";
-    outputHashAlgo = "sha256";
-    outputHashMode = "recursive";
   };
 in
 rustPlatform.buildRustPackage {
