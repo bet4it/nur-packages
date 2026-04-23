@@ -77,9 +77,9 @@ stdenv.mkDerivation (finalAttrs: {
 
       # Bun can emit mode bits that differ across hosts; normalize them so the
       # fixed-output hash only reflects file contents and dependency layout.
-      find $out -type d -print0 | xargs -0 chmod 555
-      find $out -type f -print0 | xargs -0 chmod 444
-      find $out -path "*/node_modules/.bin/*" -type f -print0 | xargs -0 chmod 555
+      find $out -type d -print0 | xargs -0 -r chmod 555
+      find $out -type f -print0 | xargs -0 -r chmod 444
+      find $out -path "*/node_modules/.bin/*" -type f -print0 | xargs -0 -r chmod 555
 
       runHook postInstall
     '';
