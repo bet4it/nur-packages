@@ -1,17 +1,8 @@
 diff --git a/src/detect.rs b/src/detect.rs
 --- a/src/detect.rs
 +++ b/src/detect.rs
-@@ -3,6 +3,8 @@
- //! Each pane's live bottom-of-buffer text is read periodically and matched
- //! against known agent output patterns to determine state.
- 
-+use std::path::Path;
-+
- /// The detected state of a terminal pane.
- #[derive(Debug, Clone, Copy, PartialEq, Eq)]
- pub enum AgentState {
-@@ -612,9 +614,27 @@ fn normalized_process_name(process: &crate::platform::ForegroundProcess) -> Stri
-         return "codex".to_string();
+@@ -591,9 +591,27 @@ fn normalized_process_name(process: &crate::platform::ForegroundProcess) -> Stri
+         }
      }
  
 +    if identify_agent(effective).is_some() {
@@ -32,9 +23,9 @@ diff --git a/src/detect.rs b/src/detect.rs
  
 +fn cmdline_executable_name(cmdline: &str) -> Option<&str> {
 +    let executable = cmdline.split_whitespace().next()?;
-+    Path::new(executable).file_name()?.to_str()
++    std::path::Path::new(executable).file_name()?.to_str()
 +}
 +
- fn process_priority(process: &crate::platform::ForegroundProcess, normalized_name: &str) -> u8 {
-     let lower_name = normalized_name.to_lowercase();
-     if lower_name != process.name.to_lowercase() {
+ fn wrapped_agent_name_from_cmdline(cmdline: &str) -> Option<String> {
+     for token in cmdline.split_whitespace() {
+         let trimmed = token.trim_matches(|c| matches!(c, '"' | '\''));

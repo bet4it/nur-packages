@@ -14,10 +14,12 @@
   metapi = pkgs.callPackage ./metapi/package.nix { };
   milkup = pkgs.callPackage ./milkup/package.nix { };
   neko-master = pkgs.callPackage ./neko-master/package.nix { };
+  netcatty = pkgs.callPackage ./netcatty/package.nix { };
   nexterm = pkgs.callPackage ./nexterm/package.nix { };
   qbit = pkgs.callPackage ./qbit/package.nix { };
   shell360 = pkgs.callPackage ./shell360/package.nix { };
   spacecake = pkgs.callPackage ./spacecake/package.nix { };
+  superset = pkgs.callPackage ./superset/package.nix { };
   termix = pkgs.callPackage ./termix/package.nix { };
   tokenicode = pkgs.callPackage ./tokenicode/package.nix { };
 }

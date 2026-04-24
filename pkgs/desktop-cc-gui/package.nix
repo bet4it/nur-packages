@@ -24,13 +24,13 @@
 
 let
   pname = "desktop-cc-gui";
-  version = "0.4.6";
+  version = "0.4.7";
 
   rawSrc = fetchFromGitHub {
     owner = "zhukunpenglinyutong";
     repo = "desktop-cc-gui";
     rev = "v${version}";
-    hash = "sha256-nfjKdJk0EBJuB9n8idpCEmxaeYnde77gr1oF3rV+G5Y=";
+    hash = "sha256-wOjFpBoV8pCOtiz8LSAoSVpnEeSiym898NLwlrLpkW4=";
   };
 
   preparedSrc = buildNpmPackage {
@@ -39,7 +39,7 @@ let
     src = rawSrc;
 
     nodejs = nodejs_20;
-    npmDepsHash = "sha256-5ksLBFbeoiS7RDYZT+ruBSersA5C+s3Xc+nnzIBqukM=";
+    npmDepsHash = "sha256-hax8LkngSsj3oLYQ9OcPQIiJ8dIhPUJscSW4T5sdoqw=";
     npmDepsFetcherVersion = 2;
     dontNpmBuild = true;
     npmFlags = [
@@ -49,9 +49,12 @@ let
 
     postPatch = ''
       substituteInPlace package.json \
-        --replace-fail '"@codemirror/search": "^6.6.0",' '"@codemirror/search": "^6.6.0", "@codemirror/autocomplete": "^6.20.0", "@codemirror/commands": "^6.10.2", "@codemirror/lint": "^6.9.3",' \
-        --replace-fail '"@xterm/xterm": "^5.5.0",' '"@xterm/xterm": "^5.5.0", "antd": "^6.3.1",' \
-        --replace-fail '"remark-gfm": "^4.0.1",' '"remark-gfm": "^4.0.1", "remark-breaks": "^4.0.0",'
+        --replace-fail '"build": "tsc && vite build"' '"build": "vite build"' \
+        --replace-fail '"@lobehub/icons": "^4.9.0",' '"@lobehub/icons": "^4.9.0", "@lobehub/ui": "4.38.4", "@lobehub/fluent-emoji": "4.1.0",' \
+        --replace-fail '"@xterm/xterm": "^5.5.0",' '"@xterm/xterm": "^5.5.0", "antd": "6.3.6",' \
+        --replace-fail '"dompurify": "^3.3.1",' '"dompurify": "^3.3.1", "es-toolkit": "1.46.0",' \
+        --replace-fail '"framer-motion": "^12.34.0",' '"framer-motion": "^12.34.0", "motion": "12.38.0",' \
+        --replace-fail '"remark-gfm": "^4.0.1",' '"remark-gfm": "^4.0.1", "remark-breaks": "4.0.0",'
 
       cp ${./package-lock.json} package-lock.json
     '';
@@ -116,9 +119,6 @@ rustPlatform.buildRustPackage {
   '';
 
   postPatch = ''
-    substituteInPlace src/features/composer/components/ChatInputBox/selectors/ConfigSelect.tsx \
-      --replace-fail 'onClick={(checked, e) => {' 'onClick={(checked: boolean, e: React.MouseEvent<HTMLButtonElement> | React.KeyboardEvent<HTMLButtonElement>) => {'
-
     substituteInPlace src-tauri/tauri.conf.json \
       --replace-fail '"createUpdaterArtifacts": true' '"createUpdaterArtifacts": false' \
       --replace-fail '"pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IENCOUY2RkIzOUFFNTBBQjgKUldTNEN1V2FzMitmeXpxVWkxMXUrM05UVHRJQTNaTHNZcVo4SktSQUJNSVM2VDEzSzVtaUhHWGcK"' '"pubkey": ""'
@@ -148,8 +148,8 @@ rustPlatform.buildRustPackage {
   meta = {
     description = "Desktop GUI for Claude Code";
     homepage = "https://github.com/zhukunpenglinyutong/desktop-cc-gui";
+    changelog = "https://github.com/zhukunpenglinyutong/desktop-cc-gui/releases/tag/v${version}";
     license = lib.licenses.mit;
-    maintainers = [ ];
     mainProgram = "cc-gui";
     platforms = lib.platforms.linux;
   };
