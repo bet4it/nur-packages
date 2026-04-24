@@ -39,7 +39,7 @@ let
     src = rawSrc;
 
     nodejs = nodejs_20;
-    npmDepsHash = "sha256-hax8LkngSsj3oLYQ9OcPQIiJ8dIhPUJscSW4T5sdoqw=";
+    npmDepsHash = "sha256-+hIgMXIVk9VRl5oYSsYnbIqCyd0jA4V38ZT5BIxHOLQ=";
     npmDepsFetcherVersion = 2;
     dontNpmBuild = true;
     npmFlags = [
@@ -123,8 +123,9 @@ rustPlatform.buildRustPackage {
       --replace-fail '"createUpdaterArtifacts": true' '"createUpdaterArtifacts": false' \
       --replace-fail '"pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IENCOUY2RkIzOUFFNTBBQjgKUldTNEN1V2FzMitmeXpxVWkxMXUrM05UVHRJQTNaTHNZcVo4SktSQUJNSVM2VDEzSzVtaUhHWGcK"' '"pubkey": ""'
 
-    if [ -d $cargoDepsCopy/libappindicator-sys-* ]; then
-      substituteInPlace $cargoDepsCopy/libappindicator-sys-*/src/lib.rs \
+    libappindicatorSys=$(find $cargoDepsCopy -path '*/libappindicator-sys-*/src/lib.rs' -print -quit)
+    if [ -n "$libappindicatorSys" ]; then
+      substituteInPlace "$libappindicatorSys" \
         --replace-fail "libayatana-appindicator3.so.1" "${libayatana-appindicator}/lib/libayatana-appindicator3.so.1"
     fi
   '';

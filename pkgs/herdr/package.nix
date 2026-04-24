@@ -33,6 +33,9 @@ rustPlatform.buildRustPackage {
 
   nativeBuildInputs = [ zig_0_15 ];
 
+  dontUseZigBuild = true;
+  dontUseZigInstall = true;
+
   LIBGHOSTTY_VT_ZIG_SYSTEM = zigDeps;
 
   preBuild = ''

@@ -73,8 +73,11 @@ rustPlatform.buildRustPackage rec {
       --replace-fail '"createUpdaterArtifacts": true' '"createUpdaterArtifacts": false'
 
     # Fix libayatana-appindicator path
-    substituteInPlace $cargoDepsCopy/libappindicator-sys-*/src/lib.rs \
-      --replace-fail "libayatana-appindicator3.so.1" "${libayatana-appindicator}/lib/libayatana-appindicator3.so.1"
+    libappindicatorSys=$(find $cargoDepsCopy -path '*/libappindicator-sys-*/src/lib.rs' -print -quit)
+    if [ -n "$libappindicatorSys" ]; then
+      substituteInPlace "$libappindicatorSys" \
+        --replace-fail "libayatana-appindicator3.so.1" "${libayatana-appindicator}/lib/libayatana-appindicator3.so.1"
+    fi
   '';
 
   env = {

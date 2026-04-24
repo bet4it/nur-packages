@@ -83,12 +83,12 @@ rustPlatform.buildRustPackage (finalAttrs: {
     # Disable updater artifacts and pubkey for Nix build
     substituteInPlace src-tauri/tauri.conf.json \
       --replace-fail '"createUpdaterArtifacts": true' '"createUpdaterArtifacts": false' \
-      --replace-fail '"pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEJBNDk0QjI4NkVDNDQwRUUKUldUdVFNUnVLRXRKdXV2elJZL3RsOWkvRDJueUwvQjh1UzdMbFBHZmZjV01Ec3lXZ1hFY3V6RkYK"' '"pubkey": ""' \
-      --replace '"beforeBuildCommand": "bunx vp check && bunx vp build"' '"beforeBuildCommand": "bunx vp build"'
+      --replace-fail '"pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEJBNDk0QjI4NkVDNDQwRUUKUldUdVFNUnVLRXRKdXV2elJZL3RsOWkvRDJueUwvQjh1UzdMbFBHZmZjV01Ec3lXZ1hFY3V6RkYK"' '"pubkey": ""'
 
     # Fix libayatana-appindicator path
-    if [ -d $cargoDepsCopy/libappindicator-sys-* ]; then
-      substituteInPlace $cargoDepsCopy/libappindicator-sys-*/src/lib.rs \
+    libappindicatorSys=$(find $cargoDepsCopy -path '*/libappindicator-sys-*/src/lib.rs' -print -quit)
+    if [ -n "$libappindicatorSys" ]; then
+      substituteInPlace "$libappindicatorSys" \
         --replace-fail "libayatana-appindicator3.so.1" "${libayatana-appindicator}/lib/libayatana-appindicator3.so.1"
     fi
   '';

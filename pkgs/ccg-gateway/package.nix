@@ -75,8 +75,9 @@ rustPlatform.buildRustPackage rec {
       --replace-fail '"beforeDevCommand": "pnpm install && pnpm dev",' '"beforeDevCommand": "pnpm --dir frontend dev",' \
       --replace-fail '"beforeBuildCommand": "pnpm install && pnpm build",' '"beforeBuildCommand": "pnpm --dir frontend build",'
 
-    if [ -d $cargoDepsCopy/libappindicator-sys-* ]; then
-      substituteInPlace $cargoDepsCopy/libappindicator-sys-*/src/lib.rs \
+    libappindicatorSys=$(find $cargoDepsCopy -path '*/libappindicator-sys-*/src/lib.rs' -print -quit)
+    if [ -n "$libappindicatorSys" ]; then
+      substituteInPlace "$libappindicatorSys" \
         --replace-fail "libayatana-appindicator3.so.1" "${libayatana-appindicator}/lib/libayatana-appindicator3.so.1"
     fi
   '';

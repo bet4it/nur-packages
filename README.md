@@ -31,9 +31,15 @@ inputs.my-packages.packages.${pkgs.system}.app-manager
 
 GitHub Actions is configured in [.github/workflows/build.yml](./.github/workflows/build.yml).
 
-Before pushing, update:
+The workflow evaluates the repository with NUR's restricted-eval check, builds
+the package set from [ci.nix](./ci.nix), uploads cacheable outputs to Cachix,
+and triggers a NUR index update for the `bet4it` repository.
 
-- `nurRepo` if you want to trigger NUR index updates
-- `cachixName` and repository secrets if you want Cachix uploads
+Before enabling cache uploads, create the `bet4it` cache on Cachix and add one
+of these GitHub repository secrets:
 
-The workflow currently evaluates and builds against `nixos-25.11`, which matches the migrated package set.
+- `CACHIX_AUTH_TOKEN`
+- `CACHIX_SIGNING_KEY`
+
+The workflow evaluates and builds against `nixos-unstable`, matching the NUR
+expectation that repositories keep working with unstable nixpkgs.

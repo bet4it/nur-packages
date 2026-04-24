@@ -70,15 +70,17 @@ rustPlatform.buildRustPackage rec {
   postPatch = ''
     # Disable updater artifacts and pubkey for Nix build
     substituteInPlace src-tauri/tauri.conf.json \
-      --replace '"createUpdaterArtifacts": true' '"createUpdaterArtifacts": false'
+      --replace-fail '"createUpdaterArtifacts": true' '"createUpdaterArtifacts": false'
 
     if grep -q '"pubkey":' src-tauri/tauri.conf.json; then
       sed -i 's#"pubkey": "[^"]*"#"pubkey": ""#' src-tauri/tauri.conf.json
     fi
 
     # Fix libayatana-appindicator path if it exists
-    if [ -d $cargoDepsCopy/libappindicator-sys-* ]; then
-      substituteInPlace $cargoDepsCopy/libappindicator-sys-*/src/lib.rs \
+    shopt -s nullglob
+    libappindicatorSources=("$cargoDepsCopy"/libappindicator-sys-*/src/lib.rs)
+    if [ ''${#libappindicatorSources[@]} -gt 0 ]; then
+      substituteInPlace "''${libappindicatorSources[@]}" \
         --replace-fail "libayatana-appindicator3.so.1" "${libayatana-appindicator}/lib/libayatana-appindicator3.so.1"
     fi
   '';
