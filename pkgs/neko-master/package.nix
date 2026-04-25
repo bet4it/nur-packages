@@ -15,7 +15,7 @@
 
 stdenv.mkDerivation rec {
   pname = "neko-master";
-  version = "1.4.1";
+  version = "agent-v1.4.1";
 
   src = fetchFromGitHub {
     owner = "foru17";
