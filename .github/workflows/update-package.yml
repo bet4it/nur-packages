@@ -1,12 +1,8 @@
-name: "Update package"
+name: "Update packages"
 
 on:
   workflow_dispatch:
     inputs:
-      package:
-        description: "Package attribute to update"
-        required: true
-        default: "herdr"
       build:
         description: "Build package before opening PR"
         required: true
@@ -18,8 +14,39 @@ permissions:
   pull-requests: write
 
 jobs:
-  update:
+  list-packages:
     runs-on: ubuntu-latest
+    outputs:
+      packages: ${{ steps.packages.outputs.packages }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Install nix
+        uses: cachix/install-nix-action@v31
+        with:
+          nix_path: nixpkgs=channel:nixos-unstable
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+            access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
+
+      - name: List packages
+        id: packages
+        run: |
+          set -euo pipefail
+
+          packages="$(nix eval --json .#packages.x86_64-linux --apply builtins.attrNames)"
+          echo "packages=$packages" >> "$GITHUB_OUTPUT"
+
+  update:
+    name: "Update ${{ matrix.package }}"
+    needs: list-packages
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        package: ${{ fromJson(needs.list-packages.outputs.packages) }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
@@ -40,7 +67,7 @@ jobs:
       - name: Update package
         id: update
         env:
-          PACKAGE: ${{ inputs.package }}
+          PACKAGE: ${{ matrix.package }}
           BUILD: ${{ inputs.build }}
         run: |
           set -euo pipefail
@@ -64,12 +91,12 @@ jobs:
         uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          branch: update/${{ inputs.package }}
+          branch: update/${{ matrix.package }}
           delete-branch: true
-          title: "Update ${{ inputs.package }}"
-          commit-message: "Update ${{ inputs.package }}"
+          title: "Update ${{ matrix.package }}"
+          commit-message: "Update ${{ matrix.package }}"
           body: |
             Automated package update generated with `nix-update`.
 
-            Package: `${{ inputs.package }}`
+            Package: `${{ matrix.package }}`
             Build before PR: `${{ inputs.build }}`
