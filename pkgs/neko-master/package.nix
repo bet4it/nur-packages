@@ -15,13 +15,13 @@
 
 stdenv.mkDerivation rec {
   pname = "neko-master";
-  version = "1.3.6";
+  version = "1.3.7";
 
   src = fetchFromGitHub {
     owner = "foru17";
     repo = "neko-master";
-    rev = "d5c111fe69489cc2749b1eb6209037a055069c19";
-    sha256 = "sha256-nnmB9IkjXSML7+uRqVluM37Wsh2ZxtYx7UuDv3+y8H0=";
+    rev = "3322da1dd66f4309ccc74c5c2be5855f75f9ae22";
+    sha256 = "sha256-rN9jMGhxGs6NKb40vlEgUGHim1TtSyPTit5wAZPUYSU=";
   };
 
   nativeBuildInputs = [
