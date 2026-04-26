@@ -64,10 +64,6 @@ buildNpmPackage rec {
         substituteInPlace src/ui/main-axios.ts \
           --replace-fail '        if (config?.serverUrl) {' '        if (config?.serverUrl && !embeddedMode) {'
 
-        substituteInPlace src/ui/desktop/authentication/Auth.tsx \
-          --replace-fail '          if (status?.embedded && status?.running && !config?.serverUrl) {' '          if (status?.embedded && status?.running) {' \
-          --replace-fail '            setCurrentServerUrl("");' '            setCurrentServerUrl("http://localhost:30001");'
-
         sed -i 's#const isDev = process.env.NODE_ENV === "development" || !app.isPackaged;#const isPackaged = process.env.TERMIX_IS_PACKAGED === "1" || app.isPackaged;\
     const isDev = process.env.NODE_ENV === "development" || !isPackaged;#' electron/main.cjs
         sed -i '/^const appRoot = isDev ? process.cwd() : path.join(__dirname, "..");$/a\
@@ -111,9 +107,11 @@ buildNpmPackage rec {
     install -Dm644 public/icon.png $out/share/icons/hicolor/512x512/apps/termix.png
 
     makeWrapper ${lib.getExe electron} $out/bin/termix \
-      --add-flags $out/share/termix/electron/main.cjs \
+      --add-flags $out/share/termix \
       --add-flags "\''${NIXOS_OZONE_WL:+\''${WAYLAND_DISPLAY:+--ozone-platform-hint=auto --enable-features=WaylandWindowDecorations --enable-wayland-ime=true}}" \
-      --run 'export TERMIX_DATA_DIR="''${XDG_CONFIG_HOME:-$HOME/.config}/Electron/server-data"' \
+      --run 'export TERMIX_DATA_DIR="''${XDG_CONFIG_HOME:-$HOME/.config}/termix/server-data"' \
+      --run 'mkdir -p "''${XDG_CONFIG_HOME:-$HOME/.config}/termix"' \
+      --run 'if [ ! -e "''${XDG_CONFIG_HOME:-$HOME/.config}/termix/server-config.json" ]; then printf "{\"serverUrl\":\"http://localhost:30001\",\"lastUpdated\":\"nixos-wrapper\"}\n" > "''${XDG_CONFIG_HOME:-$HOME/.config}/termix/server-config.json"; fi' \
       --set TERMIX_APP_VERSION "${version}" \
       --set TERMIX_IS_PACKAGED 1 \
       --set TERMIX_NODE_EXECUTABLE "${lib.getExe nodejs}" \
@@ -122,7 +120,7 @@ buildNpmPackage rec {
     makeWrapper ${lib.getExe nodejs} $out/bin/termix-server \
       --add-flags "$out/share/termix/dist/backend/backend/starter.js" \
       --chdir "$out/share/termix" \
-      --run 'export TERMIX_DATA_DIR="''${XDG_CONFIG_HOME:-$HOME/.config}/Electron/server-data"' \
+      --run 'export TERMIX_DATA_DIR="''${XDG_CONFIG_HOME:-$HOME/.config}/termix/server-data"' \
       --set NODE_ENV production
 
     runHook postInstall

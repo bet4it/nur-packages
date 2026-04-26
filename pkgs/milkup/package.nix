@@ -73,7 +73,7 @@ stdenv.mkDerivation rec {
     # the output is in 'dist' and 'dist-electron'.
 
     makeWrapper ${lib.getExe electron} $out/bin/milkup \
-      --add-flags $out/share/milkup/dist-electron/main/index.js \
+      --add-flags $out/share/milkup \
       --add-flags "''${NIXOS_OZONE_WL:+''${WAYLAND_DISPLAY:+--ozone-platform-hint=auto --enable-features=WaylandWindowDecorations --enable-wayland-ime=true}}" \
       --inherit-argv0
 
