@@ -4,7 +4,33 @@ Custom packages extracted from `nixos-config/pkgs`, maintained as a standalone f
 
 ## Usage
 
-Run a package directly:
+Use the binary cache:
+
+```bash
+cachix use bet4it
+```
+
+Or add it manually to your Nix configuration:
+
+```nix
+{
+  nix.settings.substituters = [
+    "https://bet4it.cachix.org"
+  ];
+  nix.settings.trusted-public-keys = [
+    "bet4it.cachix.org-1:/a9IrzSgxueTzTTPdgjTvBsOJRxpck0sV/lEcoA/aCo="
+  ];
+}
+```
+
+Run a package directly from the remote repository:
+
+```bash
+nix run github:bet4it/nur-packages#app-manager
+nix run github:bet4it/nur-packages#termix
+```
+
+Run a package from a local checkout:
 
 ```bash
 nix run .#app-manager
@@ -20,11 +46,50 @@ nix flake show
 Use from another flake:
 
 ```nix
-inputs.my-packages.url = "github:<your-user>/nur-packages";
+{
+  inputs.bet4it-packages.url = "github:bet4it/nur-packages";
+}
 ```
 
+Install a package in NixOS:
+
 ```nix
-inputs.my-packages.packages.${pkgs.system}.app-manager
+{ inputs, pkgs, ... }:
+
+{
+  environment.systemPackages = [
+    inputs.bet4it-packages.packages.${pkgs.system}.app-manager
+    inputs.bet4it-packages.packages.${pkgs.system}.termix
+  ];
+}
+```
+
+Install a package with Home Manager:
+
+```nix
+{ inputs, pkgs, ... }:
+
+{
+  home.packages = [
+    inputs.bet4it-packages.packages.${pkgs.system}.app-manager
+  ];
+}
+```
+
+Import this repository without flakes:
+
+```nix
+let
+  pkgs = import <nixpkgs> { };
+  bet4it-packages = import (builtins.fetchTarball {
+    url = "https://github.com/bet4it/nur-packages/archive/main.tar.gz";
+  }) { inherit pkgs; };
+in
+{
+  environment.systemPackages = [
+    bet4it-packages.app-manager
+  ];
+}
 ```
 
 ## CI

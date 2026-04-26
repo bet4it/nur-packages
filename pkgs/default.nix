@@ -22,4 +22,5 @@
   superset = pkgs.callPackage ./superset/package.nix { };
   termix = pkgs.callPackage ./termix/package.nix { };
   tokenicode = pkgs.callPackage ./tokenicode/package.nix { };
+  vibemux = pkgs.callPackage ./vibemux/package.nix { };
 }
