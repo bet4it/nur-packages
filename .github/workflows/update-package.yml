@@ -84,9 +84,11 @@ jobs:
             exit 0
           fi
 
+          version="$(nix eval --raw ".#packages.x86_64-linux.${PACKAGE}.version")"
           echo "changed=true" >> "$GITHUB_OUTPUT"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
 
-      - name: Create pull request
+      - name: Create pull request for ${{ matrix.package }} to ${{ steps.update.outputs.version }}
         id: create-pr
         if: steps.update.outputs.changed == 'true'
         uses: peter-evans/create-pull-request@v7
@@ -94,12 +96,13 @@ jobs:
           token: ${{ secrets.UPDATE_BOT_TOKEN }}
           branch: update/${{ matrix.package }}
           delete-branch: true
-          title: "Update ${{ matrix.package }}"
-          commit-message: "Update ${{ matrix.package }}"
+          title: "Update ${{ matrix.package }} to ${{ steps.update.outputs.version }}"
+          commit-message: "Update ${{ matrix.package }} to ${{ steps.update.outputs.version }}"
           body: |
             Automated package update generated with `nix-update`.
 
             Package: `${{ matrix.package }}`
+            Version: `${{ steps.update.outputs.version }}`
             Build before PR: `${{ inputs.build }}`
 
       - name: Enable auto-merge
