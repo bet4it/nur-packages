@@ -26,6 +26,17 @@
 let
   pname = "desktop-cc-gui";
   version = "0.4.7";
+  frontendPostPatch = ''
+    substituteInPlace package.json \
+      --replace-fail '"build": "tsc && vite build"' '"build": "vite build"' \
+      --replace-fail '"@lobehub/icons": "^4.9.0",' '"@lobehub/icons": "^4.9.0", "@lobehub/ui": "4.38.4", "@lobehub/fluent-emoji": "4.1.0",' \
+      --replace-fail '"@xterm/xterm": "^5.5.0",' '"@xterm/xterm": "^5.5.0", "antd": "6.3.6",' \
+      --replace-fail '"dompurify": "^3.3.1",' '"dompurify": "^3.3.1", "es-toolkit": "1.46.0",' \
+      --replace-fail '"framer-motion": "^12.34.0",' '"framer-motion": "^12.34.0", "motion": "12.38.0",' \
+      --replace-fail '"remark-gfm": "^4.0.1",' '"remark-gfm": "^4.0.1", "remark-breaks": "4.0.0",'
+
+    cp ${./package-lock.json} package-lock.json
+  '';
 
   rawSrc = fetchFromGitHub {
     owner = "zhukunpenglinyutong";
@@ -48,17 +59,7 @@ let
       "--legacy-peer-deps"
     ];
 
-    postPatch = ''
-      substituteInPlace package.json \
-        --replace-fail '"build": "tsc && vite build"' '"build": "vite build"' \
-        --replace-fail '"@lobehub/icons": "^4.9.0",' '"@lobehub/icons": "^4.9.0", "@lobehub/ui": "4.38.4", "@lobehub/fluent-emoji": "4.1.0",' \
-        --replace-fail '"@xterm/xterm": "^5.5.0",' '"@xterm/xterm": "^5.5.0", "antd": "6.3.6",' \
-        --replace-fail '"dompurify": "^3.3.1",' '"dompurify": "^3.3.1", "es-toolkit": "1.46.0",' \
-        --replace-fail '"framer-motion": "^12.34.0",' '"framer-motion": "^12.34.0", "motion": "12.38.0",' \
-        --replace-fail '"remark-gfm": "^4.0.1",' '"remark-gfm": "^4.0.1", "remark-breaks": "4.0.0",'
-
-      cp ${./package-lock.json} package-lock.json
-    '';
+    postPatch = frontendPostPatch;
 
     installPhase = ''
       runHook preInstall
@@ -72,7 +73,7 @@ let
 in
 rustPlatform.buildRustPackage {
   inherit pname version;
-  src = preparedSrc;
+  src = rawSrc;
 
   cargoRoot = "src-tauri";
   buildAndTestSubdir = "src-tauri";
@@ -114,12 +115,15 @@ rustPlatform.buildRustPackage {
   preConfigure = ''
     export HOME=$TMPDIR
 
-    find . -type d -name node_modules -exec chmod -R u+rw {} \;
-    find . -path "*/node_modules/.bin" -type d -exec chmod -R u+x {} \;
+    cp -R ${preparedSrc}/node_modules ./node_modules
+    chmod -R u+rw node_modules
+    find node_modules/.bin -type f -exec chmod u+x {} \;
     patchShebangs .
   '';
 
   postPatch = ''
+    ${frontendPostPatch}
+
     substituteInPlace src-tauri/tauri.conf.json \
       --replace-fail '"createUpdaterArtifacts": true' '"createUpdaterArtifacts": false' \
       --replace-fail '"pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IENCOUY2RkIzOUFFNTBBQjgKUldTNEN1V2FzMitmeXpxVWkxMXUrM05UVHRJQTNaTHNZcVo4SktSQUJNSVM2VDEzSzVtaUhHWGcK"' '"pubkey": ""'
@@ -147,11 +151,16 @@ rustPlatform.buildRustPackage {
     fi
   '';
 
-  passthru.updateScript = nix-update-script {
-    extraArgs = [
-      "--url=https://github.com/zhukunpenglinyutong/desktop-cc-gui"
-      "--use-github-releases"
-    ];
+  passthru = {
+    inherit preparedSrc;
+
+    updateScript = nix-update-script {
+      extraArgs = [
+        "--subpackage=preparedSrc"
+        "--url=https://github.com/zhukunpenglinyutong/desktop-cc-gui"
+        "--use-github-releases"
+      ];
+    };
   };
 
   meta = {
