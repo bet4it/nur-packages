@@ -82,7 +82,7 @@ buildNpmPackage rec {
     install -Dm644 build/icons/512x512.png $out/share/icons/hicolor/512x512/apps/netcatty.png
 
     makeWrapper ${lib.getExe electron_40} $out/bin/netcatty \
-      --add-flags $out/share/netcatty/electron/main.cjs \
+      --add-flags $out/share/netcatty \
       --add-flags "\''${NIXOS_OZONE_WL:+\''${WAYLAND_DISPLAY:+--ozone-platform-hint=auto --enable-features=WaylandWindowDecorations --enable-wayland-ime=true}}" \
       --chdir $out/share/netcatty \
       --set NODE_ENV production \
