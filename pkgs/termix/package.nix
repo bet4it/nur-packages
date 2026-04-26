@@ -30,16 +30,16 @@ let
 in
 buildNpmPackage rec {
   pname = "termix";
-  version = "2.0.0";
+  version = "2.1.0";
 
   src = fetchFromGitHub {
     owner = "Termix-SSH";
     repo = "Termix";
     rev = "release-${version}-tag";
-    hash = "sha256-3QyTXcNHGuk4JrNI/soMx4u8I3nlCvZdIjBrOcAiKBQ=";
+    hash = "sha256-YYRt0ckkT/wM90W5b3NX/Pi6qLQk5qpPKCKsv5JVDHw=";
   };
 
-  npmDepsHash = "sha256-bmdubkApp/0lO5SLgDlkD3rAxMASuQ+NyuS3Nc3EcRY=";
+  npmDepsHash = "sha256-fSJGgK0QiAFQkQQ6yTcJwGjfrsMqtX++PCiXig0oQSM=";
 
   nativeBuildInputs = [
     makeWrapper
