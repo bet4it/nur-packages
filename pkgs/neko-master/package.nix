@@ -15,13 +15,13 @@
 
 stdenv.mkDerivation rec {
   pname = "neko-master";
-  version = "1.4.1";
+  version = "1.3.6";
 
   src = fetchFromGitHub {
     owner = "foru17";
     repo = "neko-master";
-    rev = "8ce7e6102152e9ffa1097ae7d704a6dc0d528958";
-    sha256 = "sha256-8Z800+hHtc6kn//n7QoSLzDpq7CPkE6tN27XBHTiBJg=";
+    rev = "d5c111fe69489cc2749b1eb6209037a055069c19";
+    sha256 = "sha256-nnmB9IkjXSML7+uRqVluM37Wsh2ZxtYx7UuDv3+y8H0=";
   };
 
   nativeBuildInputs = [
@@ -130,6 +130,8 @@ stdenv.mkDerivation rec {
 
     runHook postInstall
   '';
+
+  passthru.updateScript = ./update.sh;
 
   meta = with lib; {
     description = "Neko Master Dashboard";

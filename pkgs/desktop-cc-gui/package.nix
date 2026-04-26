@@ -2,6 +2,7 @@
   lib,
   buildNpmPackage,
   fetchFromGitHub,
+  nix-update-script,
   rustPlatform,
   cargo-tauri,
   nodejs_20,
@@ -145,6 +146,13 @@ rustPlatform.buildRustPackage {
         $out/share/applications/*.desktop
     fi
   '';
+
+  passthru.updateScript = nix-update-script {
+    extraArgs = [
+      "--url=https://github.com/zhukunpenglinyutong/desktop-cc-gui"
+      "--use-github-releases"
+    ];
+  };
 
   meta = {
     description = "Desktop GUI for Claude Code";

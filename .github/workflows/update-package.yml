@@ -72,7 +72,7 @@ jobs:
         run: |
           set -euo pipefail
 
-          args=(--flake "$PACKAGE" --use-github-releases)
+          args=(--flake "$PACKAGE" --use-update-script --use-github-releases)
           if [ "$BUILD" = "true" ]; then
             args+=(--build)
           fi
@@ -90,7 +90,7 @@ jobs:
         if: steps.update.outputs.changed == 'true'
         uses: peter-evans/create-pull-request@v7
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.UPDATE_BOT_TOKEN }}
           branch: update/${{ matrix.package }}
           delete-branch: true
           title: "Update ${{ matrix.package }}"

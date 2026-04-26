@@ -2,6 +2,7 @@
   lib,
   stdenv,
   fetchFromGitHub,
+  nix-update-script,
   pnpm,
   nodejs_22,
   electron,
@@ -96,6 +97,13 @@ stdenv.mkDerivation rec {
       terminal = false;
     })
   ];
+
+  passthru.updateScript = nix-update-script {
+    extraArgs = [
+      "--url=https://github.com/Auto-Plugin/milkup"
+      "--use-github-releases"
+    ];
+  };
 
   meta = with lib; {
     description = "A Markdown editor built with Milkup core and Vue.js";

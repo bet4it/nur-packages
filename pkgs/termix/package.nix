@@ -3,6 +3,7 @@
   stdenv,
   buildNpmPackage,
   fetchFromGitHub,
+  nix-update-script,
   electron,
   makeWrapper,
   copyDesktopItems,
@@ -128,6 +129,13 @@ buildNpmPackage rec {
   '';
 
   desktopItems = [ desktopItem ];
+
+  passthru.updateScript = nix-update-script {
+    extraArgs = [
+      "--use-github-releases"
+      "--version-regex=^release-(.*)-tag$"
+    ];
+  };
 
   meta = {
     description = "Web-based server management platform with SSH terminal, tunneling, and file editing capabilities";

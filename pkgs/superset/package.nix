@@ -2,6 +2,7 @@
   lib,
   fetchurl,
   appimageTools,
+  nix-update-script,
 }:
 
 let
@@ -30,6 +31,13 @@ appimageTools.wrapType2 {
     install -Dm444 ${appimageContents}/@supersetdesktop.png \
       $out/share/icons/hicolor/512x512/apps/superset.png
   '';
+
+  passthru.updateScript = nix-update-script {
+    extraArgs = [
+      "--use-github-releases"
+      "--version-regex=^desktop-v(.*)$"
+    ];
+  };
 
   meta = {
     description = "Desktop app that helps manage and run coding agents";
