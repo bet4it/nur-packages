@@ -25,7 +25,7 @@
 
 let
   pname = "desktop-cc-gui";
-  version = "0.4.8";
+  version = "0.4.12";
   frontendPostPatch = ''
     substituteInPlace package.json \
       --replace-fail '"build": "tsc && vite build"' '"build": "vite build"' \
@@ -42,7 +42,7 @@ let
     owner = "zhukunpenglinyutong";
     repo = "desktop-cc-gui";
     rev = "v${version}";
-    hash = "sha256-VNJCvpce545sJsJi4vUamYVkvBWNZEiIWhDOaP647nc=";
+    hash = "sha256-vYVGIJP88V0wJhFLGnDl51VS6cjjos3fnuHKxymSQOA=";
   };
 
   preparedSrc = buildNpmPackage {
