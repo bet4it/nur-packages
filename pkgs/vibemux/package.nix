@@ -2,6 +2,7 @@
   lib,
   buildNpmPackage,
   fetchFromGitHub,
+  nix-update-script,
   rustPlatform,
   cargo-tauri,
   nodejs_22,
@@ -115,6 +116,18 @@ rustPlatform.buildRustPackage {
         $out/share/applications/*.desktop
     fi
   '';
+
+  passthru = {
+    inherit frontend;
+
+    updateScript = nix-update-script {
+      extraArgs = [
+        "--subpackage=frontend"
+        "--url=https://github.com/yoko19191/vibemux"
+        "--use-github-releases"
+      ];
+    };
+  };
 
   meta = {
     description = "Keyboard-first terminal multiplexer for ADHD-friendly multitasking and vibe coding workflows";

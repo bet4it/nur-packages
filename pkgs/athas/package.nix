@@ -2,6 +2,7 @@
   lib,
   stdenv,
   fetchFromGitHub,
+  nix-update-script,
   bun,
   rustPlatform,
   cargo-tauri,
@@ -125,6 +126,18 @@ rustPlatform.buildRustPackage (finalAttrs: {
         $out/share/applications/*.desktop
     fi
   '';
+
+  passthru = {
+    inherit (finalAttrs) node_modules;
+
+    updateScript = nix-update-script {
+      extraArgs = [
+        "--subpackage=node_modules"
+        "--url=https://github.com/athasdev/athas"
+        "--use-github-releases"
+      ];
+    };
+  };
 
   meta = {
     description = "Athas code editor";
