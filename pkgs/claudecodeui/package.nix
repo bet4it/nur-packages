@@ -8,16 +8,16 @@
 let
   originalPackage = buildNpmPackage rec {
     pname = "claudecodeui";
-    version = "1.30.0";
+    version = "1.31.5";
 
     src = fetchFromGitHub {
       owner = "siteboon";
       repo = "claudecodeui";
       rev = "v${version}";
-      hash = "sha256-8Zm4s0ta7VorckYBPYca16TInOyFsZpkQmwPlad4l+A=";
+      hash = "sha256-Qpfo5iAWI8v90w17Rvq/yOrQkM2NeEGa5aJuHQzlRPM=";
     };
 
-    npmDepsHash = "sha256-n3IPw2uvnDbChXtYYZwxclphoUO3aTHqt0ES4Z5JrN0=";
+    npmDepsHash = "sha256-nIPE2jhlNwdRZ4sMg6ZnJOZnNz1ZpEE2VlDgMI792IE=";
 
     buildInputs = [ nodejs_20 ];
     dontNpmBuild = false;
