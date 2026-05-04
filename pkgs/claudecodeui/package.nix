@@ -3,6 +3,7 @@
   buildNpmPackage,
   fetchFromGitHub,
   nodejs_20,
+  ripgrep,
   makeWrapper,
 }:
 let
@@ -21,6 +22,15 @@ let
 
     buildInputs = [ nodejs_20 ];
     dontNpmBuild = false;
+
+    npmRebuildFlags = [ "--ignore-scripts" ];
+
+    preBuild = ''
+      mkdir -p node_modules/@vscode/ripgrep/bin
+      ln -sf ${lib.getExe ripgrep} node_modules/@vscode/ripgrep/bin/rg
+
+      npm rebuild --offline bcrypt better-sqlite3 esbuild node-pty sharp unrs-resolver
+    '';
 
     meta = with lib; {
       description = "Use Claude Code, Cursor CLI or Codex on mobile and web with CloudCLI (aka Claude Code UI)";
