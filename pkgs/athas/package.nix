@@ -18,18 +18,18 @@
 
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "athas";
-  version = "0.4.5";
+  version = "0.4.7";
 
   src = fetchFromGitHub {
     owner = "athasdev";
     repo = "athas";
     rev = "v${finalAttrs.version}";
-    hash = "sha256-rkWcw1MRpxt5LqVO0+TtEimEEg0XLrf7kE/1M4L1gto=";
+    hash = "sha256-b4m2ZVrDRRInHZvrq3HmI/zBY64wlX0/1H7zkUlr+0g=";
   };
 
   buildAndTestSubdir = "src-tauri";
 
-  cargoHash = "sha256-NDtbpOZJdbnFFGlRL2a3LMpeuA7kHUWz8X1+C4wqEDw=";
+  cargoHash = "sha256-jfvT5Lg+SlqfYMLAhZdMNVkbIOr+Avq++j4A56sSA5c=";
 
   doCheck = false;
 
