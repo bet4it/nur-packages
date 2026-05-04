@@ -3,6 +3,7 @@
   stdenv,
   fetchFromGitHub,
   nix-update-script,
+  llvmPackages,
   bun,
   rustPlatform,
   cargo-tauri,
@@ -10,6 +11,7 @@
   writableTmpDirAsHomeHook,
   pkg-config,
   wrapGAppsHook4,
+  zig,
   glib-networking,
   libayatana-appindicator,
   openssl,
@@ -101,6 +103,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
     writableTmpDirAsHomeHook
     pkg-config
     wrapGAppsHook4
+    zig
     desktop-file-utils
   ];
 
@@ -112,6 +115,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
   ];
 
   env = {
+    LIBCLANG_PATH = "${lib.getLib llvmPackages.libclang}/lib";
     OPENSSL_NO_VENDOR = true;
     TAURI_SKIP_VERSION_CHECK = "1";
   };
