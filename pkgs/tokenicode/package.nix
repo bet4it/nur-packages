@@ -20,19 +20,19 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "tokenicode";
-  version = "0.10.6";
+  version = "0.10.7";
 
   src = fetchFromGitHub {
     owner = "yiliqi78";
     repo = "TOKENICODE";
     rev = "v${version}";
-    hash = "sha256-Bw7rMFYa0nsIClImT5r3m0gPzvemjJydWY2DyzDuMqs=";
+    hash = "sha256-WK+zT+d0nkMy5Btztk/syg3x5LNsTViUDgoupYmOCvc=";
   };
 
   cargoRoot = "src-tauri";
   buildAndTestSubdir = "src-tauri";
 
-  cargoHash = "sha256-1PvJHOPJYarUkv5TuaIygwUpaIuQmyzr4oOXQ8iEpK0=";
+  cargoHash = "sha256-Ao7gipgYlbKvqOzFaBPY5kXvTD3txHDVYZvvIwDQkpw=";
 
   doCheck = false;
 
@@ -40,7 +40,7 @@ rustPlatform.buildRustPackage rec {
 
   pnpmDeps = fetchPnpmDeps {
     inherit pname version src;
-    hash = "sha256-/ALHeLPWAlnRdBbXG6fZKtnztY8obZDORVgzaoUeIyQ=";
+    hash = "sha256-g2USBHdFjk/kIfrQTOee2LATdZYcWCn31eAPoWn5Zn0=";
     fetcherVersion = 3;
   };
 
