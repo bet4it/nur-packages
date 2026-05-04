@@ -172,6 +172,7 @@ rustPlatform.buildRustPackage {
         "--subpackage=node_modules"
         "--url=https://github.com/milisp/codexia"
         "--use-github-releases"
+        "--version-regex=^v([0-9]+\\.[0-9]+\\.[0-9]+)$"
       ];
     };
   };
