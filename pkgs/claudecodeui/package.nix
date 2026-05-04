@@ -3,24 +3,34 @@
   buildNpmPackage,
   fetchFromGitHub,
   nodejs_20,
+  ripgrep,
   makeWrapper,
 }:
 let
   originalPackage = buildNpmPackage rec {
     pname = "claudecodeui";
-    version = "1.30.0";
+    version = "1.31.5";
 
     src = fetchFromGitHub {
       owner = "siteboon";
       repo = "claudecodeui";
       rev = "v${version}";
-      hash = "sha256-8Zm4s0ta7VorckYBPYca16TInOyFsZpkQmwPlad4l+A=";
+      hash = "sha256-Qpfo5iAWI8v90w17Rvq/yOrQkM2NeEGa5aJuHQzlRPM=";
     };
 
-    npmDepsHash = "sha256-n3IPw2uvnDbChXtYYZwxclphoUO3aTHqt0ES4Z5JrN0=";
+    npmDepsHash = "sha256-nIPE2jhlNwdRZ4sMg6ZnJOZnNz1ZpEE2VlDgMI792IE=";
 
     buildInputs = [ nodejs_20 ];
     dontNpmBuild = false;
+
+    npmRebuildFlags = [ "--ignore-scripts" ];
+
+    preBuild = ''
+      mkdir -p node_modules/@vscode/ripgrep/bin
+      ln -sf ${lib.getExe ripgrep} node_modules/@vscode/ripgrep/bin/rg
+
+      npm rebuild --offline bcrypt better-sqlite3 esbuild node-pty sharp unrs-resolver
+    '';
 
     meta = with lib; {
       description = "Use Claude Code, Cursor CLI or Codex on mobile and web with CloudCLI (aka Claude Code UI)";
