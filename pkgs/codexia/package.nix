@@ -2,6 +2,7 @@
   lib,
   stdenv,
   fetchFromGitHub,
+  nix-update-script,
   rustPlatform,
   cargo-tauri,
   bun,
@@ -162,6 +163,18 @@ rustPlatform.buildRustPackage {
         $out/share/applications/codexia.desktop
     fi
   '';
+
+  passthru = {
+    inherit node_modules;
+
+    updateScript = nix-update-script {
+      extraArgs = [
+        "--subpackage=node_modules"
+        "--url=https://github.com/milisp/codexia"
+        "--use-github-releases"
+      ];
+    };
+  };
 
   meta = {
     description = "Agent OS and Toolkit for Codex CLI + Claude Code";
