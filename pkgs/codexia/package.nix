@@ -22,13 +22,13 @@
 
 let
   pname = "codexia";
-  version = "0.28.3";
+  version = "0.29.0";
 
   src = fetchFromGitHub {
     owner = "milisp";
     repo = "codexia";
     rev = "v${version}";
-    hash = "sha256-Wcz8UeeIknMjrTTR00GUFHTTgz9gPi2u/fcFrrNDCYw=";
+    hash = "sha256-74+i3rOj56r6f6kMaYUfxn6xYGvXwr3vow/WU/C6hBI=";
   };
 
   # Prefetch Node modules using Bun (Fixed Output Derivation)
@@ -65,7 +65,7 @@ let
 
     dontFixup = true;
 
-    outputHash = "sha256-MmgVEmXoDdEmKYSI6Qqd7TjCdPFfNXqmvxlTKTXgvTU=";
+    outputHash = "sha256-FGEdWawZATcAl7/7GL0X9CmMs0Is1pc3eaWUj+tBPvM=";
     outputHashAlgo = "sha256";
     outputHashMode = "recursive";
   };
@@ -84,7 +84,7 @@ rustPlatform.buildRustPackage {
     lockFile = ./Cargo.lock;
     outputHashes = {
       "agent-insights-0.1.4" = "sha256-JjeXHgP1X5GiY2/g3dbPRN27PznzH2Y8fecqkOiKqFE=";
-      "claude-agent-sdk-rs-0.6.4" = "sha256-ah0Pgb3itTdHB8d0q3rDjh5smsl9hLTyEL0QcUdVpAU=";
+      "claude-agent-sdk-rs-0.6.6" = "sha256-ixQV25WqJ6Eklk1uI638Q3O6r4ivqJS8/L065/zueG4=";
       "codex-app-server-protocol-0.114.0" = "sha256-7t+mVwP4+YrG1ciI+OLqsK7TUM9SrDbPsJNrt26iy9c=";
       "codex-finder-0.1.2" = "sha256-uvjrSU+KGxp6mBrCTJICMZpUT3OgAJ2hUaBbELxR18E=";
       "fix-path-env-0.0.0" = "sha256-UygkxJZoiJlsgp8PLf1zaSVsJZx1GGdQyTXqaFv3oGk=";
