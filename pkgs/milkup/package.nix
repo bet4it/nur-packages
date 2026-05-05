@@ -4,6 +4,8 @@
   fetchFromGitHub,
   nix-update-script,
   pnpm,
+  fetchPnpmDeps,
+  pnpmConfigHook,
   nodejs_22,
   electron,
   makeWrapper,
@@ -36,12 +38,12 @@ stdenv.mkDerivation rec {
 
   nativeBuildInputs = [
     nodejs_22
-    pnpm.configHook
+    pnpmConfigHook
     makeWrapper
     copyDesktopItems
   ];
 
-  pnpmDeps = pnpm.fetchDeps {
+  pnpmDeps = fetchPnpmDeps {
     inherit pname version src;
     fetcherVersion = 3;
     hash = "sha256-37cA97g/giEjwlYQOvlORaPuk1q8n4eUbXiENclokUE=";
