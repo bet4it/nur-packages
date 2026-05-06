@@ -38,6 +38,7 @@ stdenv.mkDerivation rec {
 
   nativeBuildInputs = [
     nodejs_22
+    pnpm
     pnpmConfigHook
     makeWrapper
     copyDesktopItems

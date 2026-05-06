@@ -28,6 +28,7 @@ stdenv.mkDerivation rec {
 
   nativeBuildInputs = [
     nodejs_22
+    pnpm
     pnpmConfigHook
     python3
     pkg-config
