@@ -11,6 +11,7 @@
   electerm = pkgs.callPackage ./electerm/package.nix { };
   herdr = pkgs.callPackage ./herdr/package.nix { };
   jean = pkgs.callPackage ./jean/package.nix { };
+  kelivo = pkgs.callPackage ./kelivo/package.nix { };
   metapi = pkgs.callPackage ./metapi/package.nix { };
   milkup = pkgs.callPackage ./milkup/package.nix { };
   neko-master = pkgs.callPackage ./neko-master/package.nix { };
