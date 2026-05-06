@@ -15,19 +15,19 @@
 }:
 
 let
-  version = "0.1.67";
+  version = "0.1.69";
 
   rawSrc = fetchFromGitHub {
     owner = "getpaseo";
     repo = "paseo";
     rev = "v${version}";
-    hash = "sha256-VU0hsQAJGgttA1XvCyab1trxSW3vzx90jm4T7xV9qa4=";
+    hash = "sha256-l4/iiwPQloF+WQZkj8V2jEBNuoyMAqK6Y6sFJ/MT7yY=";
   };
 
   npmDeps = fetchNpmDeps {
     name = "paseo-desktop-${version}-npm-deps";
     src = rawSrc;
-    hash = "sha256-KQvM+YQUxEdFKsb8fSm85gbfed01VrRILlddLgnt9SU=";
+    hash = "sha256-rjzmIH918poK05edU/f6G3iiP16Ra7g7vM0k5HbfKRs=";
   };
 in
 buildNpmPackage rec {
