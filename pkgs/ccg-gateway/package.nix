@@ -88,12 +88,15 @@ rustPlatform.buildRustPackage rec {
   };
 
   postInstall = ''
-    if [ -f $out/share/applications/*.desktop ]; then
+    if [ -f "$out/share/applications/CCG Gateway.desktop" ]; then
+      mv "$out/share/applications/CCG Gateway.desktop" \
+        "$out/share/applications/com.ccg.gateway.desktop"
       desktop-file-edit \
+        --set-key="StartupWMClass" --set-value="ccg-gateway" \
         --set-comment "Desktop gateway manager for Claude Code, Codex and Gemini CLI" \
         --set-key="Keywords" --set-value="ai;gateway;claude;codex;gemini;proxy;" \
         --set-key="Categories" --set-value="Development;Network;" \
-        $out/share/applications/*.desktop
+        "$out/share/applications/com.ccg.gateway.desktop"
     fi
   '';
 
