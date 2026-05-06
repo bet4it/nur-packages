@@ -76,8 +76,12 @@ buildNpmPackage rec {
   installPhase = ''
     runHook preInstall
 
+    npm prune --omit=dev
+
     mkdir -p $out/share/netcatty
     cp -r dist electron lib public skills package.json node_modules $out/share/netcatty/
+    find $out/share/netcatty/node_modules -type d -name .bin -prune -exec rm -rf {} +
+    find $out/share/netcatty/node_modules -xtype l -delete
 
     install -Dm644 build/icons/512x512.png $out/share/icons/hicolor/512x512/apps/netcatty.png
 

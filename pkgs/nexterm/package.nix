@@ -10,6 +10,7 @@
   pkg-config,
   vips,
   makeWrapper,
+  openssl,
   autoPatchelfHook,
   yarnConfigHook,
 }:
@@ -116,6 +117,19 @@ stdenv.mkDerivation rec {
     export npm_config_nodedir=${nodejs}
     npm rebuild --verbose
 
+    # Replace the root dependency tree with a production-only install for the
+    # server runtime. The earlier full install is only needed while building
+    # docs/client assets.
+    rm -rf node_modules
+    export HOME=$(mktemp -d)
+    fixup-yarn-lock yarn.lock
+    yarn config --offline set yarn-offline-mirror $offlineCache
+    yarn install --offline --frozen-lockfile --production --ignore-engines --ignore-scripts
+
+    export npm_config_nodedir=${nodejs}
+    patchShebangs node_modules
+    npm rebuild bcrypt sqlite3 --verbose
+
     runHook postBuild
   '';
 
@@ -156,11 +170,21 @@ stdenv.mkDerivation rec {
     find $out -type d -name "*-linux-riscv*" -print -exec rm -rf {} +
     find $out -type d -name "*-linux-s390x*" -print -exec rm -rf {} +
     find $out -type d -name "*-linux-loong64*" -print -exec rm -rf {} +
+    find $out -type d -name "*linuxmusl*" -print -exec rm -rf {} +
+    rm -rf $out/lib/nexterm/node_modules/bcrypt/prebuilds/linux-arm
+    rm -rf $out/lib/nexterm/node_modules/bcrypt/prebuilds/linux-arm64
+    rm -f $out/lib/nexterm/node_modules/bcrypt/prebuilds/linux-x64/bcrypt.musl.node
+    rm -rf $out/lib/nexterm/node_modules/sqlite3/build/Release/{obj.target,.deps}
+    find $out/lib/nexterm/node_modules -type d -name .bin -prune -exec rm -rf {} +
+    find $out/lib/nexterm/node_modules -xtype l -delete
 
     runHook postInstall
   '';
 
   postFixup = ''
+    substituteInPlace $out/lib/nexterm/package.json \
+      --replace-fail '"version": "1.0.9-OPEN-PREVIEW"' '"version": "${version}"'
+
     # Patch server/index.js to support configurable DATA_DIR
     substituteInPlace $out/lib/nexterm/server/index.js \
       --replace-fail 'const CERTS_DIR = path.join(__dirname, "../data/certs");' \
@@ -179,8 +203,18 @@ stdenv.mkDerivation rec {
     makeWrapper ${nodejs}/bin/node $out/bin/nexterm \
       --add-flags "$out/lib/nexterm/server/index.js" \
       --set NODE_ENV production \
-      --run 'export NEXTERM_DATA_PATH=''${NEXTERM_DATA_PATH:-/var/lib/nexterm}' \
-      --prefix PATH : ${lib.makeBinPath [ ]}
+      --run 'export NEXTERM_DATA_PATH=''${NEXTERM_DATA_PATH:-''${XDG_STATE_HOME:-$HOME/.local/state}/nexterm}
+      mkdir -p "$NEXTERM_DATA_PATH"
+      if [ -z "''${ENCRYPTION_KEY:-}" ]; then
+        keyFile="$NEXTERM_DATA_PATH/encryption-key"
+        if [ ! -f "$keyFile" ]; then
+          umask 077
+          openssl rand -hex 32 > "$keyFile"
+        fi
+        read -r ENCRYPTION_KEY < "$keyFile"
+        export ENCRYPTION_KEY
+      fi' \
+      --prefix PATH : ${lib.makeBinPath [ openssl ]}
   '';
 
   meta = with lib; {

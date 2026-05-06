@@ -84,13 +84,32 @@ buildNpmPackage rec {
     # Prepare production app (patched to skip npm install)
     node build/bin/prepare.js
 
+    node <<'EOF'
+    const fs = require("fs");
+    const path = require("path");
+
+    const pkg = JSON.parse(fs.readFileSync("package.json", "utf8"));
+    const names = new Set([
+      ...Object.keys(pkg.devDependencies || {}),
+      "7zip-bin",
+      "app-builder-bin",
+      "app-builder-lib",
+      "builder-util",
+      "dmg-builder",
+      "electron-publish",
+      "postject",
+    ]);
+
+    for (const name of names) {
+      const target = path.join("node_modules", ...name.split("/"));
+      fs.rmSync(target, { recursive: true, force: true });
+    }
+    EOF
+
     # Populate node_modules in work/app
     cp -r node_modules work/app/
-
-    # Prune dev dependencies (optional, but good practice)
-    # Since we don't have network, we rely on the fact that we copied everything.
-    # We might want to remove some known dev deps if size is an issue.
-    # For now, let's leave it as is.
+    find work/app/node_modules -type d -name .bin -prune -exec rm -rf {} +
+    find work/app/node_modules -xtype l -delete
   '';
 
   desktopItems = [ desktopItem ];
