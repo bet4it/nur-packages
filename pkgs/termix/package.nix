@@ -87,6 +87,8 @@ buildNpmPackage rec {
   installPhase = ''
     runHook preInstall
 
+    npm prune --omit=dev
+
     mkdir -p $out/share/termix
 
     # Copy the built backend and frontend
@@ -102,6 +104,8 @@ buildNpmPackage rec {
 
     # Copy node_modules
     cp -r node_modules $out/share/termix/
+    find $out/share/termix/node_modules -type d -name .bin -prune -exec rm -rf {} +
+    find $out/share/termix/node_modules -xtype l -delete
 
     # Install icon
     install -Dm644 public/icon.png $out/share/icons/hicolor/512x512/apps/termix.png

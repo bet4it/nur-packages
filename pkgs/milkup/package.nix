@@ -68,12 +68,7 @@ stdenv.mkDerivation rec {
     runHook preInstall
 
     mkdir -p $out/share/milkup
-    cp -r . $out/share/milkup
-
-    # Remove node_modules that are not needed for production if possible,
-    # but electron apps often need them. electron-builder usually handles this.
-    # Since we are running 'pnpm build' which runs vite and esbuild, 
-    # the output is in 'dist' and 'dist-electron'.
+    cp -r dist dist-electron package.json $out/share/milkup/
 
     makeWrapper ${lib.getExe electron} $out/bin/milkup \
       --add-flags $out/share/milkup \

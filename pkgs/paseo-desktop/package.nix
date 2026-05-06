@@ -73,6 +73,7 @@ buildNpmPackage rec {
     npm run build:daemon
     npm run build:web --workspace=@getpaseo/app
     npm run build:main --workspace=@getpaseo/desktop
+    npm prune --omit=dev --no-save
 
     runHook postBuild
   '';
@@ -81,30 +82,130 @@ buildNpmPackage rec {
     runHook preInstall
 
     appRoot="$out/lib/paseo-desktop"
-    mkdir -p "$appRoot/packages" "$out/bin" "$out/share/pixmaps"
+    export appRoot
+    mkdir -p "$appRoot/node_modules/@getpaseo" "$out/bin" "$out/share/pixmaps"
 
-    cp package.json "$appRoot/"
-    cp -a node_modules "$appRoot/"
+    node <<EOF
+    const fs = require("fs");
+    const path = require("path");
 
-    copy_package() {
-      local name="$1"
-      mkdir -p "$appRoot/packages/$name"
-      cp "packages/$name/package.json" "$appRoot/packages/$name/"
-      for dir in dist build assets bin node_modules; do
-        if [ -d "packages/$name/$dir" ]; then
-          cp -a "packages/$name/$dir" "$appRoot/packages/$name/"
-        fi
-      done
-      for file in .env.example README.md; do
-        if [ -f "packages/$name/$file" ]; then
-          cp "packages/$name/$file" "$appRoot/packages/$name/"
-        fi
-      done
+    const srcRoot = process.cwd();
+    const outRoot = process.env.appRoot;
+
+    const workspaceEntries = new Map([
+      ["desktop", ["package.json", "dist", "assets"]],
+      ["cli", ["package.json", "dist", "bin"]],
+      ["server", ["package.json", "dist"]],
+      ["relay", ["package.json", "dist"]],
+      ["highlight", ["package.json", "dist"]],
+      ["app", ["package.json", "dist", "assets"]],
+    ]);
+
+    const runtimeWorkspaces = ["desktop", "cli", "server", "relay", "highlight"];
+
+    function workspaceDest(name) {
+      return path.join(outRoot, "node_modules", "@getpaseo", name);
     }
 
-    for name in highlight expo-two-way-audio relay server cli app desktop website; do
-      copy_package "$name"
-    done
+    function copyMinimalWorkspace(name) {
+      const dest = workspaceDest(name);
+      fs.mkdirSync(dest, { recursive: true });
+
+      for (const entry of workspaceEntries.get(name) ?? []) {
+        const src = path.join(srcRoot, "packages", name, entry);
+        if (fs.existsSync(src)) {
+          fs.cpSync(src, path.join(dest, entry), {
+            recursive: true,
+            dereference: true,
+          });
+        }
+      }
+    }
+
+    function resolvePackageDir(fromDir, name) {
+      let current = fromDir;
+      const parts = ["node_modules", ...name.split("/")];
+
+      while (true) {
+        const candidate = path.join(current, ...parts);
+        if (fs.existsSync(path.join(candidate, "package.json"))) {
+          return candidate;
+        }
+
+        const parent = path.dirname(current);
+        if (parent === current) {
+          return null;
+        }
+        current = parent;
+      }
+    }
+
+    function mapDest(pkgDir) {
+      const rel = path.relative(srcRoot, pkgDir);
+      if (rel.startsWith("packages/")) {
+        const parts = rel.split(path.sep);
+        return path.join(workspaceDest(parts[1]), ...parts.slice(2));
+      }
+      return path.join(outRoot, rel);
+    }
+
+    for (const name of workspaceEntries.keys()) {
+      copyMinimalWorkspace(name);
+    }
+
+    const queue = [];
+    const seen = new Set();
+
+    for (const name of runtimeWorkspaces) {
+      const pkgDir = path.join(srcRoot, "packages", name);
+      const pkg = JSON.parse(fs.readFileSync(path.join(pkgDir, "package.json"), "utf8"));
+
+      for (const dep of Object.keys(pkg.dependencies ?? {})) {
+        queue.push({ fromDir: pkgDir, name: dep });
+      }
+      for (const dep of Object.keys(pkg.optionalDependencies ?? {})) {
+        queue.push({ fromDir: pkgDir, name: dep });
+      }
+    }
+
+    while (queue.length > 0) {
+      const { fromDir, name } = queue.pop();
+      if (name.startsWith("@getpaseo/")) {
+        continue;
+      }
+
+      const pkgDir = resolvePackageDir(fromDir, name);
+      if (!pkgDir) {
+        continue;
+      }
+
+      const key = path.relative(srcRoot, pkgDir);
+      if (seen.has(key)) {
+        continue;
+      }
+      seen.add(key);
+
+      const dest = mapDest(pkgDir);
+      if (!fs.existsSync(dest)) {
+        fs.mkdirSync(path.dirname(dest), { recursive: true });
+        fs.cpSync(pkgDir, dest, {
+          recursive: true,
+          dereference: true,
+        });
+      }
+
+      const pkg = JSON.parse(fs.readFileSync(path.join(pkgDir, "package.json"), "utf8"));
+      for (const dep of Object.keys(pkg.dependencies ?? {})) {
+        queue.push({ fromDir: pkgDir, name: dep });
+      }
+      for (const dep of Object.keys(pkg.optionalDependencies ?? {})) {
+        queue.push({ fromDir: pkgDir, name: dep });
+      }
+    }
+    EOF
+
+    find "$appRoot/node_modules" -type d -name .bin -prune -exec rm -rf {} +
+    find "$appRoot/node_modules" -xtype l -delete
 
     if [ -d skills ]; then
       cp -a skills "$appRoot/"
@@ -114,7 +215,7 @@ buildNpmPackage rec {
 
     makeWrapper ${electron_40}/bin/electron "$out/bin/paseo-desktop" \
       --add-flags "--no-sandbox" \
-      --add-flags "$appRoot/packages/desktop" \
+      --add-flags "$appRoot/node_modules/@getpaseo/desktop" \
       --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath [ stdenv.cc.cc.lib ]}
 
     runHook postInstall

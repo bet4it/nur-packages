@@ -103,15 +103,31 @@ stdenv.mkDerivation rec {
   installPhase = ''
     runHook preInstall
 
-    mkdir -p $out/share/neko-master
-    # Copy entire project to preserve workspace structure and relative symlinks
-    cp -r . $out/share/neko-master
+    appRoot=$out/share/neko-master
+    mkdir -p "$appRoot"
 
     # Setup standalone web assets
-    mkdir -p $out/share/neko-master/apps/web/.next/standalone/apps/web/public
-    mkdir -p $out/share/neko-master/apps/web/.next/standalone/apps/web/.next/static
-    cp -r apps/web/public/* $out/share/neko-master/apps/web/.next/standalone/apps/web/public/
-    cp -r apps/web/.next/static/* $out/share/neko-master/apps/web/.next/standalone/apps/web/.next/static/
+    mkdir -p "$appRoot/apps/web/.next/standalone"
+    cp -r apps/web/.next/standalone/. "$appRoot/apps/web/.next/standalone/"
+    mkdir -p "$appRoot/apps/web/.next/standalone/apps/web/public"
+    mkdir -p "$appRoot/apps/web/.next/standalone/apps/web/.next/static"
+    cp -r apps/web/public/* "$appRoot/apps/web/.next/standalone/apps/web/public/"
+    cp -r apps/web/.next/static/* "$appRoot/apps/web/.next/standalone/apps/web/.next/static/"
+
+    rm -rf node_modules apps/*/node_modules packages/*/node_modules
+    pnpm install --offline --prod --ignore-scripts --frozen-lockfile --package-import-method copy --filter "@neko-master/collector..."
+
+    pushd node_modules/.pnpm/better-sqlite3*/node_modules/better-sqlite3
+    npm run build-release
+    rm -rf build/Release/{obj.target,sqlite3.a,.deps} deps
+    popd
+
+    find node_modules -xtype l -delete
+    cp -r node_modules package.json pnpm-lock.yaml "$appRoot/"
+    mkdir -p "$appRoot/apps/collector" "$appRoot/packages/shared"
+    cp -r apps/collector/dist apps/collector/package.json "$appRoot/apps/collector/"
+    cp -r apps/collector/node_modules "$appRoot/apps/collector/"
+    cp -r packages/shared/dist packages/shared/package.json "$appRoot/packages/shared/"
 
     mkdir -p $out/bin
 
@@ -119,7 +135,7 @@ stdenv.mkDerivation rec {
     cat > $out/bin/neko-master-collector <<EOF
     #!/bin/sh
     export NODE_ENV=production
-    exec ${nodejs_22}/bin/node $out/share/neko-master/apps/collector/dist/index.js
+    exec ${nodejs_22}/bin/node $appRoot/apps/collector/dist/index.js
     EOF
     chmod +x $out/bin/neko-master-collector
 
@@ -127,7 +143,7 @@ stdenv.mkDerivation rec {
     cat > $out/bin/neko-master-web <<EOF
     #!/bin/sh
     export NODE_ENV=production
-    exec ${nodejs_22}/bin/node $out/share/neko-master/apps/web/.next/standalone/apps/web/server.js
+    exec ${nodejs_22}/bin/node $appRoot/apps/web/.next/standalone/apps/web/server.js
     EOF
     chmod +x $out/bin/neko-master-web
 
