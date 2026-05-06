@@ -97,8 +97,10 @@ in
 GitHub Actions is configured in [.github/workflows/build.yml](./.github/workflows/build.yml).
 
 The workflow evaluates the repository with NUR's restricted-eval check, builds
-the package set from [ci.nix](./ci.nix), uploads cacheable outputs to Cachix,
-and triggers a NUR index update for the `bet4it` repository.
+the package set from [ci.nix](./ci.nix) against `nixos-unstable` for NUR
+compatibility, builds the flake-locked cache outputs from
+[`checks.x86_64-linux.cacheOutputs`](./flake.nix), uploads cacheable outputs to
+Cachix, and triggers a NUR index update for the `bet4it` repository.
 
 Before enabling cache uploads, create the `bet4it` cache on Cachix and add one
 of these GitHub repository secrets:
@@ -106,5 +108,8 @@ of these GitHub repository secrets:
 - `CACHIX_AUTH_TOKEN`
 - `CACHIX_SIGNING_KEY`
 
-The workflow evaluates and builds against `nixos-unstable`, matching the NUR
-expectation that repositories keep working with unstable nixpkgs.
+The NUR compatibility path still evaluates and builds against
+`nixos-unstable`, matching the NUR expectation that repositories keep working
+with unstable nixpkgs. The flake cache path builds with the repository's pinned
+`flake.lock`, so `github:bet4it/nur-packages#...` consumers can hit the same
+store paths from Cachix.
