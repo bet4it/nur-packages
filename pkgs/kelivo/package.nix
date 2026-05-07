@@ -39,7 +39,7 @@ flutter338.buildFlutterApplication rec {
     (makeDesktopItem {
       name = "com.psyche.kelivo";
       exec = "kelivo";
-      icon = "kelivo";
+      icon = "com.psyche.kelivo";
       desktopName = "Kelivo";
       startupWMClass = "com.psyche.kelivo";
       comment = "An LLM chat client";
@@ -51,7 +51,10 @@ flutter338.buildFlutterApplication rec {
   ];
 
   postInstall = ''
-    install -Dm644 assets/app_icon.png $out/share/icons/hicolor/512x512/apps/kelivo.png
+    install -Dm644 assets/app_icon.png \
+      $out/share/icons/hicolor/512x512/apps/com.psyche.kelivo.png
+    ln -s com.psyche.kelivo.png \
+      $out/share/icons/hicolor/512x512/apps/kelivo.png
   '';
 
   meta = {
