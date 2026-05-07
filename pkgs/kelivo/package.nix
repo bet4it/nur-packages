@@ -37,10 +37,11 @@ flutter338.buildFlutterApplication rec {
 
   desktopItems = [
     (makeDesktopItem {
-      name = "kelivo";
+      name = "com.psyche.kelivo";
       exec = "kelivo";
       icon = "kelivo";
       desktopName = "Kelivo";
+      startupWMClass = "com.psyche.kelivo";
       comment = "An LLM chat client";
       categories = [
         "Network"
