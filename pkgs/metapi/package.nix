@@ -56,6 +56,15 @@ buildNpmPackage rec {
     mkdir -p $out/bin $out/lib/metapi
     cp -r dist drizzle node_modules package.json package-lock.json $out/lib/metapi/
 
+    betterSqlite3Dir=$out/lib/metapi/node_modules/better-sqlite3
+    betterSqlite3Node=$betterSqlite3Dir/build/Release/better_sqlite3.node
+    mkdir -p $TMPDIR/metapi-better-sqlite3
+    cp $betterSqlite3Node $TMPDIR/metapi-better-sqlite3/
+    rm -rf $betterSqlite3Dir/{build,deps,src}
+    rm -f $betterSqlite3Dir/binding.gyp
+    mkdir -p "$(dirname "$betterSqlite3Node")"
+    cp $TMPDIR/metapi-better-sqlite3/better_sqlite3.node $betterSqlite3Node
+
     makeWrapper ${nodejs_22}/bin/node $out/bin/metapi \
       --set NODE_ENV production \
       --run "export DATA_DIR=\"''${DATA_DIR:-''${XDG_DATA_HOME:-\$HOME/.local/share}/metapi}\"; mkdir -p \"\$DATA_DIR\"; ${nodejs_22}/bin/node \"$out/lib/metapi/dist/server/db/migrate.js\"" \

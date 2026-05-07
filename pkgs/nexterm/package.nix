@@ -152,32 +152,6 @@ stdenv.mkDerivation rec {
     # Clean up node_modules to avoid autoPatchelf errors and reduce size
     chmod -R u+w $out
 
-    echo "Cleaning up incompatible binaries..."
-    # Use -type d to avoid deleting js source files that might have similar names
-    find $out -type d -name "*-musl-*" -print -exec rm -rf {} +
-    find $out -type d -name "*-win32-*" -print -exec rm -rf {} +
-    find $out -type d -name "*-darwin-*" -print -exec rm -rf {} +
-    find $out -type d -name "*-android-*" -print -exec rm -rf {} +
-    find $out -type d -name "*-sunos-*" -print -exec rm -rf {} +
-    find $out -type d -name "*-freebsd-*" -print -exec rm -rf {} +
-    find $out -type d -name "*-openbsd-*" -print -exec rm -rf {} +
-    find $out -type d -name "*-netbsd-*" -print -exec rm -rf {} +
-
-    # Remove incompatible architectures for linux (assuming x64 target)
-    find $out -type d -name "*-linux-arm*" -print -exec rm -rf {} +
-    find $out -type d -name "*-linux-ppc64*" -print -exec rm -rf {} +
-    find $out -type d -name "*-linux-mips*" -print -exec rm -rf {} +
-    find $out -type d -name "*-linux-riscv*" -print -exec rm -rf {} +
-    find $out -type d -name "*-linux-s390x*" -print -exec rm -rf {} +
-    find $out -type d -name "*-linux-loong64*" -print -exec rm -rf {} +
-    find $out -type d -name "*linuxmusl*" -print -exec rm -rf {} +
-    rm -rf $out/lib/nexterm/node_modules/bcrypt/prebuilds/linux-arm
-    rm -rf $out/lib/nexterm/node_modules/bcrypt/prebuilds/linux-arm64
-    rm -f $out/lib/nexterm/node_modules/bcrypt/prebuilds/linux-x64/bcrypt.musl.node
-    rm -rf $out/lib/nexterm/node_modules/sqlite3/build/Release/{obj.target,.deps}
-    find $out/lib/nexterm/node_modules -type d -name .bin -prune -exec rm -rf {} +
-    find $out/lib/nexterm/node_modules -xtype l -delete
-
     runHook postInstall
   '';
 
