@@ -97,9 +97,6 @@ rustPlatform.buildRustPackage {
   '';
 
   postPatch = ''
-    substituteInPlace src-tauri/tauri.conf.json \
-      --replace-fail '"targets": "all"' '"targets": ["deb"]'
-
     libappindicatorSys=$(find $cargoDepsCopy -path '*/libappindicator-sys-*/src/lib.rs' -print -quit)
     if [ -n "$libappindicatorSys" ]; then
       substituteInPlace "$libappindicatorSys" \
