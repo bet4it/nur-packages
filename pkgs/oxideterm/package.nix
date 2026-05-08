@@ -19,7 +19,6 @@
   openssl,
   desktop-file-utils,
   writableTmpDirAsHomeHook,
-  nix-update-script,
 }:
 
 let
@@ -39,10 +38,7 @@ let
 
     cargoRoot = "cli";
     buildAndTestSubdir = "cli";
-
-    cargoLock = {
-      lockFile = "${src}/cli/Cargo.lock";
-    };
+    cargoHash = "sha256-Db2ipQ/WUqPFLIpzrFGU4wWLgMYcYCvrMSgBbqmkhRk=";
 
     cargoBuildFlags = [
       "--bin"
@@ -65,10 +61,7 @@ rustPlatform.buildRustPackage {
 
   cargoRoot = "src-tauri";
   buildAndTestSubdir = "src-tauri";
-
-  cargoLock = {
-    lockFile = "${src}/src-tauri/Cargo.lock";
-  };
+  cargoHash = "sha256-2OEgoTXHKONJjgoTWdqdFdFE4eVRj54EQ167m7ob3AA=";
 
   pnpmDeps = fetchPnpmDeps {
     inherit pname version src;
@@ -142,12 +135,7 @@ rustPlatform.buildRustPackage {
   passthru = {
     inherit cli;
 
-    updateScript = nix-update-script {
-      extraArgs = [
-        "--url=https://github.com/AnalyseDeCircuit/oxideterm"
-        "--use-github-releases"
-      ];
-    };
+    updateScript = ./update.sh;
   };
 
   meta = {
