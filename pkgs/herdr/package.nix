@@ -1,8 +1,11 @@
 {
+  _experimental-update-script-combinators,
   lib,
-  rustPlatform,
   fetchFromGitHub,
   callPackage,
+  nix-update-script,
+  runCommand,
+  rustPlatform,
   zig_0_15,
 }:
 
@@ -44,6 +47,29 @@ rustPlatform.buildRustPackage {
 
   # Some tests try to spawn processes (sleep, shell) which don't exist in the sandbox
   doCheck = false;
+
+  passthru = {
+    zigDepsSource = runCommand "herdr-build.zig.zon.nix" { inherit src; } ''
+      cp --no-preserve=all "$src/vendor/libghostty-vt/build.zig.zon.nix" "$out"
+    '';
+
+    updateScript = _experimental-update-script-combinators.sequence [
+      (nix-update-script {
+        extraArgs = [
+          "--use-github-releases"
+          "--version-regex=^v(.*)$"
+        ];
+      })
+      {
+        command = [
+          "sh"
+          "-ec"
+          ''cp --no-preserve=all "$(nix-build -A herdr.zigDepsSource)" pkgs/herdr/build.zig.zon.nix''
+        ];
+        supportedFeatures = [ ];
+      }
+    ];
+  };
 
   meta = {
     description = "Terminal-native agent multiplexer for coding agents";
