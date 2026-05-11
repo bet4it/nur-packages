@@ -19,7 +19,7 @@
   writableTmpDirAsHomeHook,
 }:
 
-let
+rustPlatform.buildRustPackage rec {
   pname = "claude-code-history-viewer";
   version = "1.11.0";
 
@@ -35,9 +35,6 @@ let
     hash = "sha256-fGXR3WztHAddVL2O4gtfpiaSw8PXgsMWjMRxJtjoONQ=";
     fetcherVersion = 3;
   };
-in
-rustPlatform.buildRustPackage {
-  inherit pname version src;
 
   cargoRoot = "src-tauri";
   buildAndTestSubdir = "src-tauri";
@@ -112,8 +109,6 @@ rustPlatform.buildRustPackage {
   '';
 
   passthru = {
-    inherit pnpmDeps;
-
     updateScript = nix-update-script {
       extraArgs = [
         "--generate-lockfile"
