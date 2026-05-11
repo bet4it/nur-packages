@@ -82,7 +82,7 @@ jobs:
       - name: Create pull request for ${{ matrix.package }} to ${{ steps.update.outputs.version }}
         id: create-pr
         if: steps.update.outputs.changed == 'true'
-        uses: peter-evans/create-pull-request@v7
+        uses: peter-evans/create-pull-request@v8
         with:
           token: ${{ secrets.UPDATE_BOT_TOKEN }}
           branch: update/${{ matrix.package }}
