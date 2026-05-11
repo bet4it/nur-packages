@@ -1,20 +1,23 @@
 {
+  _experimental-update-script-combinators,
   lib,
-  rustPlatform,
   fetchFromGitHub,
   callPackage,
+  nix-update-script,
+  runCommand,
+  rustPlatform,
   zig_0_15,
 }:
 
 let
   pname = "herdr";
-  version = "0.5.7";
+  version = "0.5.5";
 
   src = fetchFromGitHub {
     owner = "ogulcancelik";
     repo = "herdr";
     rev = "v${version}";
-    hash = "sha256-IuJaOPSCYydzI0iNOGX5qgIxOjH3QT4TCvx8en4uci8=";
+    hash = "sha256-gkgnfpnyTcUcJ8Tn6B8//hgMbLR0a5DIfiE9NuNQWec=";
   };
 
   zigDeps = callPackage ./build.zig.zon.nix {
@@ -24,7 +27,7 @@ in
 rustPlatform.buildRustPackage {
   inherit pname version src;
 
-  cargoHash = "sha256-4yu0ScVMgOK8E1LtG6pQCqV4Dq6gfVj80i0Bg9kGoW4=";
+  cargoHash = "sha256-lIa8BIvLJ7HUlWPyUNp/S4fK/1UzCQooeEjfousqtfw=";
 
   patches = [
     ./build-rs-use-system-zig-deps.patch
@@ -44,6 +47,29 @@ rustPlatform.buildRustPackage {
 
   # Some tests try to spawn processes (sleep, shell) which don't exist in the sandbox
   doCheck = false;
+
+  passthru = {
+    zigDepsSource = runCommand "herdr-build.zig.zon.nix" { inherit src; } ''
+      cp --no-preserve=all "$src/vendor/libghostty-vt/build.zig.zon.nix" "$out"
+    '';
+
+    updateScript = _experimental-update-script-combinators.sequence [
+      (nix-update-script {
+        extraArgs = [
+          "--use-github-releases"
+          "--version-regex=^v(.*)$"
+        ];
+      })
+      {
+        command = [
+          "sh"
+          "-ec"
+          ''cp --no-preserve=all "$(nix-build -A herdr.zigDepsSource)" pkgs/herdr/build.zig.zon.nix''
+        ];
+        supportedFeatures = [ ];
+      }
+    ];
+  };
 
   meta = {
     description = "Terminal-native agent multiplexer for coding agents";
