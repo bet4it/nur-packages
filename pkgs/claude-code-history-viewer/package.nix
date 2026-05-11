@@ -1,6 +1,7 @@
 {
   lib,
   fetchFromGitHub,
+  nix-update-script,
   rustPlatform,
   cargo-tauri,
   pnpm_10,
@@ -18,7 +19,7 @@
   writableTmpDirAsHomeHook,
 }:
 
-rustPlatform.buildRustPackage rec {
+let
   pname = "claude-code-history-viewer";
   version = "1.11.0";
 
@@ -28,6 +29,15 @@ rustPlatform.buildRustPackage rec {
     rev = "v${version}";
     hash = "sha256-KamZv8MlqB3Wq3IXEpUtFiFsXnRnxRTwbevH2Ip7KfY=";
   };
+
+  pnpmDeps = fetchPnpmDeps {
+    inherit pname version src;
+    hash = "sha256-fGXR3WztHAddVL2O4gtfpiaSw8PXgsMWjMRxJtjoONQ=";
+    fetcherVersion = 3;
+  };
+in
+rustPlatform.buildRustPackage {
+  inherit pname version src;
 
   cargoRoot = "src-tauri";
   buildAndTestSubdir = "src-tauri";
@@ -39,12 +49,6 @@ rustPlatform.buildRustPackage rec {
   doCheck = false;
 
   tauriBuildFlags = [ "--ignore-version-mismatches" ];
-
-  pnpmDeps = fetchPnpmDeps {
-    inherit pname version src;
-    hash = "sha256-fGXR3WztHAddVL2O4gtfpiaSw8PXgsMWjMRxJtjoONQ=";
-    fetcherVersion = 3;
-  };
 
   nativeBuildInputs = [
     cargo-tauri.hook
@@ -106,6 +110,20 @@ rustPlatform.buildRustPackage rec {
         $out/share/applications/*.desktop
     fi
   '';
+
+  passthru = {
+    inherit pnpmDeps;
+
+    updateScript = nix-update-script {
+      extraArgs = [
+        "--generate-lockfile"
+        "--lockfile-metadata-path=src-tauri"
+        "--subpackage=pnpmDeps"
+        "--url=https://github.com/jhlee0409/claude-code-history-viewer"
+        "--use-github-releases"
+      ];
+    };
+  };
 
   meta = {
     description = "Desktop application for exploring and analyzing Claude Code chat history";
