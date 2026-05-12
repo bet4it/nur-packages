@@ -27,9 +27,14 @@ appimageTools.wrapType2 {
     substituteInPlace $out/share/applications/superset.desktop \
       --replace-fail 'Exec=AppRun --no-sandbox %U' 'Exec=superset --no-sandbox %U' \
       --replace-fail 'Icon=@supersetdesktop' 'Icon=superset'
+    cp $out/share/applications/superset.desktop \
+      $out/share/applications/@supersetdesktop.desktop
+    echo "NoDisplay=true" >> $out/share/applications/@supersetdesktop.desktop
 
     install -Dm444 ${appimageContents}/@supersetdesktop.png \
       $out/share/icons/hicolor/512x512/apps/superset.png
+    ln -s superset.png \
+      $out/share/icons/hicolor/512x512/apps/@supersetdesktop.png
   '';
 
   passthru.updateScript = nix-update-script {

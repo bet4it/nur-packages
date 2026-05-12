@@ -69,6 +69,8 @@ stdenv.mkDerivation rec {
 
     mkdir -p $out/share/milkup
     cp -r dist dist-electron package.json $out/share/milkup/
+    install -Dm644 src/assets/icons/milkup.ico \
+      $out/share/milkup/dist-electron/assets/icons/milkup.ico
 
     makeWrapper ${lib.getExe electron} $out/bin/milkup \
       --add-flags $out/share/milkup \
@@ -87,6 +89,7 @@ stdenv.mkDerivation rec {
       exec = "milkup %U";
       icon = "milkup";
       desktopName = "milkup";
+      startupWMClass = "milkup";
       comment = "A Markdown editor built with Milkup core and Vue.js";
       categories = [
         "Office"
