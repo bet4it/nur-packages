@@ -16,12 +16,27 @@
   libglvnd,
   pciutils,
   vulkan-loader,
+  coreutils,
+  findutils,
+  gawk,
+  gnugrep,
+  gnused,
+  which,
 }:
 
 let
   pnpm = pnpm_10.override {
     nodejs = nodejs_24;
   };
+
+  runtimePath = lib.makeBinPath [
+    coreutils
+    findutils
+    gawk
+    gnugrep
+    gnused
+    which
+  ];
 in
 stdenv.mkDerivation rec {
   pname = "orca";
@@ -78,6 +93,11 @@ stdenv.mkDerivation rec {
   electronDist: process.env.ELECTRON_DIST,
   electronVersion: process.env.ELECTRON_VERSION," \
       --replace-fail "npmRebuild: true" "npmRebuild: false"
+
+    # Orca keeps its PTY daemon alive across app restarts. Nix store paths are
+    # not stable across rebuilds, so always verify the daemon entry path.
+    substituteInPlace src/main/daemon/daemon-init.ts \
+      --replace-fail "const identity = app.isPackaged" "const identity = false"
   '';
 
   buildPhase = ''
@@ -144,6 +164,7 @@ elif [ -x "$APP_DIR/orca" ]; then'
       --set NODE_ENV production \
       --set CHROME_DEVEL_SANDBOX "$out/libexec/orca/chrome-sandbox" \
       --add-flags "--class=orca" \
+      --prefix PATH : "${runtimePath}" \
       --prefix LD_LIBRARY_PATH : "${
         lib.makeLibraryPath [
           stdenv.cc.cc.lib
