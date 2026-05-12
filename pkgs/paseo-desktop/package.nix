@@ -212,10 +212,16 @@ buildNpmPackage rec {
     fi
 
     install -m 444 packages/desktop/assets/icon.png "$out/share/pixmaps/paseo.png"
+    install -Dm444 packages/desktop/assets/32x32.png "$out/share/icons/hicolor/32x32/apps/paseo.png"
+    install -Dm444 packages/desktop/assets/64x64.png "$out/share/icons/hicolor/64x64/apps/paseo.png"
+    install -Dm444 packages/desktop/assets/128x128.png "$out/share/icons/hicolor/128x128/apps/paseo.png"
+    install -Dm444 packages/desktop/assets/128x128@2x.png "$out/share/icons/hicolor/256x256/apps/paseo.png"
+    install -Dm444 packages/desktop/assets/icon.png "$out/share/icons/hicolor/512x512/apps/paseo.png"
 
     makeWrapper ${electron_40}/bin/electron "$out/bin/paseo-desktop" \
       --add-flags "--no-sandbox" \
       --add-flags "$appRoot/node_modules/@getpaseo/desktop" \
+      --inherit-argv0 \
       --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath [ stdenv.cc.cc.lib ]}
 
     runHook postInstall
@@ -229,6 +235,7 @@ buildNpmPackage rec {
       icon = "paseo";
       comment = "Desktop GUI for Paseo";
       categories = [ "Development" ];
+      startupWMClass = "Paseo";
     })
   ];
 
