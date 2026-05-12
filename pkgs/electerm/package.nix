@@ -24,6 +24,7 @@ let
       "System"
       "TerminalEmulator"
     ];
+    startupWMClass = "electerm";
   };
 in
 buildNpmPackage rec {
@@ -77,6 +78,8 @@ buildNpmPackage rec {
 
     # Copy assets
     node build/bin/copy.js
+    cp node_modules/@electerm/electerm-resource/res/imgs/electerm-round-128x128.png \
+      work/app/assets/images/electerm-round-128x128.png
 
     # Generate html
     node build/bin/pug.js
@@ -126,7 +129,7 @@ buildNpmPackage rec {
       --set-default ELECTRON_IS_DEV 0 \
       --inherit-argv0
 
-    install -Dm644 work/app/assets/images/electerm.png $out/share/icons/hicolor/512x512/apps/electerm.png
+    install -Dm644 work/app/assets/images/electerm-round-128x128.png $out/share/icons/hicolor/128x128/apps/electerm.png
 
     copyDesktopItems
 
