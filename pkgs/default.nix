@@ -18,6 +18,7 @@
   netcatty = pkgs.callPackage ./netcatty/package.nix { };
   nexterm = pkgs.callPackage ./nexterm/package.nix { };
   oxideterm = pkgs.callPackage ./oxideterm/package.nix { };
+  orca = pkgs.callPackage ./orca/package.nix { };
   paseo-desktop = pkgs.callPackage ./paseo-desktop/package.nix { };
   qbit = pkgs.callPackage ./qbit/package.nix { };
   shell360 = pkgs.callPackage ./shell360/package.nix { };
