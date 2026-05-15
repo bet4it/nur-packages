@@ -31,7 +31,6 @@ rustPlatform.buildRustPackage {
 
   patches = [
     ./build-rs-use-system-zig-deps.patch
-    ./detect-cmdline-agent-name.patch
   ];
 
   nativeBuildInputs = [ zig_0_15 ];
