@@ -11,13 +11,13 @@
 
 let
   pname = "herdr";
-  version = "0.5.8";
+  version = "0.5.9";
 
   src = fetchFromGitHub {
     owner = "ogulcancelik";
     repo = "herdr";
     rev = "v${version}";
-    hash = "sha256-nmFDcMmMhiklERIY2oPYqWqCPSzRWneHLawVtaxBZp0=";
+    hash = "sha256-xtF3kDSJ3CkP07rbWoMkW6n1k2t5lCfSnFF343yDQTU=";
   };
 
   zigDeps = callPackage ./build.zig.zon.nix {
@@ -27,7 +27,7 @@ in
 rustPlatform.buildRustPackage {
   inherit pname version src;
 
-  cargoHash = "sha256-nU69jhqx0HkybH9UnTyJfYQ3JOe2dluUSNfXvO++G7M=";
+  cargoHash = "sha256-xRAyn80t9YZRazcHqMfb3IrAQ1mLHpeV6Cc1+E2RVdE=";
 
   patches = [
     ./build-rs-use-system-zig-deps.patch
