@@ -34,7 +34,7 @@ rustPlatform.buildRustPackage rec {
 
   cargoHash = "sha256-AltjWR3odUQ+rIp7NHPhJ1S/HXZN+GvCzWuH6AA8TnM=";
 
-  pnpmDeps = fetchPnpmDeps {
+  pnpmDeps = (fetchPnpmDeps.override { pnpm = pnpm_10; }) {
     inherit pname version src;
     sourceRoot = "${src.name}/frontend";
     hash = "sha256-TKRt8HzWDCgzEdnmNiO4ncIueS9TVJ96R3kncz8pItg=";
