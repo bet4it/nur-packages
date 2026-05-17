@@ -20,19 +20,19 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "cc-switch";
-  version = "3.14.1";
+  version = "3.15.0";
 
   src = fetchFromGitHub {
     owner = "farion1231";
     repo = "cc-switch";
     rev = "v${version}";
-    hash = "sha256-mSTuPTACW4yiR9e43Kp3RcbitbZ3OQUdZsHwZlSn6iQ=";
+    hash = "sha256-OR5GnHCa2hwpZw9mYIVHF4blQwzAnxtysPbLun8adAI=";
   };
 
   cargoRoot = "src-tauri";
   buildAndTestSubdir = "src-tauri";
 
-  cargoHash = "sha256-MgO8VxcE8mHDsLlywJ3zriEXRWjZbJ6L/bfd27r9u5g=";
+  cargoHash = "sha256-h2yvzz+TDOqAXDTsjjRL6vGLeqSSz3N1Id3H4dtI5nk=";
 
   doCheck = false;
 
