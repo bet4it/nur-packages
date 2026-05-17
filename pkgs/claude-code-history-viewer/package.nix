@@ -30,7 +30,7 @@ rustPlatform.buildRustPackage rec {
     hash = "sha256-LiZxUSQ9LsOUhhywAwVelfqCQM1Ix2aXK1rmxiLPwkg=";
   };
 
-  pnpmDeps = fetchPnpmDeps {
+  pnpmDeps = (fetchPnpmDeps.override { pnpm = pnpm_10; }) {
     inherit pname version src;
     hash = "sha256-JNw8y8n8uy9NupW79Dwhv3wTveLTG1QbuEcCbU12+ZE=";
     fetcherVersion = 3;
