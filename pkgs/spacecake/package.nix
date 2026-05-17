@@ -32,7 +32,7 @@ stdenv.mkDerivation rec {
 
   sourceRoot = "source/spacecake-app";
 
-  pnpmDeps = fetchPnpmDeps {
+  pnpmDeps = (fetchPnpmDeps.override { pnpm = pnpm_10; }) {
     inherit
       pname
       version

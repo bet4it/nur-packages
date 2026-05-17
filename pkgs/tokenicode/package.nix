@@ -38,7 +38,7 @@ rustPlatform.buildRustPackage rec {
 
   tauriBuildFlags = [ "--ignore-version-mismatches" ];
 
-  pnpmDeps = fetchPnpmDeps {
+  pnpmDeps = (fetchPnpmDeps.override { pnpm = pnpm_10; }) {
     inherit pname version src;
     hash = "sha256-g2USBHdFjk/kIfrQTOee2LATdZYcWCn31eAPoWn5Zn0=";
     fetcherVersion = 3;
