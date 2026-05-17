@@ -45,7 +45,7 @@ stdenv.mkDerivation rec {
   pnpmDeps = (fetchPnpmDeps.override { pnpm = pnpm_9; }) {
     inherit pname version src;
     fetcherVersion = 3;
-    hash = "sha256-eGBbAOUqzxDWXwDFvU2wV+hCwSYS44HLqJ8DCQNg54k=";
+    hash = "sha256-LFwdYIk0aH2FzwbUxAwya51zhoTW2bjIl7x3H5cEWJg=";
   };
 
   # Fix for better-sqlite3 build
