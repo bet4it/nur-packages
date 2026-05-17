@@ -51,7 +51,12 @@ stdenv.mkDerivation rec {
   };
 
   postPatch = ''
-    patch -p1 < ${./fix-export.patch}
+    node - <<'EOF'
+    const fs = require("fs");
+    const pkg = JSON.parse(fs.readFileSync("package.json", "utf8"));
+    pkg.desktopName = "milkup.desktop";
+    fs.writeFileSync("package.json", JSON.stringify(pkg, null, 2) + "\n");
+    EOF
   '';
   # Electron builder tries to download electron, we want to skip that.
   env.ELECTRON_SKIP_BINARY_DOWNLOAD = "1";
@@ -73,8 +78,9 @@ stdenv.mkDerivation rec {
       $out/share/milkup/dist-electron/assets/icons/milkup.ico
 
     makeWrapper ${lib.getExe electron} $out/bin/milkup \
-      --add-flags $out/share/milkup \
+      --add-flags "--class=milkup" \
       --add-flags "''${NIXOS_OZONE_WL:+''${WAYLAND_DISPLAY:+--ozone-platform-hint=auto --enable-features=WaylandWindowDecorations --enable-wayland-ime=true}}" \
+      --add-flags $out/share/milkup \
       --inherit-argv0
 
     # Install icons and desktop file
