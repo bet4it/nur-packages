@@ -2,7 +2,7 @@
   lib,
   stdenv,
   fetchFromGitHub,
-  pnpm,
+  pnpm_9,
   fetchPnpmDeps,
   pnpmConfigHook,
   nodejs_22,
@@ -28,7 +28,7 @@ stdenv.mkDerivation rec {
 
   nativeBuildInputs = [
     nodejs_22
-    pnpm
+    pnpm_9
     pnpmConfigHook
     python3
     pkg-config
@@ -42,7 +42,7 @@ stdenv.mkDerivation rec {
     vips
   ];
 
-  pnpmDeps = fetchPnpmDeps {
+  pnpmDeps = (fetchPnpmDeps.override { pnpm = pnpm_9; }) {
     inherit pname version src;
     fetcherVersion = 3;
     hash = "sha256-eGBbAOUqzxDWXwDFvU2wV+hCwSYS44HLqJ8DCQNg54k=";
