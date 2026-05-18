@@ -2,6 +2,7 @@
   lib,
   stdenv,
   fetchFromGitHub,
+  nix-update-script,
   bun,
   rustPlatform,
   cargo-tauri,
@@ -19,19 +20,19 @@
 
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "jean";
-  version = "0.1.47";
+  version = "0.1.49";
 
   src = fetchFromGitHub {
     owner = "coollabsio";
     repo = "jean";
     rev = "v${finalAttrs.version}";
-    hash = "sha256-JRNHPtGHNqX6HaI1VyX2Y5PNcaGTj11RnmuDWVpDnA8=";
+    hash = "sha256-xBNQvbFTDuFyKdVzuxQG/Vn5Ur+qK6/drc13qCUVLxE=";
   };
 
   cargoRoot = "src-tauri";
   buildAndTestSubdir = finalAttrs.cargoRoot;
 
-  cargoHash = "sha256-Q3/5SS3iY7mhp2SYof/1cyKUPWATMneokufbAwU4wJE=";
+  cargoHash = "sha256-BEbRD0OD5S4b7V4sVciEJBPtyW1aOUqFMsdMr7rXeFE=";
 
   node_modules = stdenv.mkDerivation {
     pname = "${finalAttrs.pname}-node_modules";
@@ -67,7 +68,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
     '';
 
     dontFixup = true;
-    outputHash = "sha256-FWt3n6sUQtp4sZhhQvjzdgEW24yECuiKXYVrS2teOu8=";
+    outputHash = "sha256-zWoiORwulA1SOnjSruk5Ri8dBKbU5z+IbWagIfn5zJ4=";
     outputHashAlgo = "sha256";
     outputHashMode = "recursive";
   };
@@ -122,6 +123,18 @@ rustPlatform.buildRustPackage (finalAttrs: {
       --set-key="Categories" --set-value="Development;Utility;" \
       $out/share/applications/Jean.desktop
   '';
+
+  passthru = {
+    inherit (finalAttrs) node_modules;
+
+    updateScript = nix-update-script {
+      extraArgs = [
+        "--subpackage=node_modules"
+        "--url=https://github.com/coollabsio/jean"
+        "--use-github-releases"
+      ];
+    };
+  };
 
   meta = {
     description = "AI assistant for managing multiple projects and sessions with Claude CLI";
