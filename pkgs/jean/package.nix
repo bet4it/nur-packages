@@ -2,6 +2,7 @@
   lib,
   stdenv,
   fetchFromGitHub,
+  nix-update-script,
   bun,
   rustPlatform,
   cargo-tauri,
@@ -67,7 +68,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
     '';
 
     dontFixup = true;
-    outputHash = "sha256-FWt3n6sUQtp4sZhhQvjzdgEW24yECuiKXYVrS2teOu8=";
+    outputHash = "sha256-zWoiORwulA1SOnjSruk5Ri8dBKbU5z+IbWagIfn5zJ4=";
     outputHashAlgo = "sha256";
     outputHashMode = "recursive";
   };
@@ -122,6 +123,18 @@ rustPlatform.buildRustPackage (finalAttrs: {
       --set-key="Categories" --set-value="Development;Utility;" \
       $out/share/applications/Jean.desktop
   '';
+
+  passthru = {
+    inherit (finalAttrs) node_modules;
+
+    updateScript = nix-update-script {
+      extraArgs = [
+        "--subpackage=node_modules"
+        "--url=https://github.com/coollabsio/jean"
+        "--use-github-releases"
+      ];
+    };
+  };
 
   meta = {
     description = "AI assistant for managing multiple projects and sessions with Claude CLI";
