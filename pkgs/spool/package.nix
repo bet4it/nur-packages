@@ -25,13 +25,13 @@
 
 let
   pname = "spool";
-  version = "0.4.19";
+  version = "0.4.20";
 
   src = fetchFromGitHub {
     owner = "spool-lab";
     repo = "spool";
     rev = "v${version}";
-    hash = "sha256-vP1unUXX6S6Nm/Gti+9r16avVmvb796S9Kco5vHiog0=";
+    hash = "sha256-IWDJHjsFS6psPNc2XP3OCqxAhnL49QuP4IfcxvYGtT0=";
   };
 
   electron = electron_39;
@@ -89,7 +89,7 @@ stdenv.mkDerivation {
         --replace-fail 'version: 11.10.0' 'version: 12.9.0'
     '';
     fetcherVersion = 3;
-    hash = "sha256-BqtfRCgG75Fp7I2F22xYzk28iDD95xo0qXlM4Vsgb+8=";
+    hash = "sha256-rSiKs9HZN2MXOOrtIKvuQ0xEUCzNdh9dTQuc1Cp+oSo=";
   };
 
   pnpmWorkspaces = [
