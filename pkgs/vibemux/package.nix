@@ -20,13 +20,13 @@
 
 let
   pname = "vibemux";
-  version = "1.2.3";
+  version = "1.2.4";
 
   src = fetchFromGitHub {
     owner = "yoko19191";
     repo = "vibemux";
     rev = "v${version}";
-    hash = "sha256-/NfOFBd1AZOqVF7H3sWR+TkjbOkp0945/liBNF7TeuM=";
+    hash = "sha256-wF2iVHm+M5FEmD2Un5GBl2nMHfWIDHQtxzBLEwaorcM=";
   };
 
   frontend = buildNpmPackage {
@@ -35,7 +35,7 @@ let
 
     nodejs = nodejs_22;
     sourceRoot = "${src.name}/apps/desktop";
-    npmDepsHash = "sha256-l+jWsgVchlwydEo2plZzHZAQYeAILT3/Ca13pSlNnDM=";
+    npmDepsHash = "sha256-5T+7Rd1lBhQiQDOXxL+3q+IoO67XL3FZDYzrpjLZ59Q=";
 
     dontNpmBuild = true;
     npmFlags = [
@@ -58,7 +58,7 @@ rustPlatform.buildRustPackage {
   cargoRoot = "apps/desktop/src-tauri";
   buildAndTestSubdir = "apps/desktop/src-tauri";
 
-  cargoHash = "sha256-qnAQVBB4IO0A+eqeanRJRPwAuc2ceat/PiIUkP+7aac=";
+  cargoHash = "sha256-6oWCElrXFBe7BBPfv3DG+Ee52UDqYTBVDrhFY+v9EAM=";
 
   nativeBuildInputs = [
     cargo-tauri.hook
