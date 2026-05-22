@@ -2,6 +2,7 @@
   lib,
   flutter338,
   fetchFromGitHub,
+  callPackage,
   copyDesktopItems,
   makeDesktopItem,
   autoPatchelfHook,
@@ -56,6 +57,8 @@ flutter338.buildFlutterApplication rec {
     ln -s com.psyche.kelivo.png \
       $out/share/icons/hicolor/512x512/apps/kelivo.png
   '';
+
+  passthru.updateScript = lib.getExe (callPackage ./update.nix { });
 
   meta = {
     description = "LLM chat client";
