@@ -1,0 +1,40 @@
+{
+  "name": "@spool-lab/core",
+  "version": "0.4.20",
+  "private": false,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "rebuild:native": "pnpm run rebuild:native:node",
+    "rebuild:native:node": "node ../../scripts/rebuild-better-sqlite3-node.mjs",
+    "build": "pnpm run clean && tsc",
+    "dev": "tsc --watch",
+    "test": "pnpm run rebuild:native && vitest run",
+    "clean": "rm -rf dist",
+    "prepack": "pnpm run build"
+  },
+  "dependencies": {
+    "@spool-lab/redact": "workspace:*",
+    "better-sqlite3": "^12.9.0",
+    "effect": "^3.21.2"
+  },
+  "devDependencies": {
+    "@effect/vitest": "^0.29.0",
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/node": "^22.19.17",
+    "vitest": "^3.2.4"
+  }
+}

@@ -19,7 +19,7 @@
   xdg-terminal-exec,
   xz,
   zlib,
-  nix-update-script,
+  callPackage,
   writableTmpDirAsHomeHook,
 }:
 
@@ -79,17 +79,12 @@ stdenv.mkDerivation {
       "@spool/share-kit"
     ];
     postPatch = ''
-      # better-sqlite3 11.x does not build against the Electron 39 headers.
-      # Keep the fixed-output pnpm dependency snapshot in sync with postPatch.
-      substituteInPlace packages/app/package.json packages/core/package.json \
-        --replace-fail '"better-sqlite3": "^11.10.0"' '"better-sqlite3": "^12.9.0"'
-
-      substituteInPlace pnpm-lock.yaml \
-        --replace-fail 'specifier: ^11.10.0' 'specifier: ^12.9.0' \
-        --replace-fail 'version: 11.10.0' 'version: 12.9.0'
+      cp ${./packages/app/package.json} packages/app/package.json
+      cp ${./packages/core/package.json} packages/core/package.json
+      cp ${./pnpm-lock.yaml} pnpm-lock.yaml
     '';
     fetcherVersion = 3;
-    hash = "sha256-rSiKs9HZN2MXOOrtIKvuQ0xEUCzNdh9dTQuc1Cp+oSo=";
+    hash = "sha256-NJudrLjSfXd5wVsNx3qXUt4Lt7S8pvp7PWS9qzyh5O0=";
   };
 
   pnpmWorkspaces = [
@@ -123,14 +118,9 @@ stdenv.mkDerivation {
     substituteInPlace package.json \
       --replace-fail '"packageManager": "pnpm@10.33.0"' '"packageManager": "pnpm@${pnpm_10.version}"'
 
-    # better-sqlite3 11.x does not build against the Electron 39 headers.
-    # Match the patched fixed-output pnpm dependency snapshot above.
-    substituteInPlace packages/app/package.json packages/core/package.json \
-      --replace-fail '"better-sqlite3": "^11.10.0"' '"better-sqlite3": "^12.9.0"'
-
-    substituteInPlace pnpm-lock.yaml \
-      --replace-fail 'specifier: ^11.10.0' 'specifier: ^12.9.0' \
-      --replace-fail 'version: 11.10.0' 'version: 12.9.0'
+    cp ${./packages/app/package.json} packages/app/package.json
+    cp ${./packages/core/package.json} packages/core/package.json
+    cp ${./pnpm-lock.yaml} pnpm-lock.yaml
   '';
 
   buildPhase = ''
@@ -192,11 +182,7 @@ stdenv.mkDerivation {
 
   desktopItems = [ desktopItem ];
 
-  passthru.updateScript = nix-update-script {
-    extraArgs = [
-      "--use-github-releases"
-    ];
-  };
+  passthru.updateScript = lib.getExe (callPackage ./update.nix { });
 
   meta = {
     description = "Desktop app for searching and sharing AI coding sessions";
