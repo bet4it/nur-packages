@@ -25,13 +25,13 @@
 
 let
   pname = "spool";
-  version = "0.4.20";
+  version = "0.5.0";
 
   src = fetchFromGitHub {
     owner = "spool-lab";
     repo = "spool";
     rev = "v${version}";
-    hash = "sha256-IWDJHjsFS6psPNc2XP3OCqxAhnL49QuP4IfcxvYGtT0=";
+    hash = "sha256-wxa5QcD/V8BWNS/J405r+wxOE6UsP1r/EYnSH838srY=";
   };
 
   electron = electron_39;
@@ -84,7 +84,7 @@ stdenv.mkDerivation {
       cp ${./pnpm-lock.yaml} pnpm-lock.yaml
     '';
     fetcherVersion = 3;
-    hash = "sha256-NJudrLjSfXd5wVsNx3qXUt4Lt7S8pvp7PWS9qzyh5O0=";
+    hash = "sha256-ujsO2cCggP2fYGT5smsAMcTJ3h7zFCqCIzcJWqgyzXs=";
   };
 
   pnpmWorkspaces = [
