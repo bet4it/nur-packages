@@ -17,18 +17,18 @@
 
 stdenv.mkDerivation rec {
   pname = "nexterm";
-  version = "1.2.0-BETA";
+  version = "1.2.1-BETA";
 
   src = fetchFromGitHub {
     owner = "gnmyt";
     repo = "Nexterm";
     rev = "v${version}";
-    hash = "sha256-5or9vRC20KDfBjyqiyytav3Ign6yuEb77DvnylrhyMc=";
+    hash = "sha256-bFy6qAk1zAvZvSTTKPEcmMvfPNQjfGGZW0uddkxQ1Tc=";
   };
 
   offlineCache = fetchYarnDeps {
     yarnLock = "${src}/yarn.lock";
-    hash = "sha256-aYEC1hKtc3gDKoUcFzI3bQAnQOTIXFl/jn9Cg67EEHM=";
+    hash = "sha256-DfpGywwQVt6y7NI+1xrzypMmENymojVGh63bqfmSYYw=";
   };
 
   clientOfflineCache = fetchYarnDeps {
