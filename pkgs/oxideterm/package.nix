@@ -23,13 +23,13 @@
 
 let
   pname = "oxideterm";
-  version = "1.4.6";
+  version = "1.4.8";
 
   src = fetchFromGitHub {
     owner = "AnalyseDeCircuit";
     repo = "oxideterm";
     rev = "v${version}";
-    hash = "sha256-FeaSJGBzap1QYaReHNBUrzknPEDsZAbkAvyHiWv8ZxY=";
+    hash = "sha256-VKprebihYP2KOKLL5Qu+SORe1bnceYXZWO5hvBTic0s=";
   };
 
   cli = rustPlatform.buildRustPackage {
@@ -38,7 +38,7 @@ let
 
     cargoRoot = "cli";
     buildAndTestSubdir = "cli";
-    cargoHash = "sha256-9ouqEThwsgxnNrojMIhXdg5mMxXe7b5X3JbMIkazjZc=";
+    cargoHash = "sha256-gpPbPbPQL0lYJR59jNYGtf8vUJlsxVWxeyt8AhR8T0E=";
 
     cargoBuildFlags = [
       "--bin"
@@ -61,13 +61,13 @@ rustPlatform.buildRustPackage {
 
   cargoRoot = "src-tauri";
   buildAndTestSubdir = "src-tauri";
-  cargoHash = "sha256-KcYXE/7s9wC70bJkU7+p2jObWX5I12QGKNboLSXP9V4=";
+  cargoHash = "sha256-Ebc7SqJCcYagIqSJLqmCWGhmfGKOJHvFtenBoAqG5zo=";
 
   pnpmDeps = fetchPnpmDeps {
     inherit pname version src;
     pnpm = pnpm_9;
     fetcherVersion = 3;
-    hash = "sha256-6gv+RQUAosqk0ZjQtzycvS15LFgNY4BxG6u0KTjO5+w=";
+    hash = "sha256-U34aKdTgwb9QXVDAVH96UNbAMGSugbPAY99eSFYkWfM=";
   };
 
   nativeBuildInputs = [
