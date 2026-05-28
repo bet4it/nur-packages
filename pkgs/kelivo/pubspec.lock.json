@@ -334,11 +334,11 @@
       "dependency": "transitive",
       "description": {
         "name": "code_assets",
-        "sha256": "dad6bf6b9f4f378b0a69edbf42584d336efd1a9ce15deb1ba591cbb1b5ff440f",
+        "sha256": "67cf6d84013f9c601e42a6f8a6b74c4c0d9dc1a1619d775f2b28b732d3551b85",
         "url": "https://pub.dev"
       },
       "source": "hosted",
-      "version": "1.1.0"
+      "version": "1.2.0"
     },
     "code_builder": {
       "dependency": "transitive",
@@ -1266,11 +1266,11 @@
       "dependency": "direct main",
       "description": {
         "name": "lucide_icons_flutter",
-        "sha256": "f9fd5d49b93bf14b89e0ff4818658a74ab16899bdaf7aa745358ee1a34f54eed",
+        "sha256": "7c5dc01a32a9905ae34e2d84224e92d6d0c42acf8926df9e01c35a1446bf1b69",
         "url": "https://pub.dev"
       },
       "source": "hosted",
-      "version": "3.1.14+1"
+      "version": "3.1.14+2"
     },
     "matcher": {
       "dependency": "transitive",
