@@ -27,14 +27,12 @@ Run a package directly from the remote repository:
 
 ```bash
 nix run github:bet4it/nur-packages#app-manager
-nix run github:bet4it/nur-packages#termix
 ```
 
 Run a package from a local checkout:
 
 ```bash
 nix run .#app-manager
-nix run .#termix
 ```
 
 Inspect exported packages:
@@ -59,7 +57,6 @@ Install a package in NixOS:
 {
   environment.systemPackages = [
     inputs.bet4it-packages.packages.${pkgs.system}.app-manager
-    inputs.bet4it-packages.packages.${pkgs.system}.termix
   ];
 }
 ```

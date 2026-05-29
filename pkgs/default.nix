@@ -10,14 +10,12 @@
   kelivo = pkgs.callPackage ./kelivo/package.nix { };
   milkup = pkgs.callPackage ./milkup/package.nix { };
   netcatty = pkgs.callPackage ./netcatty/package.nix { };
-  nexterm = pkgs.callPackage ./nexterm/package.nix { };
   oxideterm = pkgs.callPackage ./oxideterm/package.nix { };
   paseo-desktop = pkgs.callPackage ./paseo-desktop/package.nix { };
   shell360 = pkgs.callPackage ./shell360/package.nix { };
   spacecake = pkgs.callPackage ./spacecake/package.nix { };
   spool = pkgs.callPackage ./spool/package.nix { };
   superset = pkgs.callPackage ./superset/package.nix { };
-  termix = pkgs.callPackage ./termix/package.nix { };
   tokenicode = pkgs.callPackage ./tokenicode/package.nix { };
   vibe99 = pkgs.callPackage ./vibe99/package.nix { };
   vibemux = pkgs.callPackage ./vibemux/package.nix { };
