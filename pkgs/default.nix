@@ -1,6 +1,8 @@
 { pkgs }:
-{
+rec {
   app-manager = pkgs.callPackage ./app-manager/package.nix { };
+  aioncore = pkgs.callPackage ./aioncore/package.nix { };
+  aionui = pkgs.callPackage ./aionui/package.nix { inherit aioncore; };
   athas = pkgs.callPackage ./athas/package.nix { };
   cc-switch = pkgs.callPackage ./cc-switch/package.nix { };
   ccg-gateway = pkgs.callPackage ./ccg-gateway/package.nix { };
