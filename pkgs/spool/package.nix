@@ -25,13 +25,13 @@
 
 let
   pname = "spool";
-  version = "0.5.0";
+  version = "0.5.2";
 
   src = fetchFromGitHub {
     owner = "spool-lab";
     repo = "spool";
     rev = "v${version}";
-    hash = "sha256-wxa5QcD/V8BWNS/J405r+wxOE6UsP1r/EYnSH838srY=";
+    hash = "sha256-cCf7qTv4EJhHh5SF7HnjryjWY+LHVab09k3wk5uOCvc=";
   };
 
   acpCodexLibPath = lib.makeLibraryPath [
@@ -82,7 +82,7 @@ stdenv.mkDerivation {
       cp ${./pnpm-lock.yaml} pnpm-lock.yaml
     '';
     fetcherVersion = 3;
-    hash = "sha256-ujsO2cCggP2fYGT5smsAMcTJ3h7zFCqCIzcJWqgyzXs=";
+    hash = "sha256-LiZtT5pDnAuSt4xpIWhqrs5v8xruxjNXYsbOu+UfZGk=";
   };
 
   pnpmWorkspaces = [
