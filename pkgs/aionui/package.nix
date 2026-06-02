@@ -4,7 +4,7 @@
   fetchFromGitHub,
   nix-update-script,
   bun,
-  electron_40,
+  electron,
   nodejs_22,
   python3,
   pkg-config,
@@ -144,7 +144,7 @@ stdenv.mkDerivation (finalAttrs: {
     install -Dm444 resources/app.png "$out/share/pixmaps/aionui.png"
     install -Dm444 resources/app.png "$out/share/icons/hicolor/512x512/apps/aionui.png"
 
-    makeWrapper ${lib.getExe electron_40} "$out/bin/aionui" \
+    makeWrapper ${lib.getExe electron} "$out/bin/aionui" \
       --chdir "$appRoot" \
       --add-flags "$appRoot" \
       --add-flags "\''${NIXOS_OZONE_WL:+\''${WAYLAND_DISPLAY:+--ozone-platform-hint=auto --enable-features=WaylandWindowDecorations --enable-wayland-ime=true}}" \

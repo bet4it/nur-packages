@@ -5,7 +5,7 @@
   fetchFromGitHub,
   fetchNpmDeps,
   nix-update-script,
-  electron_40,
+  electron,
   nodejs_22,
   python3,
   makeWrapper,
@@ -218,7 +218,7 @@ buildNpmPackage rec {
     install -Dm444 packages/desktop/assets/128x128@2x.png "$out/share/icons/hicolor/256x256/apps/paseo.png"
     install -Dm444 packages/desktop/assets/icon.png "$out/share/icons/hicolor/512x512/apps/paseo.png"
 
-    makeWrapper ${electron_40}/bin/electron "$out/bin/paseo-desktop" \
+    makeWrapper ${lib.getExe electron} "$out/bin/paseo-desktop" \
       --add-flags "--no-sandbox" \
       --add-flags "$appRoot/node_modules/@getpaseo/desktop" \
       --inherit-argv0 \
