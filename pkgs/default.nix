@@ -15,7 +15,6 @@ rec {
   oxideterm = pkgs.callPackage ./oxideterm/package.nix { };
   paseo-desktop = pkgs.callPackage ./paseo-desktop/package.nix { };
   shell360 = pkgs.callPackage ./shell360/package.nix { };
-  spacecake = pkgs.callPackage ./spacecake/package.nix { };
   spool = pkgs.callPackage ./spool/package.nix { };
   superset = pkgs.callPackage ./superset/package.nix { };
   tokenicode = pkgs.callPackage ./tokenicode/package.nix { };

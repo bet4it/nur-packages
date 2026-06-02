@@ -9,7 +9,7 @@
   patchelf,
   pnpm_10,
   pnpmConfigHook,
-  electron_39,
+  electron,
   nodejs_22,
   makeWrapper,
   copyDesktopItems,
@@ -33,8 +33,6 @@ let
     rev = "v${version}";
     hash = "sha256-wxa5QcD/V8BWNS/J405r+wxOE6UsP1r/EYnSH838srY=";
   };
-
-  electron = electron_39;
 
   acpCodexLibPath = lib.makeLibraryPath [
     libcap
