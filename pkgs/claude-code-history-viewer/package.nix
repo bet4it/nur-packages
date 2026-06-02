@@ -21,18 +21,18 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "claude-code-history-viewer";
-  version = "1.12.0";
+  version = "1.13.0";
 
   src = fetchFromGitHub {
     owner = "jhlee0409";
     repo = "claude-code-history-viewer";
     rev = "v${version}";
-    hash = "sha256-LiZxUSQ9LsOUhhywAwVelfqCQM1Ix2aXK1rmxiLPwkg=";
+    hash = "sha256-/gvzTpcisU2E2lDwhbeQcjbbDVhpe7ikIy2AOxKApQc=";
   };
 
   pnpmDeps = (fetchPnpmDeps.override { pnpm = pnpm_10; }) {
     inherit pname version src;
-    hash = "sha256-JNw8y8n8uy9NupW79Dwhv3wTveLTG1QbuEcCbU12+ZE=";
+    hash = "sha256-NXXIiP4PJlut3x+r9bXKSAhBmJ/KU8kfeELDqpvSUPc=";
     fetcherVersion = 3;
   };
 
