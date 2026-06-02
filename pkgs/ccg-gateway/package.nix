@@ -20,19 +20,19 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "ccg-gateway";
-  version = "1.8.2";
+  version = "1.8.3";
 
   src = fetchFromGitHub {
     owner = "mos1128";
     repo = "ccg-gateway";
     rev = "v${version}";
-    hash = "sha256-Z+cNBXtu7lbNr9WzzDrhkKrV4uicnzcH/eO/VNLIDv0=";
+    hash = "sha256-DsLb6A3TUPthlf2mJg99kg7LxONeZjlAAFmVasYAI1w=";
   };
 
   cargoRoot = "src-tauri";
   buildAndTestSubdir = "src-tauri";
 
-  cargoHash = "sha256-xVvk4ppUHUmaW8y3WUoA/HxbbWD1uXjqOLLPuygoAwo=";
+  cargoHash = "sha256-sB0PhU5UexG77PUMDDivWOST98EKwzBb4q8+kO5bLlY=";
 
   pnpmDeps = (fetchPnpmDeps.override { pnpm = pnpm_10; }) {
     inherit pname version src;
