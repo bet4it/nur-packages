@@ -84,11 +84,11 @@
       "dependency": "direct main",
       "description": {
         "name": "audioplayers",
-        "sha256": "a72dd459d1a48f61a6fb9c0134dba26597c9236af40639ff0eb70eb4e0baab70",
+        "sha256": "1d0c1b1f2095e59080e2d5046639096417a86687d89778da41b0c9a06d683dfd",
         "url": "https://pub.dev"
       },
       "source": "hosted",
-      "version": "6.6.0"
+      "version": "6.7.0"
     },
     "audioplayers_android": {
       "dependency": "transitive",
@@ -134,21 +134,21 @@
       "dependency": "transitive",
       "description": {
         "name": "audioplayers_web",
-        "sha256": "faa8fa6587f996a6f604433b53af44c57a1407d4fe8dff5766cf63d6875e8de9",
+        "sha256": "24a6f258062bd7da8cb2157e83fccb9816a08dd306cbaaa24f9813d071470545",
         "url": "https://pub.dev"
       },
       "source": "hosted",
-      "version": "5.2.0"
+      "version": "5.2.1"
     },
     "audioplayers_windows": {
       "dependency": "transitive",
       "description": {
         "name": "audioplayers_windows",
-        "sha256": "bafff2b38b6f6d331887558ba6e0a01c9c208d9dbb3ad0005234db065122a734",
+        "sha256": "95f875a96c88c3dbbcb608d4f8288e300b0113d256a81d0b3197fcc18f0dc91a",
         "url": "https://pub.dev"
       },
       "source": "hosted",
-      "version": "4.3.0"
+      "version": "4.3.1"
     },
     "bitsdojo_window": {
       "dependency": "direct main",
@@ -334,11 +334,11 @@
       "dependency": "transitive",
       "description": {
         "name": "code_assets",
-        "sha256": "67cf6d84013f9c601e42a6f8a6b74c4c0d9dc1a1619d775f2b28b732d3551b85",
+        "sha256": "bf394f466ba9205f1812a0433b392d6af280f155f56651eda7c18cc32ed493b8",
         "url": "https://pub.dev"
       },
       "source": "hosted",
-      "version": "1.2.0"
+      "version": "1.2.1"
     },
     "code_builder": {
       "dependency": "transitive",
@@ -886,11 +886,11 @@
       "dependency": "transitive",
       "description": {
         "name": "hooks",
-        "sha256": "a41af4e8fc687cd6d33de9751eb936c8c0204ebe2bcb6c15ecf707504bf47f31",
+        "sha256": "62ae9bb76d02526c7c2110a19b6e6ad788fe28d35e553e35efb02a41a46ab43a",
         "url": "https://pub.dev"
       },
       "source": "hosted",
-      "version": "2.0.0"
+      "version": "2.0.1"
     },
     "hotkey_manager": {
       "dependency": "direct main",
@@ -1505,11 +1505,11 @@
       "dependency": "transitive",
       "description": {
         "name": "permission_handler_apple",
-        "sha256": "f000131e755c54cf4d84a5d8bd6e4149e262cc31c5a8b1d698de1ac85fa41023",
+        "sha256": "e20daf680eef1ca62ffe8c8c526b778cc386d50137c77ac71c8ec9c88c13fb9d",
         "url": "https://pub.dev"
       },
       "source": "hosted",
-      "version": "9.4.7"
+      "version": "9.4.9"
     },
     "permission_handler_html": {
       "dependency": "transitive",
@@ -1764,11 +1764,11 @@
       "dependency": "direct main",
       "description": {
         "name": "scrollview_observer",
-        "sha256": "6e40ced415145c449a691d892157a3b854b751f024aed20d9aebda04c21444a3",
+        "sha256": "5ce907c5757d0805de974de8b17c0185f982dfe805dde22a0acb016b39182ece",
         "url": "https://pub.dev"
       },
       "source": "hosted",
-      "version": "1.26.3"
+      "version": "1.27.0"
     },
     "share_plus": {
       "dependency": "direct main",
@@ -2259,11 +2259,11 @@
       "dependency": "transitive",
       "description": {
         "name": "vector_graphics_compiler",
-        "sha256": "b9b3f391857781aa96acacef96066f2f49b4cd03cf9fce3ca4d8da2ef5ea129e",
+        "sha256": "7ee12e6dffe0fc8e755179d6d91b3b34f5924223fc104d85572ef9180d73d172",
         "url": "https://pub.dev"
       },
       "source": "hosted",
-      "version": "1.2.3"
+      "version": "1.2.5"
     },
     "vector_math": {
       "dependency": "transitive",
