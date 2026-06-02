@@ -17,6 +17,7 @@
   librsvg,
   libayatana-appindicator,
   openssl,
+  systemdLibs,
   desktop-file-utils,
   writableTmpDirAsHomeHook,
 }:
@@ -90,6 +91,7 @@ rustPlatform.buildRustPackage {
     librsvg
     libayatana-appindicator
     glib-networking
+    systemdLibs
   ];
 
   tauriBuildFlags = [ "--ignore-version-mismatches" ];
