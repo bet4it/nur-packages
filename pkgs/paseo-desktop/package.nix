@@ -15,19 +15,19 @@
 }:
 
 let
-  version = "0.1.83";
+  version = "0.1.88";
 
   rawSrc = fetchFromGitHub {
     owner = "getpaseo";
     repo = "paseo";
     rev = "v${version}";
-    hash = "sha256-J5TGMwu7hkvrjB8OIjKr8avR7jA8JYgds64TK1qkVRM=";
+    hash = "sha256-kz3g62fLos+fnQpP0XxUY6UXU/wq9NARE38YJ0OssXc=";
   };
 
   npmDeps = fetchNpmDeps {
     name = "paseo-desktop-${version}-npm-deps";
     src = rawSrc;
-    hash = "sha256-uzF4Gueuh+nYj9n3SQwdgbfOxq7ageeh+Vv4fZzbWXc=";
+    hash = "sha256-R2EUXh8wV0bjdeDNWMhFzd3iDV/dpkLUikbX7nzoMXQ=";
   };
 in
 buildNpmPackage rec {
@@ -70,8 +70,12 @@ buildNpmPackage rec {
     export HOME="$TMPDIR"
 
     npm rebuild node-pty
-    npm run build:daemon
-    npm run build:web --workspace=@getpaseo/app
+    npm run build:server
+    npm run build:app-deps
+    (
+      cd packages/app
+      PASEO_WEB_PLATFORM=electron npx expo export --platform web
+    )
     npm run build:main --workspace=@getpaseo/desktop
     npm prune --omit=dev --no-save
 
@@ -96,12 +100,22 @@ buildNpmPackage rec {
       ["desktop", ["package.json", "dist", "assets"]],
       ["cli", ["package.json", "dist", "bin"]],
       ["server", ["package.json", "dist"]],
+      ["client", ["package.json", "dist"]],
+      ["protocol", ["package.json", "dist"]],
       ["relay", ["package.json", "dist"]],
       ["highlight", ["package.json", "dist"]],
       ["app", ["package.json", "dist", "assets"]],
     ]);
 
-    const runtimeWorkspaces = ["desktop", "cli", "server", "relay", "highlight"];
+    const runtimeWorkspaces = [
+      "desktop",
+      "cli",
+      "server",
+      "client",
+      "protocol",
+      "relay",
+      "highlight",
+    ];
 
     function workspaceDest(name) {
       return path.join(outRoot, "node_modules", "@getpaseo", name);
