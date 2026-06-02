@@ -37,13 +37,13 @@ let
 in
 stdenv.mkDerivation (finalAttrs: {
   pname = "aionui";
-  version = "2.1.8";
+  version = "2.1.9";
 
   src = fetchFromGitHub {
     owner = "iOfficeAI";
     repo = "AionUi";
     rev = "v${finalAttrs.version}";
-    hash = "sha256-ms4ulfkB+/HCB/nQFFqbNviIoD8EWYwwI0OcKkQRLMI=";
+    hash = "sha256-OvXS9+RdROwjy0o3ksC5sFLZ0IjQWEglJ8iit739KOM=";
   };
 
   node_modules = stdenv.mkDerivation {
