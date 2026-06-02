@@ -84,7 +84,7 @@ stdenv.mkDerivation (finalAttrs: {
       runHook postInstall
     '';
 
-    outputHash = "sha256-vY6myT7HEpqLscRBlDYvu2aYItEXmJ2ilVXRCUgDOdU=";
+    outputHash = "sha256-03ar0rUH70uIfK46cj1g/A5IicKFJg2pY0iRvEOXYwA=";
     outputHashAlgo = "sha256";
     outputHashMode = "recursive";
   };
