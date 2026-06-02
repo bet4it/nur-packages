@@ -20,19 +20,19 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "tokenicode";
-  version = "0.10.7";
+  version = "0.10.8";
 
   src = fetchFromGitHub {
     owner = "yiliqi78";
     repo = "TOKENICODE";
     rev = "v${version}";
-    hash = "sha256-WK+zT+d0nkMy5Btztk/syg3x5LNsTViUDgoupYmOCvc=";
+    hash = "sha256-N7Tq9uj7aAyMZ5RwRbtyyFJPwDdhGzNX1v0dYP31ONU=";
   };
 
   cargoRoot = "src-tauri";
   buildAndTestSubdir = "src-tauri";
 
-  cargoHash = "sha256-Ao7gipgYlbKvqOzFaBPY5kXvTD3txHDVYZvvIwDQkpw=";
+  cargoHash = "sha256-2qavVTRMFi+xNqklbpGe3n9eiFjZZ/ZPuV7bYjjF+lc=";
 
   doCheck = false;
 
