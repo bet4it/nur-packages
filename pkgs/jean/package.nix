@@ -20,19 +20,19 @@
 
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "jean";
-  version = "0.1.50";
+  version = "0.1.52";
 
   src = fetchFromGitHub {
     owner = "coollabsio";
     repo = "jean";
     rev = "v${finalAttrs.version}";
-    hash = "sha256-rB8JhWdkcdzKFwMBkqfWuE4vU9ieKaI0lHhm+iQVIbU=";
+    hash = "sha256-g5TMsMwVOl11+MPs/PF91dG5nAgU/zENf8CzU1XE7Lo=";
   };
 
   cargoRoot = "src-tauri";
   buildAndTestSubdir = finalAttrs.cargoRoot;
 
-  cargoHash = "sha256-Aor7g1qnRaNzdOudz3lNBYcdKvQwp2F1+LNTYmRYDyM=";
+  cargoHash = "sha256-AZKRy/9eF2nJCFs9RPK2TNrLLV+nPI2qVdDelizCS/A=";
 
   node_modules = stdenv.mkDerivation {
     pname = "${finalAttrs.pname}-node_modules";
@@ -68,7 +68,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
     '';
 
     dontFixup = true;
-    outputHash = "sha256-zWoiORwulA1SOnjSruk5Ri8dBKbU5z+IbWagIfn5zJ4=";
+    outputHash = "sha256-0jP+G/UO37yrDVKaaFf01DNHGS7f+T7KSNA6SkVhdcc=";
     outputHashAlgo = "sha256";
     outputHashMode = "recursive";
   };
