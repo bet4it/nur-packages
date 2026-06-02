@@ -84,7 +84,7 @@ stdenv.mkDerivation (finalAttrs: {
       runHook postInstall
     '';
 
-    outputHash = "sha256-03ar0rUH70uIfK46cj1g/A5IicKFJg2pY0iRvEOXYwA=";
+    outputHash = "sha256-vY6myT7HEpqLscRBlDYvu2aYItEXmJ2ilVXRCUgDOdU=";
     outputHashAlgo = "sha256";
     outputHashMode = "recursive";
   };
@@ -171,8 +171,11 @@ stdenv.mkDerivation (finalAttrs: {
     inherit (finalAttrs) node_modules;
 
     updateScript = nix-update-script {
+      attrPath = "aionui";
       extraArgs = [
-        "--subpackage=node_modules"
+        "--flake"
+        "--subpackage"
+        "node_modules"
         "--url=https://github.com/iOfficeAI/AionUi"
         "--use-github-releases"
       ];
