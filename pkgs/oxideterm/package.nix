@@ -17,19 +17,20 @@
   librsvg,
   libayatana-appindicator,
   openssl,
+  systemdLibs,
   desktop-file-utils,
   writableTmpDirAsHomeHook,
 }:
 
 let
   pname = "oxideterm";
-  version = "1.4.8";
+  version = "1.5.2";
 
   src = fetchFromGitHub {
     owner = "AnalyseDeCircuit";
     repo = "oxideterm";
     rev = "v${version}";
-    hash = "sha256-VKprebihYP2KOKLL5Qu+SORe1bnceYXZWO5hvBTic0s=";
+    hash = "sha256-OivOF4g+ZkuBtqUlQih1CfJFGrhXYmuC/sqZoM3ZOyg=";
   };
 
   cli = rustPlatform.buildRustPackage {
@@ -38,7 +39,7 @@ let
 
     cargoRoot = "cli";
     buildAndTestSubdir = "cli";
-    cargoHash = "sha256-gpPbPbPQL0lYJR59jNYGtf8vUJlsxVWxeyt8AhR8T0E=";
+    cargoHash = "sha256-MYzoB/jzkGUNVX9EH3x2f2DrXVi+vvJcfAMEvnuxlY8=";
 
     cargoBuildFlags = [
       "--bin"
@@ -61,7 +62,7 @@ rustPlatform.buildRustPackage {
 
   cargoRoot = "src-tauri";
   buildAndTestSubdir = "src-tauri";
-  cargoHash = "sha256-Ebc7SqJCcYagIqSJLqmCWGhmfGKOJHvFtenBoAqG5zo=";
+  cargoHash = "sha256-ppE7UkUiBHzjS9urwhagkCLayJemAe7LiNa6CVaZ5xY=";
 
   pnpmDeps = fetchPnpmDeps {
     inherit pname version src;
@@ -90,6 +91,7 @@ rustPlatform.buildRustPackage {
     librsvg
     libayatana-appindicator
     glib-networking
+    systemdLibs
   ];
 
   tauriBuildFlags = [ "--ignore-version-mismatches" ];
