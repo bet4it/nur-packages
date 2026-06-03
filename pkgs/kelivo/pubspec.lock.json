@@ -726,11 +726,11 @@
       "dependency": "transitive",
       "description": {
         "name": "flutter_plugin_android_lifecycle",
-        "sha256": "38d1c268de9097ff59cf0e844ac38759fc78f76836d37edad06fa21e182055a0",
+        "sha256": "3854fe5e3bff0b113c658f260b90c95dea17c92db0f2addeac2e343dd9969785",
         "url": "https://pub.dev"
       },
       "source": "hosted",
-      "version": "2.0.34"
+      "version": "2.0.35"
     },
     "flutter_shaders": {
       "dependency": "transitive",
@@ -886,11 +886,11 @@
       "dependency": "transitive",
       "description": {
         "name": "hooks",
-        "sha256": "62ae9bb76d02526c7c2110a19b6e6ad788fe28d35e553e35efb02a41a46ab43a",
+        "sha256": "9a62a50b50b769a737bc0a8ff381f333529df3ab746b2f6b02e83760231455ba",
         "url": "https://pub.dev"
       },
       "source": "hosted",
-      "version": "2.0.1"
+      "version": "2.0.2"
     },
     "hotkey_manager": {
       "dependency": "direct main",
