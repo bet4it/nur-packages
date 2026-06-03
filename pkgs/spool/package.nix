@@ -82,7 +82,7 @@ stdenv.mkDerivation {
       cp ${./pnpm-lock.yaml} pnpm-lock.yaml
     '';
     fetcherVersion = 3;
-    hash = "sha256-LiZtT5pDnAuSt4xpIWhqrs5v8xruxjNXYsbOu+UfZGk=";
+    hash = "sha256-z4F7n71UjgrYgwHl29fxoOBe0ep1ZIucRcZlYtwYZQI=";
   };
 
   pnpmWorkspaces = [
