@@ -29,16 +29,16 @@ let
 in
 buildNpmPackage rec {
   pname = "electerm";
-  version = "3.15.28";
+  version = "3.15.32";
 
   src = fetchFromGitHub {
     owner = "electerm";
     repo = "electerm";
     rev = "v${version}";
-    hash = "sha256-e8rEjv7V244AFE5Gsd8iJlMp19o42454OrbGXXuPiIA=";
+    hash = "sha256-/Sz/F+qysKsIqaCRydICk1XHnOcRvcDnYp6EYAK4+Mw=";
   };
 
-  npmDepsHash = "sha256-DUELPf4CUjm4TdkZNG5vSm/BUQJqI/IHVYJpex6c8gE=";
+  npmDepsHash = "sha256-WBQh9dmQhfsUtLzapF7WwunAejyq55rL3qopZz0POaY=";
 
   npmFlags = [
     "--legacy-peer-deps"
