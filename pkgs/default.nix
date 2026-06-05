@@ -4,6 +4,7 @@ rec {
   aioncore = pkgs.callPackage ./aioncore/package.nix { };
   athas = pkgs.callPackage ./athas/package.nix { };
   cc-switch = pkgs.callPackage ./cc-switch/package.nix { };
+  cc-session = pkgs.callPackage ./cc-session/package.nix { };
   ccg-gateway = pkgs.callPackage ./ccg-gateway/package.nix { };
   claude-code-history-viewer = pkgs.callPackage ./claude-code-history-viewer/package.nix { };
   electerm = pkgs.callPackage ./electerm/package.nix { };
