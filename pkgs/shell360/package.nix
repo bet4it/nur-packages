@@ -21,13 +21,13 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "shell360";
-  version = "0.1.21";
+  version = "0.2.1";
 
   src = fetchFromGitHub {
     owner = "nashaofu";
     repo = "shell360";
     rev = "v${version}";
-    hash = "sha256-lyM0f/bDDBW2G+o5L/vy6gRPH+xw6MDuDq1KsfwDm+w=";
+    hash = "sha256-DadWQssVddSujq98egb+5ExjZEoJEPWKeHX2FAg60sQ=";
   };
 
   nativeBuildInputs = [
@@ -53,7 +53,7 @@ rustPlatform.buildRustPackage rec {
     inherit pname version src;
     pnpm = pnpm_9;
     fetcherVersion = 3;
-    hash = "sha256-2fV0hR/WY/ZuJPpTHR2nzTNtJvcQr1Hzv2lbIwGplIw=";
+    hash = "sha256-K8EJEq5tS1Xh5Ctup0BcYXw9mBL6vop5klq2yRiRX/Y=";
   };
 
   cargoHash = "sha256-wKRXhnsp1ox+0QED3mb+M/i2awQP+IDeOeAMOpZQR8Y=";
