@@ -29,13 +29,13 @@ let
 in
 buildNpmPackage rec {
   pname = "netcatty";
-  version = "1.1.21";
+  version = "1.1.27";
 
   src = fetchFromGitHub {
     owner = "binaricat";
     repo = "Netcatty";
     rev = "v${version}";
-    hash = "sha256-QpcoppPvXrIaHbcKwRDLZbTPkJhFvUCuM2ixbKbuXOA=";
+    hash = "sha256-N4bcpmYdF1GlmFdZZaZtnhMnOne0IdTmG8pf/Kpaigs=";
   };
 
   nodejs = nodejs_22;
