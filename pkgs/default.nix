@@ -21,5 +21,6 @@ rec {
   usbee = pkgs.callPackage ./usbee/package.nix { inherit usbeehive; };
   vibe99 = pkgs.callPackage ./vibe99/package.nix { };
   vibemux = pkgs.callPackage ./vibemux/package.nix { };
+  vmark = pkgs.callPackage ./vmark/package.nix { };
   usbeehive = pkgs.callPackage ./usbeehive/package.nix { };
 }
