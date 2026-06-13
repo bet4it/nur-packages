@@ -23,4 +23,5 @@ rec {
   vibemux = pkgs.callPackage ./vibemux/package.nix { };
   vmark = pkgs.callPackage ./vmark/package.nix { };
   usbeehive = pkgs.callPackage ./usbeehive/package.nix { };
+  fast-resume = pkgs.callPackage ./fast-resume/package.nix { };
 }
