@@ -24,6 +24,7 @@
   openssl,
   pango,
   webkitgtk_4_1,
+  desktop-file-utils,
   darwin,
 }:
 
@@ -81,6 +82,7 @@ rustPlatform.buildRustPackage rec {
     nodejs_22
     pkg-config
     wrapGAppsHook4
+    desktop-file-utils
   ];
 
   buildInputs = [
@@ -94,6 +96,17 @@ rustPlatform.buildRustPackage rec {
   postPatch = ''
     substituteInPlace src-tauri/tauri.conf.json \
       --replace-fail '"createUpdaterArtifacts": true' '"createUpdaterArtifacts": false'
+  '';
+
+  postInstall = ''
+    if [ -f "$out/share/applications/CC Session.desktop" ]; then
+      mv "$out/share/applications/CC Session.desktop" \
+        "$out/share/applications/cc-session.desktop"
+      desktop-file-edit \
+        --set-key="StartupWMClass" --set-value="cc-session" \
+        --set-key="Categories" --set-value="Development;Utility;" \
+        $out/share/applications/cc-session.desktop
+    fi
   '';
 
   passthru.updateScript = nix-update-script {
