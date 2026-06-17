@@ -1,6 +1,6 @@
 {
   coreutils,
-  flutter338,
+  flutter344,
   nix,
   nix-update,
   writeShellApplication,
@@ -12,7 +12,7 @@ writeShellApplication {
 
   runtimeInputs = [
     coreutils
-    flutter338
+    flutter344
     nix
     nix-update
     yq-go

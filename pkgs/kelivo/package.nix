@@ -1,6 +1,6 @@
 {
   lib,
-  flutter338,
+  flutter344,
   fetchFromGitHub,
   callPackage,
   copyDesktopItems,
@@ -11,15 +11,15 @@
   libayatana-appindicator,
 }:
 
-flutter338.buildFlutterApplication rec {
+flutter344.buildFlutterApplication rec {
   pname = "kelivo";
-  version = "1.1.15";
+  version = "1.1.16";
 
   src = fetchFromGitHub {
     owner = "Chevey339";
     repo = "kelivo";
     rev = "v${version}";
-    hash = "sha256-rORMY8ATQK95a7HiV7pVM1Ok7ot0jCJMRGT47kFEJGE=";
+    hash = "sha256-4btyaznF4Re6EKAg8Y72Z/2Oty0QhKUP3IpAGGI8E/0=";
   };
 
   pubspecLock = lib.importJSON ./pubspec.lock.json;
