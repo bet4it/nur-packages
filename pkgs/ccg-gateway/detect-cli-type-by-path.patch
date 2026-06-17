@@ -1,0 +1,72 @@
+From b35261eeae71b47bf7b5da78056f5ab0ce22657c Mon Sep 17 00:00:00 2001
+From: Bet4 <0xbet4@gmail.com>
+Date: Mon, 15 Jun 2026 13:17:04 +0800
+Subject: [PATCH] feat: 根据请求路径/协议类型识别 Agent 类型
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ src-tauri/src/api/handlers.rs   | 10 ++++++++--
+ src-tauri/src/services/proxy.rs | 24 +++++++++++-------------
+ 2 files changed, 19 insertions(+), 15 deletions(-)
+
+diff --git a/src-tauri/src/api/handlers.rs b/src-tauri/src/api/handlers.rs
+index 9a6c255..02481d3 100644
+--- a/src-tauri/src/api/handlers.rs
++++ b/src-tauri/src/api/handlers.rs
+@@ -59,8 +59,14 @@ pub async fn proxy_handler_catchall(
+             (None, raw_full_path.clone())
+         };
+ 
+-    // Detect CLI type from User-Agent
+-    let cli_type = detect_cli_type(&headers);
++    // Detect CLI type from request path / protocol type
++    let cli_type = match detect_cli_type(&full_path) {
++        Some(t) => t,
++        None => {
++            tracing::error!(path = %full_path, "Unknown request protocol / path");
++            return Err(StatusCode::BAD_REQUEST);
++        }
++    };
+     let provider_profile = path_profile.unwrap_or_else(|| detect_gateway_profile(&headers));
+ 
+     // Serialize client headers for logging
+diff --git a/src-tauri/src/services/proxy.rs b/src-tauri/src/services/proxy.rs
+index 3b8b6d8..2cce6d3 100644
+--- a/src-tauri/src/services/proxy.rs
++++ b/src-tauri/src/services/proxy.rs
+@@ -207,20 +207,18 @@ pub struct TokenUsage {
+     gemini_thoughts_token_count: i64,
+ }
+ 
+-/// Detect CLI type from User-Agent header
+-pub fn detect_cli_type(headers: &HeaderMap) -> CliType {
+-    let ua = headers
+-        .get("user-agent")
+-        .and_then(|v| v.to_str().ok())
+-        .unwrap_or("")
+-        .to_lowercase();
+-
+-    if ua.contains("codex") || ua.contains("openai") {
+-        CliType::Codex
+-    } else if ua.contains("gemini") || ua.contains("google") {
+-        CliType::Gemini
++/// Detect CLI type from request path / protocol type
++pub fn detect_cli_type(path: &str) -> Option<CliType> {
++    let path_lower = path.to_lowercase();
++
++    if path_lower == "/responses" || path_lower == "/chat/completions" {
++        Some(CliType::Codex)
++    } else if path_lower == "/messages" {
++        Some(CliType::ClaudeCode)
++    } else if path_lower.contains("generatecontent") {
++        Some(CliType::Gemini)
+     } else {
+-        CliType::ClaudeCode
++        None
+     }
+ }
+ 
+-- 
+2.54.0
