@@ -57,23 +57,23 @@ let
 in
 rustPlatform.buildRustPackage rec {
   pname = "cc-session";
-  version = "0.5.0";
+  version = "0.5.2";
 
   src = fetchFromGitHub {
     owner = "tyql688";
     repo = "cc-session";
     rev = "v${version}";
-    hash = "sha256-u4B5KHqXkR1qWdYwQzQscSysqmwAvbax+yw40Tf25kQ=";
+    hash = "sha256-XuisLja7ukn5nOIfvxsOtoAKhfeZ6L6ohrkHHma3NLM=";
   };
 
   cargoRoot = "src-tauri";
   buildAndTestSubdir = "src-tauri";
-  cargoHash = "sha256-RzILU05OH9ZS0YUE4qOxQqzkgqGAMKh+WUZubcP9Z68=";
+  cargoHash = "sha256-BhBOLF3cjXwNqCaWpZOJgOMTRdKIW6dQwKPKxdFezgQ=";
 
   npmDeps = fetchNpmDeps {
     name = "${pname}-${version}-npm-deps";
     inherit src;
-    hash = "sha256-o8BvV8DI4i5WCYd7yKEqDYFur4nsPFOOv7iDpOiDTMM=";
+    hash = "sha256-Yv5q8zgVLbdzplZLVyyDYoCPfs02HExCOMl/qGitCtU=";
   };
 
   nativeBuildInputs = [
