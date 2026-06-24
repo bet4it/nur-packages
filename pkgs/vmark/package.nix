@@ -23,13 +23,13 @@
 
 let
   pname = "vmark";
-  version = "0.8.6";
+  version = "0.8.9";
 
   src = fetchFromGitHub {
     owner = "xiaolai";
     repo = "vmark";
     rev = "v${version}";
-    hash = "sha256-d4MfZexo2nsdL0gl7cIgVLsGICvMS7+nDF39Ury9jMQ=";
+    hash = "sha256-EtJrmZrMAoV7kpzhBCRIcdIEwAiCX6/Fl5RQ2kpKvps=";
   };
 
   targetTriple =
@@ -86,7 +86,7 @@ rustPlatform.buildRustPackage {
   cargoRoot = "src-tauri";
   buildAndTestSubdir = "src-tauri";
 
-  cargoHash = "sha256-ZSca8HJhs1/h85m/4tteOgveLl0wKLtC4Tw2TeIhX2I=";
+  cargoHash = "sha256-SVvQOssSaZgOSMsKmQuvRrrK7NdY3L07KAro2soTvGo=";
   pnpmRoot = ".";
 
   nativeBuildInputs = [
