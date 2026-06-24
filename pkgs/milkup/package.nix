@@ -15,7 +15,7 @@
 
 stdenv.mkDerivation rec {
   pname = "milkup";
-  version = "1.0.17";
+  version = "1.0.18";
 
   upstreamSrc = fetchFromGitHub {
     owner = "Auto-Plugin";
