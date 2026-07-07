@@ -12,6 +12,7 @@
   pkg-config,
   wrapGAppsHook4,
   zig,
+  cacert,
   glib-networking,
   libayatana-appindicator,
   openssl,
@@ -105,6 +106,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
     wrapGAppsHook4
     zig
     desktop-file-utils
+    cacert
   ];
 
   buildInputs = [
@@ -118,6 +120,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
     LIBCLANG_PATH = "${lib.getLib llvmPackages.libclang}/lib";
     OPENSSL_NO_VENDOR = true;
     TAURI_SKIP_VERSION_CHECK = "1";
+    SSL_CERT_FILE = "${cacert}/etc/ssl/certs/ca-bundle.crt";
   };
 
   postInstall = ''
