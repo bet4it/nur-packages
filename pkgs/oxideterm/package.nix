@@ -3,7 +3,7 @@
   rustPlatform,
   fetchFromGitHub,
   fetchPnpmDeps,
-  pnpm_9,
+  pnpm_10,
   nodejs_22,
   pnpmConfigHook,
   pkg-config,
@@ -66,14 +66,14 @@ rustPlatform.buildRustPackage {
 
   pnpmDeps = fetchPnpmDeps {
     inherit pname version src;
-    pnpm = pnpm_9;
-    fetcherVersion = 3;
-    hash = "sha256-woH64J0YOtyDOBWP+MidtWYeG7M/PLDQ0TfZpOJAUjI=";
+    pnpm = pnpm_10;
+    fetcherVersion = 4;
+    hash = "sha256-RsEzrQxUsmRwbSbJ4tiOrL55K/tpR3ovwgwnOlf3bvo=";
   };
 
   nativeBuildInputs = [
     cargo-tauri.hook
-    pnpm_9
+    pnpm_10
     pnpmConfigHook
     nodejs_22
     pkg-config

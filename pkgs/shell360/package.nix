@@ -11,7 +11,7 @@
   libsoup_3,
   webkitgtk_4_1,
   librsvg,
-  pnpm_9,
+  pnpm_10,
   nodejs,
   pnpmConfigHook,
   wrapGAppsHook3,
@@ -32,7 +32,7 @@ rustPlatform.buildRustPackage rec {
 
   nativeBuildInputs = [
     pkg-config
-    pnpm_9
+    pnpm_10
     pnpmConfigHook
     nodejs
     wrapGAppsHook3
@@ -51,9 +51,9 @@ rustPlatform.buildRustPackage rec {
 
   pnpmDeps = fetchPnpmDeps {
     inherit pname version src;
-    pnpm = pnpm_9;
-    fetcherVersion = 3;
-    hash = "sha256-zMdBCwG+Vmjvins+w9JsmLne4q+bFqykn2N4EXkkZCY=";
+    pnpm = pnpm_10;
+    fetcherVersion = 4;
+    hash = "sha256-rzxlq2mB7BI0miHx6qwJXotKj+THBzi+INB6FEyW+GA=";
   };
 
   cargoHash = "sha256-JEUvNUPt4iaZBZYKoAjNqXu78wLQPTAxEsg/8KkZ1ek=";
