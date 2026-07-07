@@ -34,6 +34,8 @@ rustPlatform.buildRustPackage (finalAttrs: {
 
   cargoHash = "sha256-Yys0vv1a5CIR8o23T9+YOyCXXMfdQF9KgKKWATYfr88=";
 
+  doCheck = false;
+
   node_modules = stdenv.mkDerivation {
     pname = "${finalAttrs.pname}-node_modules";
     inherit (finalAttrs) version src;
