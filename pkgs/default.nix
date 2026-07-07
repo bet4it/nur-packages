@@ -11,6 +11,7 @@ rec {
   kelivo = pkgs.callPackage ./kelivo/package.nix { };
   milkup = pkgs.callPackage ./milkup/package.nix { };
   netcatty = pkgs.callPackage ./netcatty/package.nix { };
+  nyaterm = pkgs.callPackage ./nyaterm/package.nix { };
   oxideterm = pkgs.callPackage ./oxideterm/package.nix { };
   paseo-desktop = pkgs.callPackage ./paseo-desktop/package.nix { };
   shell360 = pkgs.callPackage ./shell360/package.nix { };
