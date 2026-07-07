@@ -7,12 +7,12 @@
 
 let
   pname = "superset";
-  version = "1.12.5";
+  version = "1.13.1";
 
   src = fetchurl {
     name = "superset-${version}-x86_64.AppImage";
     url = "https://github.com/superset-sh/superset/releases/download/desktop-v${version}/Superset-x86_64.AppImage";
-    hash = "sha256-TMfY0q5AnBFUhpU62AkiXBDj1mXeRzIQyRZhiPErvNg=";
+    hash = "sha256-R3xd9R1Cf2YPCTOpTWXgUyz2inJROpUXE0N+hROjYpo=";
   };
 
   appimageContents = appimageTools.extractType2 {
