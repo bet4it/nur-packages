@@ -76,6 +76,8 @@ rustPlatform.buildRustPackage rec {
     hash = "sha256-wBfIGBioiPCOa+jkPH3iNn2Hex6/sRntNqlDRzYHBdQ=";
   };
 
+  npmFlags = [ "--legacy-peer-deps" ];
+
   nativeBuildInputs = [
     cargo-tauri.hook
     npmHooks.npmConfigHook
