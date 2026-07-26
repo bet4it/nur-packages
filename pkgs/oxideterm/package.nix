@@ -2,143 +2,125 @@
   lib,
   rustPlatform,
   fetchFromGitHub,
-  fetchPnpmDeps,
-  pnpm_10,
-  nodejs_22,
-  pnpmConfigHook,
+  cmake,
   pkg-config,
-  cargo-tauri,
-  wrapGAppsHook4,
-  glib-networking,
-  glib,
-  gtk3,
-  libsoup_3,
-  webkitgtk_4_1,
-  librsvg,
-  libayatana-appindicator,
+  protobuf,
+  fontconfig,
   openssl,
+  sqlite,
+  zlib,
+  zstd,
+  glib,
+  alsa-lib,
+  libxkbcommon,
+  wayland,
+  libxcb,
+  libX11,
+  libXext,
+  vulkan-loader,
+  dbus,
   systemdLibs,
-  desktop-file-utils,
+  gst_all_1,
+  makeWrapper,
+  makeDesktopItem,
+  copyDesktopItems,
   writableTmpDirAsHomeHook,
 }:
 
-let
+rustPlatform.buildRustPackage rec {
   pname = "oxideterm";
-  version = "1.6.12";
+  version = "2.0.11";
 
   src = fetchFromGitHub {
     owner = "AnalyseDeCircuit";
     repo = "oxideterm";
-    rev = "v${version}";
-    hash = "sha256-fofSNwzBmr4sKizhyObbtV71Z39tK65z+6VuTaSo0wA=";
+    tag = "v${version}";
+    hash = "sha256-WMA2MKlP8q8wkm3f0EUYFmiqRQq/8DeY7P/YY82nufw=";
   };
 
-  cli = rustPlatform.buildRustPackage {
-    pname = "${pname}-cli";
-    inherit version src;
+  cargoHash = "sha256-h3ikv4T/T1gyP3lU1bewvrO3P+lwbRPwSHkMwKgi6I8=";
 
-    cargoRoot = "cli";
-    buildAndTestSubdir = "cli";
-    cargoHash = "sha256-rei3jUbQr4cR6cvr03brqFLIg5hS8wxXVY9LMxvp0Fo=";
+  cargoBuildFlags = [
+    "-p"
+    "oxideterm-gpui-app"
+    "--bin"
+    "oxideterm-native"
+    "-p"
+    "oxideterm-cli"
+    "--bin"
+    "oxideterm"
+  ];
 
-    cargoBuildFlags = [
-      "--bin"
-      "oxt"
-    ];
-
-    doCheck = false;
-
-    meta = {
-      description = "CLI companion for OxideTerm";
-      homepage = "https://github.com/AnalyseDeCircuit/oxideterm";
-      license = lib.licenses.gpl3Only;
-      mainProgram = "oxt";
-      platforms = lib.platforms.linux;
-    };
-  };
-in
-rustPlatform.buildRustPackage {
-  inherit pname version src;
-
-  cargoRoot = "src-tauri";
-  buildAndTestSubdir = "src-tauri";
-  cargoHash = "sha256-WACq/6G9DfoHOByfhXjDijivw+5B76BZ+k3b38ESGH0=";
-
-  pnpmDeps = fetchPnpmDeps {
-    inherit pname version src;
-    pnpm = pnpm_10;
-    fetcherVersion = 4;
-    hash = "sha256-oqGOBBhbox8+y78C6PxDPRVVfhV836YI7ylNZgbGkpQ=";
-  };
+  doCheck = false;
 
   nativeBuildInputs = [
-    cargo-tauri.hook
-    pnpm_10
-    pnpmConfigHook
-    nodejs_22
+    cmake
     pkg-config
-    wrapGAppsHook4
-    desktop-file-utils
+    protobuf
+    makeWrapper
+    copyDesktopItems
     writableTmpDirAsHomeHook
   ];
 
   buildInputs = [
+    fontconfig
     openssl
+    sqlite
+    zlib
+    zstd
     glib
-    gtk3
-    libsoup_3
-    webkitgtk_4_1
-    librsvg
-    libayatana-appindicator
-    glib-networking
+    alsa-lib
+    libxkbcommon
+    wayland
+    libxcb
+    libX11
+    libXext
+    vulkan-loader
+    dbus
     systemdLibs
+    gst_all_1.gstreamer
+    gst_all_1.gst-plugins-base
+    gst_all_1.gst-plugins-good
+    gst_all_1.gst-plugins-bad
   ];
 
-  tauriBuildFlags = [ "--ignore-version-mismatches" ];
-
-  doCheck = false;
-
-  preConfigure = ''
-    export HOME=$TMPDIR
-
-    mkdir -p src-tauri/cli-bin
-    cp ${cli}/bin/oxt src-tauri/cli-bin/oxt
-    chmod +x src-tauri/cli-bin/oxt
-  '';
-
-  postPatch = ''
-    substituteInPlace src-tauri/tauri.conf.json \
-      --replace-fail '"createUpdaterArtifacts": true' '"createUpdaterArtifacts": false'
-
-    libappindicatorSys=$(find $cargoDepsCopy -path '*/libappindicator-sys-*/src/lib.rs' -print -quit)
-    if [ -n "$libappindicatorSys" ]; then
-      substituteInPlace "$libappindicatorSys" \
-        --replace-fail "libayatana-appindicator3.so.1" "${libayatana-appindicator}/lib/libayatana-appindicator3.so.1"
-    fi
-  '';
-
-  env = {
-    OPENSSL_NO_VENDOR = true;
-    TAURI_SKIP_VERSION_CHECK = "1";
-  };
-
   postInstall = ''
-    ln -s ${cli}/bin/oxt $out/bin/oxt
+    mv $out/bin/oxideterm-native $out/bin/oxideterm-native.unwrapped
+    makeWrapper $out/bin/oxideterm-native.unwrapped $out/bin/oxideterm-native \
+      --prefix LD_LIBRARY_PATH : ${
+        lib.makeLibraryPath [
+          vulkan-loader
+          libxkbcommon
+          wayland
+        ]
+      } \
+      --prefix GST_PLUGIN_SYSTEM_PATH_1_0 : ${
+        lib.makeSearchPath "lib/gstreamer-1.0" [
+          gst_all_1.gstreamer
+          gst_all_1.gst-plugins-base
+          gst_all_1.gst-plugins-good
+          gst_all_1.gst-plugins-bad
+        ]
+      }
 
-    if [ -f $out/share/applications/*.desktop ]; then
-      desktop-file-edit \
-        --set-comment "Local-first SSH workspace built with Rust and Tauri" \
-        --set-key="Keywords" --set-value="terminal;ssh;sftp;tauri;rust;workspace;" \
-        --set-key="Categories" --set-value="Development;Network;TerminalEmulator;" \
-        $out/share/applications/*.desktop
-    fi
+    ln -s $out/bin/oxideterm-native $out/bin/OxideTerm
   '';
 
-  passthru = {
-    inherit cli;
-
-    updateScript = ./update.sh;
-  };
+  desktopItems = [
+    (makeDesktopItem {
+      name = "oxideterm";
+      exec = "oxideterm-native %U";
+      icon = "oxideterm";
+      desktopName = "OxideTerm";
+      comment = "Local-first SSH workspace with terminal, SFTP, forwarding, and BYOK AI";
+      categories = [
+        "Development"
+        "Network"
+        "TerminalEmulator"
+      ];
+      startupWMClass = "OxideTerm";
+    })
+  ];
 
   meta = {
     description = "Local-first SSH workspace with terminal, SFTP, forwarding, and BYOK AI";
@@ -146,7 +128,7 @@ rustPlatform.buildRustPackage {
     changelog = "https://github.com/AnalyseDeCircuit/oxideterm/releases/tag/v${version}";
     license = lib.licenses.gpl3Only;
     maintainers = with lib.maintainers; [ ];
-    mainProgram = "oxideterm";
+    mainProgram = "oxideterm-native";
     platforms = lib.platforms.linux;
   };
 }
