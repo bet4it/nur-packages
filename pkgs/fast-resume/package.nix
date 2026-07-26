@@ -6,14 +6,14 @@
 
 python314Packages.buildPythonApplication rec {
   pname = "fast-resume";
-  version = "1.18.0";
+  version = "2.5.0";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "angristan";
     repo = "fast-resume";
     tag = "v${version}";
-    hash = "sha256-0r5g2zMELFVHjVbujLJONSquCope3fxctWStNnN4nEs=";
+    hash = "sha256-gZjacCyTzSrCQdlaEfvlOQPHFURXgLdzyhFBT0KcxWw=";
   };
 
   build-system = with python314Packages; [
