@@ -20,19 +20,19 @@
 
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "jean";
-  version = "0.1.63";
+  version = "0.1.68";
 
   src = fetchFromGitHub {
     owner = "coollabsio";
     repo = "jean";
     rev = "v${finalAttrs.version}";
-    hash = "sha256-LSOG/0Xu17M7qbold8nOavVXgUTxOabf9bieEPXD/ow=";
+    hash = "sha256-Rzl86kM3V/ol5+adGVFJwHz1fggj8y056Q7U22B3gB8=";
   };
 
   cargoRoot = "src-tauri";
   buildAndTestSubdir = finalAttrs.cargoRoot;
 
-  cargoHash = "sha256-7rL9otWegmLT4nyh41ureDGxlXJpOkx61cCNrjwuYcQ=";
+  cargoHash = "sha256-J4VdXCasjVD7vBaGocfleRaRNfGHfwSYZosDlS0DTmA=";
 
   doCheck = false;
 
