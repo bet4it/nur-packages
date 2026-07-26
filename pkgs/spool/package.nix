@@ -42,8 +42,8 @@ buildNpmPackage {
 
   meta = {
     description = "CLI to publish, read, and resume AI coding agent sessions";
-    homepage = "https://github.com/spool-lab/spool";
-    changelog = "https://github.com/spool-lab/spool/releases/tag/v${version}";
+    homepage = "https://github.com/paperboytm/spool";
+    changelog = "https://github.com/paperboytm/spool/releases/tag/v${version}";
     license = lib.licenses.mit;
     mainProgram = "spool";
     maintainers = with lib.maintainers; [ ];
