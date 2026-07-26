@@ -16,6 +16,8 @@
   libgee,
   libsoup_3,
   glib-networking,
+  libsecret,
+  gnutls,
   squashfsTools,
   dwarfs,
   zsync2,
@@ -54,6 +56,8 @@ stdenv.mkDerivation (finalAttrs: {
     libgee
     libsoup_3
     glib-networking
+    libsecret
+    gnutls
   ];
 
   mesonFlags = [
