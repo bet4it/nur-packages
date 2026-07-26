@@ -1,43 +1,26 @@
 {
   lib,
-  python314Packages,
+  rustPlatform,
   fetchFromGitHub,
 }:
 
-python314Packages.buildPythonApplication rec {
+rustPlatform.buildRustPackage rec {
   pname = "fast-resume";
-  version = "1.18.0";
-  pyproject = true;
+  version = "2.5.0";
 
   src = fetchFromGitHub {
     owner = "angristan";
     repo = "fast-resume";
     tag = "v${version}";
-    hash = "sha256-0r5g2zMELFVHjVbujLJONSquCope3fxctWStNnN4nEs=";
+    hash = "sha256-gZjacCyTzSrCQdlaEfvlOQPHFURXgLdzyhFBT0KcxWw=";
   };
 
-  build-system = with python314Packages; [
-    hatchling
-  ];
+  cargoHash = "sha256-XPyrVqS408RfE9Kbx25krpGSf08hHCv6EE6jBa2vG4g=";
 
-  dependencies = with python314Packages; [
-    textual
-    rich
-    click
-    humanize
-    orjson
-  ] ++ lib.optionals (python314Packages ? textual-image) [
-    python314Packages.textual-image
-  ] ++ lib.optionals (python314Packages ? tantivy) [
-    python314Packages.tantivy
-  ];
-
-  dontCheckRuntimeDeps = true;
-
-  meta = with lib; {
+  meta = {
     description = "Fuzzy finder for coding agent session history";
     homepage = "https://github.com/angristan/fast-resume";
-    license = licenses.mit;
+    license = lib.licenses.mit;
     mainProgram = "fr";
   };
 }
