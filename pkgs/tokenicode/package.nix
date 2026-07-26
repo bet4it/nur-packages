@@ -18,21 +18,32 @@
   writableTmpDirAsHomeHook,
 }:
 
+let
+  # Upstream's tagged pnpm-lock.yaml drifts from package.json (a stale
+  # `@tauri-apps/api` specifier: package.json wants ~2.10.0, the lockfile
+  # still says ^2), which trips pnpm's --frozen-lockfile check. The
+  # resolved version (2.10.1) satisfies both ranges, so just fix up the
+  # recorded specifier instead of re-resolving anything. Applied both when
+  # computing pnpmDeps and in the main build so the two lockfiles match.
+  fixTauriApiSpecifier = ''
+    sed -i "/'@tauri-apps\/api':/{n;s/specifier: \^2/specifier: ~2.10.0/}" pnpm-lock.yaml
+  '';
+in
 rustPlatform.buildRustPackage rec {
   pname = "tokenicode";
-  version = "0.11.0";
+  version = "0.12.0";
 
   src = fetchFromGitHub {
     owner = "yiliqi78";
     repo = "TOKENICODE";
     rev = "v${version}";
-    hash = "sha256-wa49iI8z/sz1TIjFG3xTefH8+4pIk4AnutZI47z+2s4=";
+    hash = "sha256-IGt7pFASj1VoVBzRWqUNuiJp3e5NSOc/pEbFp5zwXc0=";
   };
 
   cargoRoot = "src-tauri";
   buildAndTestSubdir = "src-tauri";
 
-  cargoHash = "sha256-IijdJtQzlnOLrJ6DpcAX3Lhwz1ymCNL7MQo3Pt0FTYc=";
+  cargoHash = "sha256-kwSsWtMsSl/a6294U1TNU/z4yMp7zxDaX4IHDDzk6B8=";
 
   doCheck = false;
 
@@ -42,6 +53,8 @@ rustPlatform.buildRustPackage rec {
     inherit pname version src;
     hash = "sha256-oBBZUPoKEF+d7tiVVnXr+SMC5A4umTPU5blvidY79X8=";
     fetcherVersion = 3;
+
+    postPatch = fixTauriApiSpecifier;
   };
 
   nativeBuildInputs = [
@@ -68,6 +81,8 @@ rustPlatform.buildRustPackage rec {
   '';
 
   postPatch = ''
+    ${fixTauriApiSpecifier}
+
     # Disable updater artifacts and pubkey for Nix build
     substituteInPlace src-tauri/tauri.conf.json \
       --replace-fail '"createUpdaterArtifacts": true' '"createUpdaterArtifacts": false'
