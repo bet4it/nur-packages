@@ -25,13 +25,13 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "app-manager";
-  version = "3.7.1";
+  version = "3.7.3";
 
   src = fetchFromGitHub {
     owner = "kem-a";
     repo = "AppManager";
     rev = "v${finalAttrs.version}";
-    hash = "sha256-suvL9peWHDWELET4jZ1qu6bGsWMcblsNeaCejIuWBLQ=";
+    hash = "sha256-6l9MFZhlyc9F5ewigf09JX1q9aeoBipYulT56GoRpes=";
   };
 
   strictDeps = true;
