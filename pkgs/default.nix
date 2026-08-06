@@ -15,6 +15,7 @@ rec {
   nyaterm = pkgs.callPackage ./nyaterm/package.nix { };
   opencodex = pkgs.callPackage ./opencodex/package.nix { };
   oxideterm = pkgs.callPackage ./oxideterm/package.nix { };
+  rio = pkgs.callPackage ./rio/package.nix { };
   paseo-desktop = pkgs.callPackage ./paseo-desktop/package.nix { };
   shell360 = pkgs.callPackage ./shell360/package.nix { };
   spool = pkgs.callPackage ./spool/package.nix { };
