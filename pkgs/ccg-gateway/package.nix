@@ -29,10 +29,6 @@ rustPlatform.buildRustPackage rec {
     hash = "sha256-xYIJKhLNLHE/ElVxG+JSKK8MhNrOcpf4Pos1h1rNgjo=";
   };
 
-  patches = [
-    ./detect-cli-type-by-path.patch
-  ];
-
   cargoRoot = "src-tauri";
   buildAndTestSubdir = "src-tauri";
 
