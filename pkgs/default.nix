@@ -11,6 +11,7 @@ rec {
   jean = pkgs.callPackage ./jean/package.nix { };
   kelivo = pkgs.callPackage ./kelivo/package.nix { };
   milkup = pkgs.callPackage ./milkup/package.nix { };
+  markra = pkgs.callPackage ./markra/package.nix { };
   netcatty = pkgs.callPackage ./netcatty/package.nix { };
   nyaterm = pkgs.callPackage ./nyaterm/package.nix { };
   opencodex = pkgs.callPackage ./opencodex/package.nix { };
