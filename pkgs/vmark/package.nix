@@ -23,13 +23,13 @@
 
 let
   pname = "vmark";
-  version = "0.9.12";
+  version = "0.9.29";
 
   src = fetchFromGitHub {
     owner = "xiaolai";
     repo = "vmark";
     rev = "v${version}";
-    hash = "sha256-38ADPbeQBC7CKGsXIGvtj+WPhQ7MP9BndVZysVcrIvA=";
+    hash = "sha256-sbVL+G76vFVa6eQe/6l/jkWh6uxmPIKHKsI80IU/TCo=";
   };
 
   targetTriple =
@@ -43,7 +43,7 @@ let
 
   pnpmDeps = (fetchPnpmDeps.override { pnpm = pnpm_10; }) {
     inherit pname version src;
-    hash = "sha256-V6wmtwuVcuvXtVrVRipXzzLTJSWX4rgclMcHQRXtJ60=";
+    hash = "sha256-nR5llnyp4Hs2XTdknxWdjcqR45+XeGKKgXzgzSQ0tkQ=";
     fetcherVersion = 3;
   };
 
@@ -69,9 +69,9 @@ let
     installPhase = ''
       runHook preInstall
 
-      install -Dm644 vmark-mcp-server/package.json \
+      install -Dm644 server/mcp/package.json \
         "$out/lib/vmark-mcp-server/package.json"
-      cp -R vmark-mcp-server/dist "$out/lib/vmark-mcp-server/dist"
+      cp -R server/mcp/dist "$out/lib/vmark-mcp-server/dist"
 
       makeWrapper ${lib.getExe nodejs_22} "$out/bin/vmark-mcp-server" \
         --add-flags "$out/lib/vmark-mcp-server/dist/cli.js"
@@ -86,7 +86,7 @@ rustPlatform.buildRustPackage {
   cargoRoot = "src-tauri";
   buildAndTestSubdir = "src-tauri";
 
-  cargoHash = "sha256-fS1+hcMhxo5Ke2xd0rxEtodFF15zruoq4Do1HpT6RCM=";
+  cargoHash = "sha256-wtnOYveiwF5a5kmEklkNxlVfaj1jjE5YlFGi7bneqrw=";
   pnpmRoot = ".";
 
   nativeBuildInputs = [
