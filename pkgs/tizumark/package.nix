@@ -41,10 +41,8 @@ rustPlatform.buildRustPackage rec {
 
   cargoRoot = "src-tauri";
   buildAndTestSubdir = "src-tauri";
-  cargoHash = lib.fakeHash;
-
   cargoLock = {
-    lockFile = "${src}/src-tauri/Cargo.lock";
+    lockFile = ./Cargo.lock;
     outputHashes = {
       # rust-brotli git dependency (see [patch.crates-io] in Cargo.toml).
       "brotli-8.0.3" = "sha256-5HRCwBCs9xcOdWd15SZ0ryEr4/Fk4IVxYdIGbMyRu98=";
