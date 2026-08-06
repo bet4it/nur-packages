@@ -69,9 +69,9 @@ let
     installPhase = ''
       runHook preInstall
 
-      install -Dm644 vmark-mcp-server/package.json \
+      install -Dm644 server/mcp/package.json \
         "$out/lib/vmark-mcp-server/package.json"
-      cp -R vmark-mcp-server/dist "$out/lib/vmark-mcp-server/dist"
+      cp -R server/mcp/dist "$out/lib/vmark-mcp-server/dist"
 
       makeWrapper ${lib.getExe nodejs_22} "$out/bin/vmark-mcp-server" \
         --add-flags "$out/lib/vmark-mcp-server/dist/cli.js"
