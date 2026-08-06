@@ -137,8 +137,6 @@ rustPlatform.buildRustPackage {
 
     updateScript = nix-update-script {
       extraArgs = [
-        "--generate-lockfile"
-        "--lockfile-metadata-path=src-tauri"
         "--subpackage=frontend"
         "--url=https://github.com/jerrywu001/cc-sessions-viewer"
         "--use-github-releases"
