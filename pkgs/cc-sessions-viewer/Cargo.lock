@@ -458,7 +458,7 @@ dependencies = [
 
 [[package]]
 name = "cc-sessions-viewer"
-version = "0.3.4"
+version = "0.3.14"
 dependencies = [
  "base64 0.22.1",
  "chrono",
@@ -474,6 +474,7 @@ dependencies = [
  "rusqlite",
  "serde",
  "serde_json",
+ "sha2",
  "tauri",
  "tauri-build",
  "tauri-plugin-dialog",
@@ -4246,8 +4247,6 @@ dependencies = [
 [[package]]
 name = "tao"
 version = "0.35.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a33f7f9e486ade65fcf1e45c440f9236c904f5c1002cdc7fc6ae582777345ce4"
 dependencies = [
  "bitflags 2.11.1",
  "block2 0.6.2",
