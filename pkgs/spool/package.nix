@@ -8,11 +8,11 @@
 }:
 
 let
-  version = "0.8.4";
+  version = "0.8.5";
 
   npmTarball = fetchurl {
     url = "https://registry.npmjs.org/@spool-lab/cli/-/cli-${version}.tgz";
-    hash = "sha256-lSQHysg6lrhAH/sOEoCdG/CSzM1XkVk+6SV9sddwKEE=";
+    hash = "sha256-kltPaAoGF+7ROl9RbK7U2N0YVKj41kREqJd0J8mIYt8=";
   };
 
   # The published npm tarball for @spool-lab/cli doesn't ship a
@@ -29,7 +29,7 @@ buildNpmPackage {
   pname = "spool";
   inherit version src;
 
-  npmDepsHash = "sha256-mpy4bOKUfCqAnOSOfkKj0M2LmprV0ihwwXvE0yIarYg=";
+  npmDepsHash = "sha256-CrJkBwzmGOd1SR1RvXxR4SWRgUy4lyolUTsKBPg3zXE=";
 
   nativeBuildInputs = [
     python3
