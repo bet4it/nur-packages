@@ -101,7 +101,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
   pnpmDeps = (fetchPnpmDeps.override { pnpm = pnpm_11; }) {
     inherit (finalAttrs) pname version src;
     fetcherVersion = 4;
-    hash = "sha256-PU2eBrNl7EYHtWaiG7ASmytoeziTVzsITFYGLj8o8e8=";
+    hash = "sha256-fQ1iCrtvBqMp3Anu68AZGEf45ZIDPDWN5wu6WidQl60=";
   };
   pnpmRoot = ".";
 
