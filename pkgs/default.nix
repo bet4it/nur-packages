@@ -18,15 +18,12 @@ rec {
   opencodex = pkgs.callPackage ./opencodex/package.nix { };
   oxideterm = pkgs.callPackage ./oxideterm/package.nix { };
   rio = pkgs.callPackage ./rio/package.nix { };
-  paseo-desktop = pkgs.callPackage ./paseo-desktop/package.nix { };
   shell360 = pkgs.callPackage ./shell360/package.nix { };
   spool = pkgs.callPackage ./spool/package.nix { };
   superset = pkgs.callPackage ./superset/package.nix { };
   tokenicode = pkgs.callPackage ./tokenicode/package.nix { };
   tizumark = pkgs.callPackage ./tizumark/package.nix { };
   usbee = pkgs.callPackage ./usbee/package.nix { inherit usbeehive; };
-  vibe99 = pkgs.callPackage ./vibe99/package.nix { };
-  vibemux = pkgs.callPackage ./vibemux/package.nix { };
   vmark = pkgs.callPackage ./vmark/package.nix { };
   usbeehive = pkgs.callPackage ./usbeehive/package.nix { };
   fast-resume = pkgs.callPackage ./fast-resume/package.nix { };
