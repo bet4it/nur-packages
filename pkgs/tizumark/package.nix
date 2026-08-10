@@ -30,13 +30,13 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "tizumark";
-  version = "1.2.0";
+  version = "1.2.1";
 
   src = fetchFromGitHub {
     owner = "tizuio";
     repo = "TizuMark";
     rev = "v${version}";
-    hash = "sha256-hrJVfIwMjBistsxou6nbpP97bEFKEanP4ukhuzCMbZ0=";
+    hash = "sha256-5c44sx4cr420X250quyo8+um9hRKavkLcDkaAIp/ErE=";
   };
 
   cargoRoot = "src-tauri";
@@ -44,7 +44,6 @@ rustPlatform.buildRustPackage rec {
   cargoLock = {
     lockFile = ./Cargo.lock;
     outputHashes = {
-      # rust-brotli git dependency (see [patch.crates-io] in Cargo.toml).
       "brotli-8.0.3" = "sha256-5HRCwBCs9xcOdWd15SZ0ryEr4/Fk4IVxYdIGbMyRu98=";
     };
   };
@@ -52,7 +51,7 @@ rustPlatform.buildRustPackage rec {
   npmDeps = fetchNpmDeps {
     name = "tizumark-${version}-npm-deps";
     inherit src;
-    hash = "sha256-nof78D0ho8tAPfTw4yqusfkj4dzrx8zatRi9fceF2kk=";
+    hash = "sha256-7qn++HRPHF87d80iz1CA1sW7u60yH+A1nfNJ/P36z4E=";
   };
 
   doCheck = false;
