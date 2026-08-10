@@ -139,6 +139,11 @@ stdenv.mkDerivation {
       --add-flags "$out/lib/spool/packages/cli/bin/spool.js" \
       --prefix PATH : ${lib.makeBinPath [ nodejs_22 ]}
 
+    # Install the SKILL.md so home-manager can symlink it into
+    # ~/.agents/skills/spool/ — tracked by the Nix store, so every
+    # rebuild picks up the latest version without manual sync.
+    install -Dm644 skills/spool/SKILL.md $out/share/skills/spool/SKILL.md
+
     runHook postInstall
   '';
 
