@@ -26,13 +26,13 @@ Or add it manually to your Nix configuration:
 Run a package directly from the remote repository:
 
 ```bash
-nix run github:bet4it/nur-packages#app-manager
+nix run github:bet4it/nur-packages#agentero
 ```
 
 Run a package from a local checkout:
 
 ```bash
-nix run .#app-manager
+nix run .#agentero
 ```
 
 Inspect exported packages:
@@ -56,7 +56,7 @@ Install a package in NixOS:
 
 {
   environment.systemPackages = [
-    inputs.bet4it-packages.packages.${pkgs.system}.app-manager
+    inputs.bet4it-packages.packages.${pkgs.system}.agentero
   ];
 }
 ```
@@ -68,7 +68,7 @@ Install a package with Home Manager:
 
 {
   home.packages = [
-    inputs.bet4it-packages.packages.${pkgs.system}.app-manager
+    inputs.bet4it-packages.packages.${pkgs.system}.agentero
   ];
 }
 ```
@@ -84,7 +84,7 @@ let
 in
 {
   environment.systemPackages = [
-    bet4it-packages.app-manager
+    bet4it-packages.agentero
   ];
 }
 ```
