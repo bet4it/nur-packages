@@ -182,14 +182,20 @@ rustPlatform.buildRustPackage (finalAttrs: {
     printf '#!/bin/sh\necho "agentero-cli stub" >&2\nexit 1\n' > "$stub"
     chmod +x "$stub"
 
-    # 2) Build the headless CLI (same package prepare-bundled-cli.mjs builds).
+    # 2) Stage pdfium shared library into src-tauri/pdfium/ so tauri-build's
+    #    `resources: ["pdfium/*"]` glob matches. This replaces the upstream
+    #    `pnpm pdfium:stage` (part of the stripped beforeBuildCommand).
+    mkdir -p src-tauri/pdfium
+    cp ${pdfium}/lib/libpdfium.so src-tauri/pdfium/libpdfium.so
+
+    # 3) Build the headless CLI (same package prepare-bundled-cli.mjs builds).
     cargo build --offline --release -p agentero-cli
 
-    # 3) Replace the stub with the real binary Tauri will embed via externalBin.
+    # 4) Replace the stub with the real binary Tauri will embed via externalBin.
     cp target/release/agentero-cli "$stub"
     chmod +x "$stub"
 
-    # 4) Frontend (`pnpm build` from the stripped beforeBuildCommand).
+    # 5) Frontend (`pnpm build` from the stripped beforeBuildCommand).
     pnpm build
   '';
 
