@@ -26,7 +26,7 @@
 }:
 
 let
-  version = "0.5.5";
+  version = "0.6.0";
 
   # Prebuilt pdfium pinned to chromium/7897 (what liteparse-pdfium-sys
   # expects). Pointed at via env vars so its build script skips download.
@@ -87,7 +87,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
     owner = "poco-ai";
     repo = "Agentero";
     rev = "v${finalAttrs.version}";
-    hash = "sha256-MO8Nejghhs4e0AZyGBhzIUrz2s2tE46iYtF3Mme9tzU=";
+    hash = "sha256-sirS4Lnfyp7EzGoXFrQeSTkNkOvQ3cBaaMksYjq1JjU=";
   };
 
   # Vendor the whole workspace so the `cli` member (built in preBuild) is
@@ -96,12 +96,12 @@ rustPlatform.buildRustPackage (finalAttrs: {
   # remove it to let cargo fall back to the workspace-root Cargo.lock.
   cargoRoot = "./.";
   buildAndTestSubdir = "src-tauri";
-  cargoHash = "sha256-bru8jFAzs7zKCXGuOxc6YrSmbjIjdDq76SLRoTCKxg4=";
+  cargoHash = "sha256-MuJhuwu0wnTIJbVGPMQuBs9NNQndvwkdO+tn2WIhi1Q=";
 
   pnpmDeps = (fetchPnpmDeps.override { pnpm = pnpm_11; }) {
     inherit (finalAttrs) pname version src;
     fetcherVersion = 4;
-    hash = "sha256-/TZEFq9Hqnm8EWjfhDOckE8uT0h8+WO1yt6BGIO/vuw=";
+    hash = "sha256-lVYh4OOF7O9o+7QtIGJ8KQCx1jlAs/2V4NH0HX5yFTw=";
   };
   pnpmRoot = ".";
 
@@ -182,14 +182,20 @@ rustPlatform.buildRustPackage (finalAttrs: {
     printf '#!/bin/sh\necho "agentero-cli stub" >&2\nexit 1\n' > "$stub"
     chmod +x "$stub"
 
-    # 2) Build the headless CLI (same package prepare-bundled-cli.mjs builds).
+    # 2) Stage pdfium shared library into src-tauri/pdfium/ so tauri-build's
+    #    `resources: ["pdfium/*"]` glob matches. This replaces the upstream
+    #    `pnpm pdfium:stage` (part of the stripped beforeBuildCommand).
+    mkdir -p src-tauri/pdfium
+    cp ${pdfium}/lib/libpdfium.so src-tauri/pdfium/libpdfium.so
+
+    # 3) Build the headless CLI (same package prepare-bundled-cli.mjs builds).
     cargo build --offline --release -p agentero-cli
 
-    # 3) Replace the stub with the real binary Tauri will embed via externalBin.
+    # 4) Replace the stub with the real binary Tauri will embed via externalBin.
     cp target/release/agentero-cli "$stub"
     chmod +x "$stub"
 
-    # 4) Frontend (`pnpm build` from the stripped beforeBuildCommand).
+    # 5) Frontend (`pnpm build` from the stripped beforeBuildCommand).
     pnpm build
   '';
 
