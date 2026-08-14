@@ -9,16 +9,16 @@
 
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "aioncore";
-  version = "0.1.66";
+  version = "0.1.67";
 
   src = fetchFromGitHub {
     owner = "iOfficeAI";
     repo = "AionCore";
     rev = "v${finalAttrs.version}";
-    hash = "sha256-qIZL8Z6SufhzqE1AEGpL7BGYJ5wszK9kyIcTePWMlds=";
+    hash = "sha256-0SiYaL+WcOIuFp+zGxvT4wz+oQIpXYDdMeJFxwHwLyQ=";
   };
 
-  cargoHash = "sha256-n8+PFFutFCK3bbFayalQ3bm9vpt8WkEedx6Ae1tvpjk=";
+  cargoHash = "sha256-7cW5ttr0jT/XjfGmKMEiPczxXLEXzf2gAwC+6HRJTl4=";
 
   nativeBuildInputs = [
     pkg-config
