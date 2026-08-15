@@ -27,4 +27,5 @@ rec {
   vmark = pkgs.callPackage ./vmark/package.nix { };
   usbeehive = pkgs.callPackage ./usbeehive/package.nix { };
   fast-resume = pkgs.callPackage ./fast-resume/package.nix { };
+  horsemd = pkgs.callPackage ./horsemd/package.nix { };
 }
