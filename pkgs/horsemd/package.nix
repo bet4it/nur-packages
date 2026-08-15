@@ -54,7 +54,6 @@ buildNpmPackage rec {
 
     cp -r out $out/lib/horsemd/out
     cp package.json $out/lib/horsemd/package.json
-    cp -r node_modules $out/lib/horsemd/node_modules
     cp -r build $out/lib/horsemd/build
     cp -r assets $out/lib/horsemd/assets
 
