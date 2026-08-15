@@ -1,0 +1,19 @@
+diff --git a/src/main/index.ts b/src/main/index.ts
+index d64ef73..81c3e52 100644
+--- a/src/main/index.ts
++++ b/src/main/index.ts
+@@ -13,12 +13,8 @@ const MARKDOWN_EXTENSIONS = ['.md', '.markdown', '.mdown', '.mkd']
+ // Bundled examples are opened on demand from Help. Browsing the user's
+ // Documents folder on macOS can trigger a privacy prompt before they have even
+ // opened a file.
+-const demoDir = app.isPackaged
+-  ? join(process.resourcesPath, 'demo')
+-  : join(__dirname, '../../resources/demo')
+-const cheatsheetDir = app.isPackaged
+-  ? join(process.resourcesPath, 'templates')
+-  : join(__dirname, '../../resources/templates')
++const demoDir = join(__dirname, '../../resources/demo')
++const cheatsheetDir = join(__dirname, '../../resources/templates')
+ 
+ interface SiblingFile {
+   name: string
