@@ -58,7 +58,8 @@ buildNpmPackage rec {
 
   env = {
     ELECTRON_SKIP_BINARY_DOWNLOAD = 1;
-    npm_config_nodedir = nodejs_22;
+    npm_config_nodedir = electron.headers;
+    npm_config_build_from_source = true;
   };
 
   makeCacheWritable = true;
@@ -66,29 +67,51 @@ buildNpmPackage rec {
   postPatch = ''
     substituteInPlace package.json \
       --replace-fail '"version": "0.0.0"' '"version": "${version}"'
+
+    # beforePackCursorSdk tries to npm install platform-specific @cursor/sdk
+    # packages at build time, which fails in the Nix sandbox (no network).
+    # afterPackMacUuid is macOS-only (no-op on Linux). Both are unnecessary.
+    substituteInPlace electron-builder.config.cjs \
+      --replace-fail "beforePack: './scripts/beforePackCursorSdk.cjs'," "" \
+      --replace-fail "afterPack: './scripts/afterPackMacUuid.cjs'," ""
   '';
 
   preBuild = ''
     patch -p1 < patches/ssh2+1.17.0.patch
+    node scripts/patch-xterm-webgl-atlas.cjs
     npm rebuild node-pty @serialport/bindings-cpp --build-from-source
+  '';
+
+  buildPhase = ''
+    runHook preBuild
+
+    npm run build
+
+    npm exec electron-builder -- \
+      --config electron-builder.config.cjs \
+      --dir \
+      --linux \
+      --publish never \
+      -c.electronDist=${electron.dist} \
+      -c.electronVersion=${electron.version} \
+      -c.npmRebuild=false
+
+    runHook postBuild
   '';
 
   installPhase = ''
     runHook preInstall
 
-    npm prune --omit=dev
-
     mkdir -p $out/share/netcatty
-    cp -r dist electron lib public skills package.json node_modules $out/share/netcatty/
-    find $out/share/netcatty/node_modules -type d -name .bin -prune -exec rm -rf {} +
-    find $out/share/netcatty/node_modules -xtype l -delete
+    cp -r release/linux-unpacked/{locales,resources{,.pak}} $out/share/netcatty/
 
     install -Dm644 build/icons/512x512.png $out/share/icons/hicolor/512x512/apps/netcatty.png
 
     makeWrapper ${lib.getExe electron} $out/bin/netcatty \
-      --add-flags $out/share/netcatty \
+      --add-flags $out/share/netcatty/resources/app.asar \
       --add-flags "\''${NIXOS_OZONE_WL:+\''${WAYLAND_DISPLAY:+--ozone-platform-hint=auto --enable-features=WaylandWindowDecorations --enable-wayland-ime=true}}" \
-      --chdir $out/share/netcatty \
+      --set-default ELECTRON_IS_DEV 0 \
+      --set-default ELECTRON_FORCE_IS_PACKAGED 1 \
       --set NODE_ENV production \
       --inherit-argv0
 
