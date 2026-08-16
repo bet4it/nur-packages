@@ -194,9 +194,16 @@ rustPlatform.buildRustPackage (finalAttrs: {
   '';
 
   postInstall = ''
+    # Rename the PATH entry from `agentero` (the cargo bin name) to
+    # `agentero-app` so it does not collide with the headless CLI package's
+    # `agentero` command in a shared environment (buildEnv). wrapGAppsHook4
+    # runs later in fixupPhase and wraps `bin/agentero-app`.
+    mv "$out/bin/agentero" "$out/bin/agentero-app"
+
     if [ -f "$out/share/applications/"*.desktop ]; then
       desktop-file-edit \
         --set-comment "AI coding agent desktop app" \
+        --set-key="Exec" --set-value="agentero-app" \
         --set-key="Keywords" --set-value="ai;agent;tauri;coding;vault;" \
         --set-key="StartupWMClass" --set-value="Agentero" \
         --set-key="Categories" --set-value="Development;Utility;" \
@@ -222,7 +229,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
     changelog = "https://github.com/poco-ai/Agentero/releases/tag/v${version}";
     license = lib.licenses.mit;
     maintainers = [ ];
-    mainProgram = "agentero";
+    mainProgram = "agentero-app";
     platforms = [
       "x86_64-linux"
       "aarch64-linux"
