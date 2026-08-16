@@ -129,7 +129,6 @@ stdenv.mkDerivation {
       --dir \
       --linux \
       --publish never \
-      -c.asar=false \
       -c.electronDist=${electron.dist} \
       -c.electronVersion=${electron.version} \
       -c.npmRebuild=false
@@ -140,19 +139,22 @@ stdenv.mkDerivation {
   installPhase = ''
     runHook preInstall
 
-    mkdir -p $out/share/spool $out/bin
-    cp -R packages/app/dist/linux-unpacked/. $out/share/spool/
+    mkdir -p $out/share/spool
+    cp -r packages/app/dist/linux-unpacked/{locales,resources{,.pak}} $out/share/spool/
 
     patchelf \
       --set-interpreter "$(cat $NIX_CC/nix-support/dynamic-linker)" \
       --set-rpath "${acpCodexLibPath}" \
-      $out/share/spool/resources/app/node_modules/acp-extension-codex-linux-x64/bin/acp-extension-codex
+      $out/share/spool/resources/app.asar.unpacked/node_modules/acp-extension-codex-linux-x64/bin/acp-extension-codex
 
-    makeWrapper "$out/share/spool/@spoolapp" "$out/bin/spool-app" \
+    makeWrapper ${lib.getExe electron} $out/bin/spool-app \
       --add-flags "--no-sandbox" \
+      --add-flags $out/share/spool/resources/app.asar \
       --add-flags "\''${NIXOS_OZONE_WL:+\''${WAYLAND_DISPLAY:+--ozone-platform-hint=auto --enable-features=WaylandWindowDecorations --enable-wayland-ime=true}}" \
       --prefix PATH : "${runtimePath}" \
       --prefix LD_LIBRARY_PATH : "${electronRuntimeLibPath}" \
+      --set-default ELECTRON_IS_DEV 0 \
+      --set-default ELECTRON_FORCE_IS_PACKAGED 1 \
       --inherit-argv0
 
     install -Dm644 packages/app/resources/icon.png $out/share/icons/hicolor/512x512/apps/spool.png
