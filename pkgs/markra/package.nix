@@ -23,22 +23,22 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "markra";
-  version = "2.6.0";
+  version = "2.9.0";
 
   src = fetchFromGitHub {
     owner = "markrahq";
     repo = "markra";
     rev = "v${version}";
-    hash = "sha256-elBnXpT16CtlECV9I3h50KXtqq+k1FSV5vtI1XiDH7g=";
+    hash = "sha256-jOpA5TNHDbmzOVoF5/NRHdzEZKDimWDuADmHZz1LMCc=";
   };
 
   cargoRoot = "apps/desktop/src-tauri";
   buildAndTestSubdir = "apps/desktop/src-tauri";
-  cargoHash = "sha256-h8bFi8ts4hPbXNXrtTUwC5upXL337dqpaELp9/Jt/j0=";
+  cargoHash = "sha256-rT0Z460Q3G52Oa9MKWzyWPSHhtRbZY/iW/bF71wZIZk=";
 
   pnpmDeps = (fetchPnpmDeps.override { pnpm = pnpm_10; }) {
     inherit pname version src;
-    hash = "sha256-xxfjacJaGmgwusLijXWrZE0d0KN/uHVqpF8CWc7JwcM=";
+    hash = "sha256-3RB4UuOQlayU1j3+xq3aVtx8zIIhxFSdkx+aRG6CfXE=";
     fetcherVersion = 3;
   };
 
