@@ -16,13 +16,13 @@
 
 let
   pname = "spool";
-  version = "0.5.3";
+  version = "0.5.4";
 
   src = fetchFromGitHub {
     owner = "bet4it";
     repo = "spool";
     rev = "v${version}";
-    hash = "sha256-z5w2+0fEi7CrPWRCPtkpISdm9FpCbDABSs/i5X/7r84=";
+    hash = "sha256-EjtE/LH1z1NaOwTAeMZaCFxXk8wrRFP/yJ/lAlJOelM=";
   };
 
   # The CLI transitively depends on @spool-lab/core (which depends on
@@ -46,7 +46,7 @@ stdenv.mkDerivation {
       ;
     pnpm = pnpm_10;
     fetcherVersion = 3;
-    hash = "sha256-ATFDq6Oe4nrXs8nKE7f7Tkh+ojw8hdDtwKQlRkcq/2s=";
+    hash = "sha256-PIiP+YP0JF7ovpT7svKDwEGazp5/KwQ3LVlCMoGPedI=";
   };
 
   nativeBuildInputs = [
