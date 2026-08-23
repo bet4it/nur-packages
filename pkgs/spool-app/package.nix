@@ -25,13 +25,13 @@
 
 let
   pname = "spool-app";
-  version = "0.5.3";
+  version = "0.5.4";
 
   src = fetchFromGitHub {
     owner = "bet4it";
     repo = "spool";
     rev = "v${version}";
-    hash = "sha256-z5w2+0fEi7CrPWRCPtkpISdm9FpCbDABSs/i5X/7r84=";
+    hash = "sha256-EjtE/LH1z1NaOwTAeMZaCFxXk8wrRFP/yJ/lAlJOelM=";
   };
 
   pnpmWorkspaces = [
@@ -83,7 +83,7 @@ stdenv.mkDerivation {
       ;
     pnpm = pnpm_10;
     fetcherVersion = 3;
-    hash = "sha256-GSLsChuEOUjpVNPGFQSxeYzrFGEJrxBggCRNhO63mQQ=";
+    hash = "sha256-3PyPZ2If/+MwqOX2HbwkZGIujMPyoRoUeo0UbbpVOeY=";
   };
 
   nativeBuildInputs = [
