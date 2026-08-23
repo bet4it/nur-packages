@@ -13,13 +13,13 @@
 
 flutter344.buildFlutterApplication rec {
   pname = "kelivo";
-  version = "1.2.2";
+  version = "1.2.3";
 
   src = fetchFromGitHub {
     owner = "Chevey339";
     repo = "kelivo";
     rev = "v${version}";
-    hash = "sha256-TKqLieqIOsc8Ct44b4vkvq+xuCWaaY7NUXhhs0RK2jE=";
+    hash = "sha256-wTlHFJizR4aNm/TJbewKZPKwe01PYOGkXkM/Qsax71o=";
   };
 
   pubspecLock = lib.importJSON ./pubspec.lock.json;
