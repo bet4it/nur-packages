@@ -26,16 +26,16 @@
 
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "rio";
-  version = "0.5.25";
+  version = "0.5.26";
 
   src = fetchFromGitHub {
     owner = "raphamorim";
     repo = "rio";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-YMG1kKYvRkKQUK5ux5W7tNXEIaHgxaJocwA7Pbp1XBc=";
+    hash = "sha256-ehGgExJFGY41mXtpR0llQte0w10EQef4pZ0QAUE5Rrg=";
   };
 
-  cargoHash = "sha256-UK4QZP1LFd90lSMvWiN+8RrGJA53EbKQFOa9P2YhhuM=";
+  cargoHash = "sha256-7DmnAwFyjNdyc+xcA5iV/jhtc/Spryjt3sKh7EBm6uY=";
 
   cargoBuildFlags = [
     "-p"
