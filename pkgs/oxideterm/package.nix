@@ -29,16 +29,16 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "oxideterm";
-  version = "2.0.23";
+  version = "2.0.24";
 
   src = fetchFromGitHub {
     owner = "AnalyseDeCircuit";
     repo = "oxideterm";
     tag = "v${version}";
-    hash = "sha256-2FiqBOfiMazyLrZfOdYkqCwsv/4fFIwqOlZIK0pK5eo=";
+    hash = "sha256-TI0cRiCL1AuKUn+dE9Zu/hH+S+1ey8hH+MK7hKGKwYA=";
   };
 
-  cargoHash = "sha256-kvUAXIDbLmMm4JFCWC/gzuFXT5wIB/ZPA8cv0mFRQdw=";
+  cargoHash = "sha256-8xUyAmQEuTcnr63ejnGtyNTNIy4/VhGFbf+DQ/mqsNc=";
 
   cargoBuildFlags = [
     "-p"
