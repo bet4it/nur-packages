@@ -9,7 +9,7 @@
 
 let
   pname = "opencodex";
-  version = "2.31.0";
+  version = "2.33.0";
 
   # The npm tarball published to the registry is the source of truth. Its URL
   # embeds `${version}`, so nix-update's npm version fetcher (keyed on the
@@ -17,7 +17,7 @@ let
   # and this URL in one pass.
   src = fetchurl {
     url = "https://registry.npmjs.org/@bitkyc08/opencodex/-/opencodex-${version}.tgz";
-    hash = "sha256-p0VHiMUy3hL9Mjx8rFTHOUvZITfSo61qrVRD9oT4VgM=";
+    hash = "sha256-ZzbZDHMZwcvoMxC5T0/OMRg0OJpgryJ93Vawcrr3UUQ=";
   };
 
   # The npm tarball omits its lockfile, so fetch the release-matching one from
