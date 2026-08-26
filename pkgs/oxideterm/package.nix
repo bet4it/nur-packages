@@ -21,6 +21,7 @@
   dbus,
   systemdLibs,
   gst_all_1,
+  libkrb5,
   makeWrapper,
   makeDesktopItem,
   copyDesktopItems,
@@ -60,6 +61,7 @@ rustPlatform.buildRustPackage rec {
     makeWrapper
     copyDesktopItems
     writableTmpDirAsHomeHook
+    rustPlatform.bindgenHook
   ];
 
   buildInputs = [
@@ -78,6 +80,7 @@ rustPlatform.buildRustPackage rec {
     vulkan-loader
     dbus
     systemdLibs
+    libkrb5
     gst_all_1.gstreamer
     gst_all_1.gst-plugins-base
     gst_all_1.gst-plugins-good
