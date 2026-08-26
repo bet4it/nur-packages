@@ -24,13 +24,13 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "nyaterm";
-  version = "1.2.4";
+  version = "1.2.5";
 
   src = fetchFromGitHub {
     owner = "nyakang";
     repo = "nyaterm";
     rev = "v${version}";
-    hash = "sha256-v2o8nBbFZgF8OY2AOrbVXbr7Lt7U83MawkRNO3cSLH8=";
+    hash = "sha256-EXz1FZsMutl4c47kxdCQah3Myr7M0EOsDDswq6pIYo4=";
   };
 
   nativeBuildInputs = [
@@ -60,13 +60,13 @@ rustPlatform.buildRustPackage rec {
     inherit pname version src;
     pnpm = pnpm_10;
     fetcherVersion = 4;
-    hash = "sha256-S1f+EopfNi7kDxo9/nxF5GvvHYN8LFVBFr2qEWOTTEU=";
+    hash = "sha256-2Y5v93Y4WQbGccthwmcr39OOyhgxYHgg/Nv/wk5xbE0=";
   };
 
   cargoRoot = "src-tauri";
   buildAndTestSubdir = "src-tauri";
 
-  cargoHash = "sha256-qFa+uMAwboPjKis8CpxbtqK7VtZSuZxph75SgOAnEJ8=";
+  cargoHash = "sha256-oo8Oaki0OXObs6Z8SDweG4uGajlbNJwjtfbSgCO3rnI=";
 
   postPatch = ''
     substituteInPlace src-tauri/tauri.conf.json \
