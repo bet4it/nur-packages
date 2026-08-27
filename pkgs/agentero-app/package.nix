@@ -26,7 +26,7 @@
 }:
 
 let
-  version = "0.8.2";
+  version = "0.9.0";
 
   # Prebuilt pdfium pinned to chromium/7897 (what liteparse-pdfium-sys
   # expects). Pointed at via env vars so its build script skips download.
@@ -87,7 +87,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
     owner = "poco-ai";
     repo = "Agentero";
     rev = "v${finalAttrs.version}";
-    hash = "sha256-93Jj0Kml8TlU/DxkeN6iCbJrPuiMe9tyf7/wtXtWLkA=";
+    hash = "sha256-+zjWYe/7Tp60AHxDmFwjWNqSSCAg+TO6AAWL1Hk5ptM=";
   };
 
   # Vendor the whole workspace so the `cli` member (built in preBuild) is
@@ -96,12 +96,12 @@ rustPlatform.buildRustPackage (finalAttrs: {
   # remove it to let cargo fall back to the workspace-root Cargo.lock.
   cargoRoot = "./.";
   buildAndTestSubdir = "src-tauri";
-  cargoHash = "sha256-quGsq2LU1Oo3zx89SDPj/X9mD7EgEReqvVvSYnlk/eo=";
+  cargoHash = "sha256-+mtrs83cuLNtAmZ5TcGHfJIlY0iw4ukB2s7bsCMyXRY=";
 
   pnpmDeps = (fetchPnpmDeps.override { pnpm = pnpm_11; }) {
     inherit (finalAttrs) pname version src;
     fetcherVersion = 4;
-    hash = "sha256-L1qAKA6gNtV5U4WUsyuOJd2Rg3ZIJb/2Js76WfVJ7G8=";
+    hash = "sha256-1gUE7i/lS0vhqOqoyld1QpGE+W+HY53U0LtLmZsDwVs=";
   };
   pnpmRoot = ".";
 
