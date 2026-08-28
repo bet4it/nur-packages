@@ -200,15 +200,28 @@ rustPlatform.buildRustPackage (finalAttrs: {
     # runs later in fixupPhase and wraps `bin/agentero-app`.
     mv "$out/bin/agentero" "$out/bin/agentero-app"
 
-    if [ -f "$out/share/applications/"*.desktop ]; then
+    # Tauri uses the `identifier` field from tauri.conf.json
+    # ("com.poco-ai.agentero") as the GTK application_id / Wayland app_id.
+    # GNOME Shell matches running windows to .desktop files by comparing
+    # the app_id against the .desktop filename and StartupWMClass. If they
+    # don't match, the taskbar/dock shows no icon. Rename the desktop file
+    # and icon to use the reverse-DNS identifier so all three align.
+    if [ -f "$out/share/applications/Agentero.desktop" ]; then
+      mv "$out/share/applications/Agentero.desktop" \
+        "$out/share/applications/com.poco-ai.agentero.desktop"
       desktop-file-edit \
         --set-comment "AI coding agent desktop app" \
         --set-key="Exec" --set-value="agentero-app" \
+        --set-key="Icon" --set-value="com.poco-ai.agentero" \
         --set-key="Keywords" --set-value="ai;agent;tauri;coding;vault;" \
-        --set-key="StartupWMClass" --set-value="Agentero" \
+        --set-key="StartupWMClass" --set-value="com.poco-ai.agentero" \
         --set-key="Categories" --set-value="Development;Utility;" \
-        "$out/share/applications/"*.desktop
+        "$out/share/applications/com.poco-ai.agentero.desktop"
     fi
+
+    for icon in "$out"/share/icons/hicolor/*/apps/agentero.png; do
+      mv "$icon" "$(dirname "$icon")/com.poco-ai.agentero.png"
+    done
   '';
 
   passthru = {
