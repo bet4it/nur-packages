@@ -26,16 +26,16 @@ let
 in
 buildNpmPackage rec {
   pname = "horsemd";
-  version = "0.13.29";
+  version = "0.13.187";
 
   src = fetchFromGitHub {
     owner = "BND-1";
     repo = "horseMD";
     rev = "v${version}";
-    hash = "sha256-BD+8YYifdCYlc5orU2lUaDneLtxsMNoK71LumDfgnvI=";
+    hash = "sha256-5OVf6GqbIUZOo5K7gMbJCKIGE0UtvPsqI6n3nOXGomE=";
   };
 
-  npmDepsHash = "sha256-NGUaJDbfRMUcLmcnyjhiyGN2lw3ZtjDt+x9RAWmL6N4=";
+  npmDepsHash = "sha256-VOXaNFThVtF8/n3eAN5elSY6G5XxXDmCNx2YJhvEPdE=";
 
   env.ELECTRON_SKIP_BINARY_DOWNLOAD = "1";
 
