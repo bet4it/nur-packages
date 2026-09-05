@@ -97,6 +97,12 @@ rustPlatform.buildRustPackage (finalAttrs: {
     fi
   '';
 
+  # Tauri runs beforeBuildCommand (`vp build`) via plain sh, so
+  # node_modules/.bin must be on PATH for the vite-plus CLI to resolve.
+  preBuild = ''
+    export PATH="$PWD/node_modules/.bin:$PATH"
+  '';
+
   nativeBuildInputs = [
     cargo-tauri.hook
     bun
