@@ -20,7 +20,7 @@
 
 let
   pname = "cc-sessions-viewer";
-  version = "0.3.25";
+  version = "0.3.26";
 
   src = fetchFromGitHub {
     owner = "jerrywu001";
@@ -31,7 +31,7 @@ let
       ${lib.getExe npm-lockfile-fix} $out/package-lock.json
     '';
 
-    hash = "sha256-IvN6FuzPqYo2EjFntGs9TSlDw7xSOmU3+WbSao0rIqE=";
+    hash = "sha256-HNgO6bt2a9a2drZoWhieHZx1rcbZcLKRAig+RC5dbMA=";
   };
 
   frontend = buildNpmPackage {
