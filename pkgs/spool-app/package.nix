@@ -25,13 +25,13 @@
 
 let
   pname = "spool-app";
-  version = "0.5.4";
+  version = "0.5.5";
 
   src = fetchFromGitHub {
     owner = "bet4it";
     repo = "spool";
     rev = "v${version}";
-    hash = "sha256-EjtE/LH1z1NaOwTAeMZaCFxXk8wrRFP/yJ/lAlJOelM=";
+    hash = "sha256-0POfQ1S+0ZXgGtrmybzv/KOaWC3JyWQ62kMM0kiO6wQ=";
   };
 
   pnpmWorkspaces = [
