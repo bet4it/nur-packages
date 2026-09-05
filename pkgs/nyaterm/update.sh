@@ -73,7 +73,9 @@ echo "Updating $package $current_version -> $latest_version"
 nix-update -f default.nix "$package" --version "$latest_version" --src-only
 
 main_hash="$(probe_hash "(let pkg = (import ./default.nix { }).$package; src = pkg.cargoDeps.vendorStaging; in (src.overrideAttrs (_: { outputHash = \"\"; outputHashAlgo = \"sha256\"; })))")"
+sidecar_hash="$(probe_hash "(let pkg = (import ./default.nix { }).$package; src = pkg.nyaterm-mcp.cargoDeps.vendorStaging; in (src.overrideAttrs (_: { outputHash = \"\"; outputHashAlgo = \"sha256\"; })))")"
 pnpm_hash="$(probe_hash "(let pkg = (import ./default.nix { }).$package; src = pkg.pnpmDeps; in (src.overrideAttrs (_: { outputHash = \"\"; outputHashAlgo = \"sha256\"; })))")"
 
-sed -i -E 's|cargoHash = [^;]+;|cargoHash = "'"$main_hash"'";|' "$package_file"
+sed -i -E '/cargoRoot = "src-tauri";/,/doCheck = false;/ s|cargoHash = [^;]+;|cargoHash = "'"$main_hash"'";|' "$package_file"
+sed -i -E '/pname = "nyaterm-mcp";/,/doCheck = false;/ s|cargoHash = [^;]+;|cargoHash = "'"$sidecar_hash"'";|' "$package_file"
 sed -i -E '/pnpmDeps = fetchPnpmDeps \{/,/};/ s|hash = [^;]+;|hash = "'"$pnpm_hash"'";|' "$package_file"
