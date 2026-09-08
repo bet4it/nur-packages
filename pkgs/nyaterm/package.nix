@@ -25,13 +25,13 @@
 
 let
   pname = "nyaterm";
-  version = "1.2.8";
+  version = "1.2.9";
 
   src = fetchFromGitHub {
     owner = "nyakang";
     repo = "nyaterm";
     rev = "v${version}";
-    hash = "sha256-WUqlOhd0dG+aCgxX0awO7FOFrcZy5jfeBrbk0IFnx/I=";
+    hash = "sha256-7MIiVGyXVqQbPtTAZeVp7wsJkjKr/pHdH3z9eAHrZAs=";
   };
 
   targetTriple =
@@ -49,7 +49,7 @@ let
 
     cargoRoot = "src-tauri/crates/nyaterm-mcp";
     buildAndTestSubdir = "src-tauri/crates/nyaterm-mcp";
-    cargoHash = "sha256-C6OTINR4gkmPI/wyzS9sPa+N4dlDFE7ZmRvUeZ5oxyg=";
+    cargoHash = "sha256-+1lTt6REjhheKoyED/ZESPArfTGzMZvCF45hnXJPWqY=";
 
     doCheck = false;
   };
@@ -90,7 +90,7 @@ rustPlatform.buildRustPackage {
   cargoRoot = "src-tauri";
   buildAndTestSubdir = "src-tauri";
 
-  cargoHash = "sha256-GP8XvqonTmo9AKGsk55yQ7HayYdMEomU300R29JdpEg=";
+  cargoHash = "sha256-vMPLrlzvQK1X1OtBNNa0Z8r75PYypKSz3UG7N9p45Sc=";
 
   postPatch = ''
     substituteInPlace src-tauri/tauri.conf.json \
@@ -127,6 +127,10 @@ rustPlatform.buildRustPackage {
 
   passthru = {
     inherit nyaterm-mcp;
+
+    # Custom script: nix-update alone cannot probe the sidecar's
+    # cargoHash, so the three hashes are refreshed by pkgs/nyaterm/update.sh.
+    updateScript = ./update.sh;
   };
 
   meta = {
