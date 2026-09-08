@@ -21,18 +21,18 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "gitdesktop";
-  version = "0.11.1";
+  version = "0.12.0";
 
   src = fetchFromGitHub {
     owner = "theBGuy";
     repo = "GitDesktop";
     rev = "v${version}";
-    hash = "sha256-gd5vI0gmY+eHxw9xgvqQAl2nGB3/cXvUGYSmwDIvq6k=";
+    hash = "sha256-dainQzlsibAyZ2wruKwBwXPzsw5GvB0wyFOfObLmyXw=";
   };
 
   pnpmDeps = (fetchPnpmDeps.override { pnpm = pnpm_11; }) {
     inherit pname version src;
-    hash = "sha256-9Myned3T2nfd8mObDjtr31aDNel1y1yq9jKG+S13dk4=";
+    hash = "sha256-2swZIYbVYKg9qYF09Ygjk4N+xjzQhiDD6n57EW6M7Jc=";
     fetcherVersion = 4;
   };
 
