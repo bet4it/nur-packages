@@ -49,7 +49,7 @@ let
 
     cargoRoot = "src-tauri/crates/nyaterm-mcp";
     buildAndTestSubdir = "src-tauri/crates/nyaterm-mcp";
-    cargoHash = "sha256-C6OTINR4gkmPI/wyzS9sPa+N4dlDFE7ZmRvUeZ5oxyg=";
+    cargoHash = "sha256-+1lTt6REjhheKoyED/ZESPArfTGzMZvCF45hnXJPWqY=";
 
     doCheck = false;
   };
@@ -127,6 +127,10 @@ rustPlatform.buildRustPackage {
 
   passthru = {
     inherit nyaterm-mcp;
+
+    # Custom script: nix-update alone cannot probe the sidecar's
+    # cargoHash, so the three hashes are refreshed by pkgs/nyaterm/update.sh.
+    updateScript = ./update.sh;
   };
 
   meta = {
