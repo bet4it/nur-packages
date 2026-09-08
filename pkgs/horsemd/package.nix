@@ -26,13 +26,13 @@ let
 in
 buildNpmPackage rec {
   pname = "horsemd";
-  version = "0.13.187";
+  version = "0.13.200";
 
   src = fetchFromGitHub {
     owner = "BND-1";
     repo = "horseMD";
     rev = "v${version}";
-    hash = "sha256-5OVf6GqbIUZOo5K7gMbJCKIGE0UtvPsqI6n3nOXGomE=";
+    hash = "sha256-tpJLTlnDPDSj4j4lme369WSLcGW81jh41UuuPjoGarE=";
   };
 
   npmDepsHash = "sha256-VOXaNFThVtF8/n3eAN5elSY6G5XxXDmCNx2YJhvEPdE=";
