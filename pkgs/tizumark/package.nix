@@ -30,13 +30,13 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "tizumark";
-  version = "1.2.2";
+  version = "1.2.3";
 
   src = fetchFromGitHub {
     owner = "tizuio";
     repo = "TizuMark";
     rev = "v${version}";
-    hash = "sha256-i/uY0YB4sazfuLmMTLWQPQlH9IFbTuwAybOUHOW5tmA=";
+    hash = "sha256-qURp9MF7GvOTWnJfxdeQge2rQFAYsx8NyX0keyDNuL0=";
   };
 
   cargoRoot = "src-tauri";
@@ -51,7 +51,7 @@ rustPlatform.buildRustPackage rec {
   npmDeps = fetchNpmDeps {
     name = "tizumark-${version}-npm-deps";
     inherit src;
-    hash = "sha256-7qn++HRPHF87d80iz1CA1sW7u60yH+A1nfNJ/P36z4E=";
+    hash = "sha256-149FXBBg2xZ8Yo7Q0pgagE0+3XT5aNg2V82gJnL8Xtg=";
   };
 
   doCheck = false;
