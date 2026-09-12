@@ -2,7 +2,7 @@
 rec {
   agentero = pkgs.callPackage ./agentero/package.nix { };
   agentero-app = pkgs.callPackage ./agentero-app/package.nix { };
-  agys = pkgs.callPackage ./agys/package.nix { };
+  agy-swap = pkgs.callPackage ./agy-swap/package.nix { };
   aioncore = pkgs.callPackage ./aioncore/package.nix { };
   athas = pkgs.callPackage ./athas/package.nix { };
   cc-session = pkgs.callPackage ./cc-session/package.nix { };
