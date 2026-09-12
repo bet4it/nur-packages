@@ -8,13 +8,13 @@
 
 stdenv.mkDerivation rec {
   pname = "gnome-shell-extension-usbee";
-  version = "2.7.0";
+  version = "2.7.1";
 
   src = fetchFromGitHub {
     owner = "abrauchli";
     repo = "usbee";
     rev = "v${version}";
-    hash = "sha256-bj52ovNYQBH0pRKtTOtcKwcsxrgb+G21VARfIzJ7j/E=";
+    hash = "sha256-9FAUtkWiTdu5upeqvS/U5DpDXph+ZJ2D9c8DiXxh+Sg=";
   };
 
   nativeBuildInputs = [
