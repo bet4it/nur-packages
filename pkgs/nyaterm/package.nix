@@ -25,13 +25,13 @@
 
 let
   pname = "nyaterm";
-  version = "1.2.9";
+  version = "1.2.10";
 
   src = fetchFromGitHub {
     owner = "nyakang";
     repo = "nyaterm";
     rev = "v${version}";
-    hash = "sha256-7MIiVGyXVqQbPtTAZeVp7wsJkjKr/pHdH3z9eAHrZAs=";
+    hash = "sha256-h/W1p1vZkC5OUYClksQ+LCHW9Pyj+Zw93xCQkkY1sx8=";
   };
 
   targetTriple =
@@ -49,7 +49,7 @@ let
 
     cargoRoot = "src-tauri/crates/nyaterm-mcp";
     buildAndTestSubdir = "src-tauri/crates/nyaterm-mcp";
-    cargoHash = "sha256-+1lTt6REjhheKoyED/ZESPArfTGzMZvCF45hnXJPWqY=";
+    cargoHash = "sha256-jwnvxQG6MfQESta2PoNnZfjPwy6FG3E5w7BbiQtZVPs=";
 
     doCheck = false;
   };
@@ -90,7 +90,7 @@ rustPlatform.buildRustPackage {
   cargoRoot = "src-tauri";
   buildAndTestSubdir = "src-tauri";
 
-  cargoHash = "sha256-vMPLrlzvQK1X1OtBNNa0Z8r75PYypKSz3UG7N9p45Sc=";
+  cargoHash = "sha256-LKx1tHtdXMLEf7QrzOkWO5mij5QoMiAO8DzDy+quqDo=";
 
   postPatch = ''
     substituteInPlace src-tauri/tauri.conf.json \
