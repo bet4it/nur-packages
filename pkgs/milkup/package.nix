@@ -50,14 +50,6 @@ stdenv.mkDerivation rec {
     hash = "sha256-37cA97g/giEjwlYQOvlORaPuk1q8n4eUbXiENclokUE=";
   };
 
-  postPatch = ''
-    node - <<'EOF'
-    const fs = require("fs");
-    const pkg = JSON.parse(fs.readFileSync("package.json", "utf8"));
-    pkg.desktopName = "milkup.desktop";
-    fs.writeFileSync("package.json", JSON.stringify(pkg, null, 2) + "\n");
-    EOF
-  '';
   # Electron builder tries to download electron, we want to skip that.
   env.ELECTRON_SKIP_BINARY_DOWNLOAD = "1";
 
