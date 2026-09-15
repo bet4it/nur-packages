@@ -21,7 +21,7 @@ let
       "Development"
       "TextEditor"
     ];
-    startupWMClass = "HorseMD";
+    startupWMClass = "horsemd";
   };
 in
 buildNpmPackage rec {
@@ -58,6 +58,7 @@ buildNpmPackage rec {
     cp -r assets $out/lib/horsemd/assets
 
     makeWrapper ${lib.getExe electron} $out/bin/horsemd \
+      --add-flags "--class=horsemd" \
       --add-flags $out/lib/horsemd \
       --add-flags "\''${NIXOS_OZONE_WL:+\''${WAYLAND_DISPLAY:+--ozone-platform-hint=auto --enable-features=WaylandWindowDecorations --enable-wayland-ime=true}}" \
       --set-default ELECTRON_IS_DEV 0 \
