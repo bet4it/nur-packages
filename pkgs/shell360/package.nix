@@ -21,13 +21,13 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "shell360";
-  version = "0.2.6";
+  version = "0.2.7";
 
   src = fetchFromGitHub {
     owner = "nashaofu";
     repo = "shell360";
     rev = "v${version}";
-    hash = "sha256-wLgWNUYcdYrLKSeVeBtsfutOk8Yt3hc8ZGZKFfv8Jyc=";
+    hash = "sha256-/22jWSzH0OGTjocfkJf6kmTj/qtBZzrEhDOfPzGmMYo=";
   };
 
   nativeBuildInputs = [
@@ -53,10 +53,10 @@ rustPlatform.buildRustPackage rec {
     inherit pname version src;
     pnpm = pnpm_10;
     fetcherVersion = 4;
-    hash = "sha256-EujN0QXirYNuuwVy+lXGHCQu956XWZLl2IF2+YrlGpU=";
+    hash = "sha256-kEibW4rmkmSJgFwmTVKIKykfkAGjSJAWgJL7hmKxo4U=";
   };
 
-  cargoHash = "sha256-HP3I/u+lm+XvUu8ZUtm2Ymjjrq9tBmtCOoVWxp152nU=";
+  cargoHash = "sha256-iXANKjHMmZQfSe5lRJclYU5utm8scjMyC2SvTpbC4CY=";
 
   postPatch = ''
     substituteInPlace src-tauri/tauri.conf.json \
