@@ -107,13 +107,23 @@ rustPlatform.buildRustPackage rec {
       }
 
     ln -s $out/bin/oxideterm-native $out/bin/OxideTerm
+
+    install -Dm644 crates/oxideterm-gpui-app/resources/icons/32x32.png $out/share/icons/hicolor/32x32/apps/com.oxideterm.app.png
+    install -Dm644 crates/oxideterm-gpui-app/resources/icons/64x64.png $out/share/icons/hicolor/64x64/apps/com.oxideterm.app.png
+    install -Dm644 crates/oxideterm-gpui-app/resources/icons/128x128.png $out/share/icons/hicolor/128x128/apps/com.oxideterm.app.png
+    install -Dm644 crates/oxideterm-gpui-app/resources/icons/128x128@2x.png $out/share/icons/hicolor/256x256/apps/com.oxideterm.app.png
+    install -Dm644 crates/oxideterm-gpui-app/resources/icons/icon.png $out/share/icons/hicolor/512x512/apps/com.oxideterm.app.png
+
+    for size in 32x32 64x64 128x128 256x256 512x512; do
+      ln -s com.oxideterm.app.png $out/share/icons/hicolor/$size/apps/oxideterm.png
+    done
   '';
 
   desktopItems = [
     (makeDesktopItem {
-      name = "oxideterm";
+      name = "com.oxideterm.app";
       exec = "oxideterm-native %U";
-      icon = "oxideterm";
+      icon = "com.oxideterm.app";
       desktopName = "OxideTerm";
       comment = "Local-first SSH workspace with terminal, SFTP, forwarding, and BYOK AI";
       categories = [
@@ -121,7 +131,7 @@ rustPlatform.buildRustPackage rec {
         "Network"
         "TerminalEmulator"
       ];
-      startupWMClass = "OxideTerm";
+      startupWMClass = "com.oxideterm.app";
     })
   ];
 
