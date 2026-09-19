@@ -8,13 +8,13 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "usbeehive";
-  version = "0.12.0";
+  version = "0.12.1";
 
   src = fetchFromGitHub {
     owner = "abrauchli";
     repo = pname;
     rev = "v${version}";
-    hash = "sha256-TShsv/1zn3/0418ubljUmPsdQgSaiN3uaQjMOnHZTYU=";
+    hash = "sha256-zaGUIs/A6UXlsK8uSsMrsdTzQFfCDpsEmJB+lz2O7Pg=";
   };
 
   nativeBuildInputs = [
@@ -26,7 +26,7 @@ rustPlatform.buildRustPackage rec {
     systemdLibs
   ];
 
-  cargoHash = "sha256-+Gn3jfaVuJxzjsllKIja41duSkK05X/X/PaSJPS2qwE=";
+  cargoHash = "sha256-4JO9WaVYvBBCt3hVdigMhXrtVOM5t7ZEvVgsOESTVhw=";
 
   meta = with lib; {
     description = "A brief description of your package";
