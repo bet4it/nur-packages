@@ -12,13 +12,17 @@
 let
   desktopItem = makeDesktopItem {
     name = "colamd";
-    exec = "colamd %U";
+    exec = "colamd %F";
     icon = "colamd";
     desktopName = "ColaMD";
     comment = "A free, elegant Markdown editor for humans and AI agents";
     categories = [
       "Office"
       "TextEditor"
+    ];
+    mimeTypes = [
+      "text/markdown"
+      "text/x-markdown"
     ];
     startupWMClass = "ColaMD";
   };
