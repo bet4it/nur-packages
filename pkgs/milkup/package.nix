@@ -84,7 +84,7 @@ stdenv.mkDerivation rec {
   desktopItems = [
     (makeDesktopItem {
       name = "milkup";
-      exec = "milkup %U";
+      exec = "milkup %F";
       icon = "milkup";
       desktopName = "milkup";
       startupWMClass = "milkup";
@@ -92,6 +92,10 @@ stdenv.mkDerivation rec {
       categories = [
         "Office"
         "TextEditor"
+      ];
+      mimeTypes = [
+        "text/markdown"
+        "text/x-markdown"
       ];
       terminal = false;
     })

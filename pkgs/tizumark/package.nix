@@ -117,9 +117,12 @@ rustPlatform.buildRustPackage rec {
   postInstall = ''
     if [ -f "$out/share/applications/"*.desktop ]; then
       desktop-file-edit \
+        --set-key="Exec" --set-value="tizumark %F" \
         --set-comment "A lightweight cross-platform Markdown editor" \
         --set-key="Keywords" --set-value="markdown;editor;tauri;" \
         --set-key="Categories" --set-value="Office;TextEditor;" \
+        --add-mime-type="text/markdown" \
+        --add-mime-type="text/x-markdown" \
         "$out/share/applications/"*.desktop
     fi
   '';

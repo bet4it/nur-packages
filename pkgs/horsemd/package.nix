@@ -13,13 +13,17 @@
 let
   desktopItem = makeDesktopItem {
     name = "horsemd";
-    exec = "horsemd %U";
+    exec = "horsemd %F";
     icon = "horsemd";
     desktopName = "HorseMD";
     comment = "A warm, Typora-style Markdown editor";
     categories = [
       "Development"
       "TextEditor"
+    ];
+    mimeTypes = [
+      "text/markdown"
+      "text/x-markdown"
     ];
     startupWMClass = "horsemd";
   };

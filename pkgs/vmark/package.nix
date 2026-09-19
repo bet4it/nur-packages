@@ -140,8 +140,11 @@ rustPlatform.buildRustPackage {
       mv "$out/share/applications/VMark.desktop" \
         "$out/share/applications/vmark.desktop"
       desktop-file-edit \
+        --set-key="Exec" --set-value="vmark %F" \
         --set-key="StartupWMClass" --set-value="vmark" \
         --set-key="Categories" --set-value="Development;TextEditor;" \
+        --add-mime-type="text/markdown" \
+        --add-mime-type="text/x-markdown" \
         "$out/share/applications/vmark.desktop"
     fi
   '';
