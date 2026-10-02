@@ -155,11 +155,23 @@ rustPlatform.buildRustPackage (finalAttrs: {
 
       # Strip the upstream beforeBuildCommand (it runs `cargo build
       # -p agentero-cli` out-of-band, which fights the Nix cargo vendor),
-      # remove externalBin (the CLI ships as a separate Nix package), and
-      # disable updater artifacts.
+      # remove externalBin (the CLI ships as a separate Nix package),
+      # drop the bundled ACP adapter resources, and disable updater
+      # artifacts.
+      #
+      # The bundled adapters are staged by upstream's scripts/
+      # prepare-adapters.mjs (npm install of @agentclientprotocol/
+      # claude-agent-acp + codex-acp at build time) and ship as an
+      # offline-fallback adapter tier via `adapters/**/*` in bundle
+      # resources. The staging requires network access, and the bundled
+      # tier only serves when no PATH-installed adapter is found — in the
+      # Nix context users manage claude/codex adapters through their own
+      # package set anyway, so we drop the tier. The runtime in
+      # registry/bundled.rs handles a missing adapters dir gracefully.
       jq '
         del(.build.beforeBuildCommand) |
         .bundle.externalBin = [] |
+        .bundle.resources -= ["adapters/**/*"] |
         .bundle.createUpdaterArtifacts = false |
         .plugins.updater.endpoints = []
       ' src-tauri/tauri.conf.json | sponge src-tauri/tauri.conf.json
@@ -171,7 +183,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
         --replace-fail "libayatana-appindicator3.so.1" "${libayatana-appindicator}/lib/libayatana-appindicator3.so.1"
     '';
 
-  # Stage pdfium and build the frontend — the two things the stripped
+  # Stage pdfium and build the frontend — the things the stripped
   # beforeBuildCommand did that tauri-build still needs.
   preBuild = ''
     # 1) Stage pdfium shared library into src-tauri/pdfium/ so tauri-build's
