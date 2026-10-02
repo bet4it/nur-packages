@@ -57,23 +57,23 @@ let
 in
 rustPlatform.buildRustPackage rec {
   pname = "cc-session";
-  version = "0.8.2";
+  version = "0.8.3";
 
   src = fetchFromGitHub {
     owner = "tyql688";
     repo = "cc-session";
     rev = "v${version}";
-    hash = "sha256-yp8qSyXDx/bk+VGrdRe/6veY5j8yjt71QV1yZLH9cew=";
+    hash = "sha256-5AoCVCu/+PNR6B9d5TxcVzOpZhl3sbN9bz9OFgiitb8=";
   };
 
   cargoRoot = "src-tauri";
   buildAndTestSubdir = "src-tauri";
-  cargoHash = "sha256-Uo55uTrEWhuG8y67h+Ss6YUAeE/7N8b/MG5UR+wSrrU=";
+  cargoHash = "sha256-XB40+YHVJiP90HMf0/HGyDrZoLrFcLnvCOXAcANw2Z4=";
 
   npmDeps = fetchNpmDeps {
     name = "${pname}-${version}-npm-deps";
     inherit src;
-    hash = "sha256-m1SIdW4AofTt4aIudcwTNh6odIc0iGWHnC1t2qhokng=";
+    hash = "sha256-nLSzL+wgGShXHb9raPdQEE2F3NupFcLenGiYwgI12J8=";
   };
 
   npmFlags = [ "--legacy-peer-deps" ];
