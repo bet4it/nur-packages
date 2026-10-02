@@ -29,7 +29,7 @@ let
 in
 buildNpmPackage rec {
   pname = "colamd";
-  version = "2.4.3";
+  version = "2.7.2";
 
   src = fetchFromGitHub {
     owner = "marswaveai";
