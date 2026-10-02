@@ -12,7 +12,6 @@ rec {
   claude-code-history-viewer = pkgs.callPackage ./claude-code-history-viewer/package.nix { };
   electerm = pkgs.callPackage ./electerm/package.nix { };
   jean = pkgs.callPackage ./jean/package.nix { };
-  kelivo = pkgs.callPackage ./kelivo/package.nix { };
   milkup = pkgs.callPackage ./milkup/package.nix { };
   markra = pkgs.callPackage ./markra/package.nix { };
   netcatty = pkgs.callPackage ./netcatty/package.nix { };
