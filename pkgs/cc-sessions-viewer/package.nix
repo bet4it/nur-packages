@@ -52,6 +52,11 @@ let
 
       mkdir -p $out
       cp -R node_modules $out/
+      # Upstream adds its site-docs vitepress docs to npm workspaces, so
+      # npm ci links node_modules/site-docs -> ../site-docs. The workspace
+      # directory itself is not part of this derivation's output, leaving a
+      # dangling symlink that the noBrokenSymlinks check rejects.
+      find $out -xtype l -delete
 
       runHook postInstall
     '';
