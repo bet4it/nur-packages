@@ -11,16 +11,16 @@
 
 buildGoModule rec {
   pname = "agy-swap";
-  version = "2.2.0";
+  version = "2.10.0";
 
   src = fetchFromGitHub {
     owner = "aklkbqx";
     repo = "agy-swap";
     rev = "v${version}";
-    hash = "sha256-skzdMzvCVm4idx/mvsIpNmVlYLTbZrIT9rLXyhO28zo=";
+    hash = "sha256-x2sQ46Iq+YI3y5oVqCT6rz8+F8OpPPysrkTAVo+YRR0=";
   };
 
-  vendorHash = "sha256-8DVgOm8ly/t6nLCRJE2QZ4JpxePPAJEr//r5rEWyYao=";
+  vendorHash = "sha256-vKms/NRoVn39Q1nNFbOiaEgfgq3FhFaIBQvpW4kpDeQ=";
 
   subPackages = [ "cmd/agy-swap" ];
 
