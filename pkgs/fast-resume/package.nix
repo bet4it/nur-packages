@@ -6,16 +6,16 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "fast-resume";
-  version = "2.12.0";
+  version = "2.13.0";
 
   src = fetchFromGitHub {
     owner = "angristan";
     repo = "fast-resume";
     tag = "v${version}";
-    hash = "sha256-IApxU7smV/4lmpbdrCW8rQcsuJ/G2VRVo8pxWQoMKp8=";
+    hash = "sha256-h5/aLV7tbEFnrD4fVVZNmVmo1mZwTwaTLB+rMPQRqw0=";
   };
 
-  cargoHash = "sha256-0DyS7NyO+X2buVvI5eAZ9UOXTsy8S79zkm4nW/V2FpI=";
+  cargoHash = "sha256-ouJZ6j3PT3NMRb9QKP2t0Cd+krcjXTSF5Fcgu4ZECZs=";
 
   meta = {
     description = "Fuzzy finder for coding agent session history";
