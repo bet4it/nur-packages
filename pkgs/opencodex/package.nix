@@ -9,7 +9,7 @@
 
 let
   pname = "opencodex";
-  version = "2.59.0";
+  version = "2.75.0";
 
   # The npm tarball published to the registry is the source of truth. Its URL
   # embeds `${version}`, so nix-update's npm version fetcher (keyed on the
@@ -17,7 +17,7 @@ let
   # and this URL in one pass.
   src = fetchurl {
     url = "https://registry.npmjs.org/@bitkyc08/opencodex/-/opencodex-${version}.tgz";
-    hash = "sha256-ZUrZ+H8L9KplQaaLmQb1Gw3JqrMYts19VAaJtSTxuEw=";
+    hash = "sha256-uVX2tPxW9umDHUJcajiiRgO1ZH9bx18lKhhf6jUz6DA=";
   };
 
   # The npm tarball omits its lockfile, so fetch the release-matching one from
@@ -34,7 +34,7 @@ let
     name = "${pname}-${version}-bun-lock";
     src = fetchurl {
       url = "https://raw.githubusercontent.com/lidge-jun/opencodex/v${version}/bun.lock";
-      hash = "sha256-IprjzDaoLXD5fBsx6+pKYBVNRdDgnvpBNWoOqR87Oes=";
+      hash = "sha256-LcU/WvVuy/Jpy2knabTJkQ+dGqHXZYrk3rZkRBKfzf0=";
     };
 
     dontBuild = true;
@@ -47,7 +47,7 @@ let
     '';
 
     outputHashMode = "flat";
-    outputHash = "sha256-IprjzDaoLXD5fBsx6+pKYBVNRdDgnvpBNWoOqR87Oes=";
+    outputHash = "sha256-LcU/WvVuy/Jpy2knabTJkQ+dGqHXZYrk3rZkRBKfzf0=";
   };
 
   # Fixed-output derivation that captures the bun-installed node_modules tree.
@@ -94,7 +94,7 @@ let
     '';
 
     outputHashMode = "recursive";
-    outputHash = "sha256-Jacv+cygOi2+W3U23A/y3+1+wNLgnvfb6Ni0u6SEXbE=";
+    outputHash = "sha256-FOJpPhzNLtOgqI8RWBgtmWyIJLILXB+JzpB/+adaxi0=";
   };
 in
 stdenvNoCC.mkDerivation (finalAttrs: {
