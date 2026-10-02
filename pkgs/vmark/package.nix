@@ -23,13 +23,13 @@
 
 let
   pname = "vmark";
-  version = "0.9.77";
+  version = "0.9.91";
 
   src = fetchFromGitHub {
     owner = "xiaolai";
     repo = "vmark";
     rev = "v${version}";
-    hash = "sha256-ZFyCgArmJQb7Un9kw7fTDm6JRZiAdKffHg3OPkEujB0=";
+    hash = "sha256-aQJbU5F13k/Il5Q/ogiu7q56+QqHSO57Zj58JSyOrQM=";
   };
 
   targetTriple =
@@ -43,7 +43,7 @@ let
 
   pnpmDeps = (fetchPnpmDeps.override { pnpm = pnpm_10; }) {
     inherit pname version src;
-    hash = "sha256-i01ibaupWC8XNIOQGBeYybRYmJT1zRTeDsf5L23/wDM=";
+    hash = "sha256-qPkjGt/1iKVpgp0PoRv2qH80Z+/C+a4ScNW2m8oFSOo=";
     fetcherVersion = 3;
   };
 
@@ -86,7 +86,7 @@ rustPlatform.buildRustPackage {
   cargoRoot = "src-tauri";
   buildAndTestSubdir = "src-tauri";
 
-  cargoHash = "sha256-be6wzJ5XYHIGB9bpXZuvy+sFgMu5fDithHGTjZ3n6XE=";
+  cargoHash = "sha256-n2Eza2f53BOeei5ehe0peWm5UsL99oLqWiyFzBvOBR4=";
   pnpmRoot = ".";
 
   nativeBuildInputs = [
