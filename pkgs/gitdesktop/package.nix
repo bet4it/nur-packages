@@ -21,13 +21,13 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "gitdesktop";
-  version = "0.13.1";
+  version = "0.13.3";
 
   src = fetchFromGitHub {
     owner = "theBGuy";
     repo = "GitDesktop";
     rev = "v${version}";
-    hash = "sha256-ztAUDS9ag/UWKkCUQj8LXpCqA80IUej1jpCvEYZEgvw=";
+    hash = "sha256-lrD0fhFjW10UGaFL/5DE57qsdnsolRfBVR+mQ/g36NM=";
   };
 
   pnpmDeps = (fetchPnpmDeps.override { pnpm = pnpm_11; }) {
