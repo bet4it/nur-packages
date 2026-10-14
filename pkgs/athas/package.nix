@@ -22,18 +22,18 @@
 
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "athas";
-  version = "0.15.1";
+  version = "0.16.3";
 
   src = fetchFromGitHub {
     owner = "athasdev";
     repo = "athas";
     rev = "v${finalAttrs.version}";
-    hash = "sha256-a9xJ/y8/ycoBriMIzpacWpdsJLDXqdGesNuUBEmKlcU=";
+    hash = "sha256-AuqsXzc7tevtUvnpuunG3AZ5QhhuSMtNr5AIAKJ1uxQ=";
   };
 
   buildAndTestSubdir = "src-tauri";
 
-  cargoHash = "sha256-qXZ+msi928b44GeGo/SSY39v3rKAzP2t8/cZjplD6w0=";
+  cargoHash = "sha256-RAz30ABfKf6h5U5xbKvyJikKkWQW1/rRgLj97HMGLRA=";
 
   doCheck = false;
 
@@ -73,7 +73,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
     '';
 
     dontFixup = true;
-    outputHash = "sha256-PBNXUsG0a31LAtetp08dn8vpXzID9+faeb1YXQTgFxo=";
+    outputHash = "sha256-KHi/EQuXe6/qbLaLaGpISBshALoNSURwssKcL8cUDxQ=";
     outputHashAlgo = "sha256";
     outputHashMode = "recursive";
   };
