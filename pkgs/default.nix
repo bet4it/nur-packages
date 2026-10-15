@@ -22,7 +22,6 @@ rec {
   spool = pkgs.callPackage ./spool/package.nix { };
   spool-app = pkgs.callPackage ./spool-app/package.nix { };
   superset = pkgs.callPackage ./superset/package.nix { };
-  tokenicode = pkgs.callPackage ./tokenicode/package.nix { };
   tizumark = pkgs.callPackage ./tizumark/package.nix { };
   usbee = pkgs.callPackage ./usbee/package.nix { inherit usbeehive; };
   vmark = pkgs.callPackage ./vmark/package.nix { };
