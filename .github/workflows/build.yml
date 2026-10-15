@@ -37,6 +37,8 @@ jobs:
         nixPath:
           - nixpkgs=channel:nixos-unstable
     runs-on: ubuntu-latest
+    env:
+      NIXPKGS_ALLOW_UNFREE: 1
     steps:
     - name: Checkout repository
       uses: actions/checkout@v7
