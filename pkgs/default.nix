@@ -10,7 +10,6 @@ rec {
   cc-sessions-viewer = pkgs.callPackage ./cc-sessions-viewer/package.nix { };
   claude-code-history-viewer = pkgs.callPackage ./claude-code-history-viewer/package.nix { };
   electerm = pkgs.callPackage ./electerm/package.nix { };
-  jean = pkgs.callPackage ./jean/package.nix { };
   milkup = pkgs.callPackage ./milkup/package.nix { };
   markra = pkgs.callPackage ./markra/package.nix { };
   netcatty = pkgs.callPackage ./netcatty/package.nix { };
@@ -20,7 +19,6 @@ rec {
   shell360 = pkgs.callPackage ./shell360/package.nix { };
   spool = pkgs.callPackage ./spool/package.nix { };
   spool-app = pkgs.callPackage ./spool-app/package.nix { };
-  superset = pkgs.callPackage ./superset/package.nix { };
   tizumark = pkgs.callPackage ./tizumark/package.nix { };
   usbee = pkgs.callPackage ./usbee/package.nix { inherit usbeehive; };
   vmark = pkgs.callPackage ./vmark/package.nix { };
