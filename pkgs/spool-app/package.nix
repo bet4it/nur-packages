@@ -127,7 +127,7 @@ stdenv.mkDerivation {
     runHook preInstall
 
     mkdir -p $out/share/spool
-    cp -r packages/app/dist/linux-unpacked/{locales,resources{,.pak}} $out/share/spool/
+    cp -r packages/app/dist/linux*-unpacked/{locales,resources{,.pak}} $out/share/spool/
 
     makeWrapper ${lib.getExe electron} $out/bin/spool-app \
       --add-flags "--no-sandbox" \

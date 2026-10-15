@@ -103,7 +103,7 @@ buildNpmPackage rec {
     runHook preInstall
 
     mkdir -p $out/share/netcatty
-    cp -r release/linux-unpacked/{locales,resources{,.pak}} $out/share/netcatty/
+    cp -r release/linux*-unpacked/{locales,resources{,.pak}} $out/share/netcatty/
 
     install -Dm644 build/icons/512x512.png $out/share/icons/hicolor/512x512/apps/netcatty.png
 
