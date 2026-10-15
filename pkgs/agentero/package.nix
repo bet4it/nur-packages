@@ -50,7 +50,7 @@ let
       url = "https://github.com/run-llama/pdfium-binaries/releases/download/chromium%2F7897/${pdfiumAsset}.tgz";
       hash = {
         "x86_64-linux" = "sha256-r5byH9jp1TlVAT2tHRewA9ASACXnh7fOYRpoXVcodZQ=";
-        "aarch64-linux" = lib.fakeHash;
+        "aarch64-linux" = "sha256-6B7ER90ACX6y/CbP+IvlPqMhSVcRpDr56ntQvr3qkiY=";
       }.${stdenv.hostPlatform.system} or lib.fakeHash;
     };
     dontUnpack = true;
