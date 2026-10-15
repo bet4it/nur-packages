@@ -8,7 +8,6 @@ rec {
   cc-session = pkgs.callPackage ./cc-session/package.nix { };
   colamd = pkgs.callPackage ./colamd/package.nix { };
   cc-sessions-viewer = pkgs.callPackage ./cc-sessions-viewer/package.nix { };
-  ccg-gateway = pkgs.callPackage ./ccg-gateway/package.nix { };
   claude-code-history-viewer = pkgs.callPackage ./claude-code-history-viewer/package.nix { };
   electerm = pkgs.callPackage ./electerm/package.nix { };
   jean = pkgs.callPackage ./jean/package.nix { };
