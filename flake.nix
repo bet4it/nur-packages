@@ -5,7 +5,10 @@
     let
       lib = nixpkgs.lib;
       forAllSystems = lib.genAttrs lib.systems.flakeExposed;
-      pkgsFor = system: import nixpkgs { inherit system; };
+      pkgsFor = system: import nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+      };
     in
     {
       legacyPackages = forAllSystems (system: import ./default.nix {
