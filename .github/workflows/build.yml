@@ -48,6 +48,13 @@ jobs:
     env:
       NIXPKGS_ALLOW_UNFREE: 1
     steps:
+    - name: Free Disk Space
+      uses: endersonmenezes/free-disk-space@v4
+      with:
+        remove_android: true
+        remove_dotnet: true
+        remove_haskell: true
+        remove_tool_cache: true
     - name: Checkout repository
       uses: actions/checkout@v7
     - name: Install nix
@@ -57,6 +64,8 @@ jobs:
         extra_nix_config: |
           experimental-features = nix-command flakes
           access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
+          max-jobs = 1
+          cores = 0
     - name: Show nixpkgs version
       run: nix-instantiate --eval -E '(import <nixpkgs> {}).lib.version'
     - name: Setup cachix
