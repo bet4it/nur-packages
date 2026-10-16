@@ -96,7 +96,7 @@ GitHub Actions is configured in [.github/workflows/build.yml](./.github/workflow
 The workflow evaluates the repository with NUR's restricted-eval check, builds
 the package set from [ci.nix](./ci.nix) against `nixos-unstable` for NUR
 compatibility, builds the flake-locked cache outputs from
-[`checks.x86_64-linux.cacheOutputs`](./flake.nix), uploads cacheable outputs to
+[`checks.<system>.cacheOutputs`](./flake.nix) (for `x86_64-linux` and `aarch64-linux`), uploads cacheable outputs to
 Cachix, and triggers a NUR index update for the `bet4it` repository.
 
 Before enabling cache uploads, create the `bet4it` cache on Cachix and add one

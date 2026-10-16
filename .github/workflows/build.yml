@@ -36,10 +36,25 @@ jobs:
           - bet4it
         nixPath:
           - nixpkgs=channel:nixos-unstable
-    runs-on: ubuntu-latest
+        system:
+          - x86_64-linux
+          - aarch64-linux
+        include:
+          - system: x86_64-linux
+            os: ubuntu-26.04
+          - system: aarch64-linux
+            os: ubuntu-26.04-arm
+    runs-on: ${{ matrix.os }}
     env:
       NIXPKGS_ALLOW_UNFREE: 1
     steps:
+    - name: Free Disk Space
+      uses: endersonmenezes/free-disk-space@v4
+      with:
+        remove_android: true
+        remove_dotnet: true
+        remove_haskell: true
+        remove_tool_cache: true
     - name: Checkout repository
       uses: actions/checkout@v7
     - name: Install nix
@@ -49,6 +64,8 @@ jobs:
         extra_nix_config: |
           experimental-features = nix-command flakes
           access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
+          max-jobs = 1
+          cores = 0
     - name: Show nixpkgs version
       run: nix-instantiate --eval -E '(import <nixpkgs> {}).lib.version'
     - name: Setup cachix
@@ -72,8 +89,8 @@ jobs:
     - name: Build NUR package set
       run: nix shell -f '<nixpkgs>' nix-build-uncached -c nix-build-uncached ci.nix -A cacheOutputs
     - name: Build flake cache outputs
-      run: nix build .#checks.x86_64-linux.cacheOutputs
+      run: nix build .#checks.${{ matrix.system }}.cacheOutputs
     - name: Trigger NUR update
       # Don't replace <YOUR_REPO_NAME> here!
-      if: ${{ matrix.nurRepo != '<YOUR_REPO_NAME>' }}
+      if: ${{ matrix.nurRepo != '<YOUR_REPO_NAME>' && matrix.system == 'x86_64-linux' }}
       run: curl -XPOST "https://nur-update.nix-community.org/update?repo=${{ matrix.nurRepo }}"
