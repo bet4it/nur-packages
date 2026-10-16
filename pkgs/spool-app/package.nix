@@ -3,9 +3,7 @@
   stdenv,
   fetchFromGitHub,
   fetchPnpmDeps,
-  libcap,
   libglvnd,
-  openssl,
   patchelf,
   pnpm_10,
   pnpmConfigHook,
@@ -17,21 +15,19 @@
   python3,
   pkg-config,
   xdg-terminal-exec,
-  xz,
-  zlib,
   nix-update-script,
   writableTmpDirAsHomeHook,
 }:
 
 let
   pname = "spool-app";
-  version = "0.5.5";
+  version = "0.5.6";
 
   src = fetchFromGitHub {
     owner = "bet4it";
     repo = "spool";
     rev = "v${version}";
-    hash = "sha256-0POfQ1S+0ZXgGtrmybzv/KOaWC3JyWQ62kMM0kiO6wQ=";
+    hash = "sha256-awoscBq8lWlhwQdLq+kdlnDPjw2FDlSkkq8wJzxwBko=";
   };
 
   pnpmWorkspaces = [
@@ -39,15 +35,6 @@ let
     "@spool-lab/core"
     "@spool-lab/redact"
     "@spool/share-kit"
-  ];
-
-  acpCodexLibPath = lib.makeLibraryPath [
-    libcap
-    openssl
-    stdenv.cc.cc.lib
-    stdenv.cc.libc
-    xz
-    zlib
   ];
 
   electronRuntimeLibPath = lib.makeLibraryPath [
@@ -83,7 +70,7 @@ stdenv.mkDerivation {
       ;
     pnpm = pnpm_10;
     fetcherVersion = 3;
-    hash = "sha256-3PyPZ2If/+MwqOX2HbwkZGIujMPyoRoUeo0UbbpVOeY=";
+    hash = "sha256-pIseTAjyHFG9wVDeGyBUQfuJFko45brEcEYvVNoHyiU=";
   };
 
   nativeBuildInputs = [
@@ -142,11 +129,6 @@ stdenv.mkDerivation {
     mkdir -p $out/share/spool
     cp -r packages/app/dist/linux-unpacked/{locales,resources{,.pak}} $out/share/spool/
 
-    patchelf \
-      --set-interpreter "$(cat $NIX_CC/nix-support/dynamic-linker)" \
-      --set-rpath "${acpCodexLibPath}" \
-      $out/share/spool/resources/app.asar.unpacked/node_modules/acp-extension-codex-linux-x64/bin/acp-extension-codex
-
     makeWrapper ${lib.getExe electron} $out/bin/spool-app \
       --add-flags "--no-sandbox" \
       --add-flags $out/share/spool/resources/app.asar \
@@ -179,7 +161,10 @@ stdenv.mkDerivation {
     license = lib.licenses.mit;
     mainProgram = "spool-app";
     maintainers = with lib.maintainers; [ ];
-    platforms = [ "x86_64-linux" ];
+    platforms = [
+      "x86_64-linux"
+      "aarch64-linux"
+    ];
     sourceProvenance = with lib.sourceTypes; [
       fromSource
       binaryNativeCode
