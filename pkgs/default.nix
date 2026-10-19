@@ -9,7 +9,6 @@ rec {
   colamd = pkgs.callPackage ./colamd/package.nix { };
   cc-sessions-viewer = pkgs.callPackage ./cc-sessions-viewer/package.nix { };
   claude-code-history-viewer = pkgs.callPackage ./claude-code-history-viewer/package.nix { };
-  electerm = pkgs.callPackage ./electerm/package.nix { };
   milkup = pkgs.callPackage ./milkup/package.nix { };
   markra = pkgs.callPackage ./markra/package.nix { };
   netcatty = pkgs.callPackage ./netcatty/package.nix { };
