@@ -1,7 +1,7 @@
 {
   lib,
   stdenv,
-  buildGoModule,
+  buildGo127Module,
   fetchFromGitHub,
   installShellFiles,
   makeWrapper,
@@ -9,18 +9,18 @@
   nix-update-script,
 }:
 
-buildGoModule rec {
+buildGo127Module rec {
   pname = "agy-swap";
-  version = "2.11.1";
+  version = "2.13.1";
 
   src = fetchFromGitHub {
     owner = "aklkbqx";
     repo = "agy-swap";
     rev = "v${version}";
-    hash = "sha256-O7ORwZ7X3x1U3pHWKJFC5vjHvUAxcPIcQhTAM5ehm+A=";
+    hash = "sha256-bj6UjSM+eshjzAyYdvMMBaitvGG0ZlVNaYaC1EIX2CI=";
   };
 
-  vendorHash = "sha256-vKms/NRoVn39Q1nNFbOiaEgfgq3FhFaIBQvpW4kpDeQ=";
+  vendorHash = "sha256-BkZLqv16ymOkOGUKmk+x0S3c8jxxZaK0djBFQGZBBPE=";
 
   subPackages = [ "cmd/agy-swap" ];
 
