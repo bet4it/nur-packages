@@ -10,6 +10,7 @@ rec {
   cc-sessions-viewer = pkgs.callPackage ./cc-sessions-viewer/package.nix { };
   claude-code-history-viewer = pkgs.callPackage ./claude-code-history-viewer/package.nix { };
   milkup = pkgs.callPackage ./milkup/package.nix { };
+  meku = pkgs.callPackage ./meku/package.nix { };
   markra = pkgs.callPackage ./markra/package.nix { };
   netcatty = pkgs.callPackage ./netcatty/package.nix { };
   nyaterm = pkgs.callPackage ./nyaterm/package.nix { };
