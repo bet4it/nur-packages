@@ -24,6 +24,7 @@ rec {
   vmark = pkgs.callPackage ./vmark/package.nix { };
   usbeehive = pkgs.callPackage ./usbeehive/package.nix { };
   fast-resume = pkgs.callPackage ./fast-resume/package.nix { };
+  fulgur = pkgs.callPackage ./fulgur/package.nix { };
   gitdesktop = pkgs.callPackage ./gitdesktop/package.nix { };
   horsemd = pkgs.callPackage ./horsemd/package.nix { };
 }
