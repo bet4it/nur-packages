@@ -27,4 +27,5 @@ rec {
   fulgur = pkgs.callPackage ./fulgur/package.nix { };
   gitdesktop = pkgs.callPackage ./gitdesktop/package.nix { };
   horsemd = pkgs.callPackage ./horsemd/package.nix { };
+  mayoi = pkgs.callPackage ./mayoi/package.nix { };
 }
