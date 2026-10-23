@@ -22,16 +22,16 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "meku";
-  version = "1.0.1";
+  version = "1.0.3";
 
   src = fetchFromGitHub {
     owner = "mebishp";
     repo = "meku";
     rev = "v${version}";
-    hash = "sha256-1LSaZ+f5JfAOodpfih5Wr3Ij6RcVFvDy51oAeQa1RXA=";
+    hash = "sha256-LG6KdIogdyplBlkJBjqGxZi37Ac/JdZge8ViXUwoWrE=";
   };
 
-  cargoHash = "sha256-dC3Sg+Ud6ySJwD2zGNoD165ER1meRHexqnXDD0iTyfs=";
+  cargoHash = "sha256-35yQjWTPyEsLQJtSqlDIn2m2RtXvXdCOIOI9qZR9404=";
 
   nativeBuildInputs = [
     pkg-config
