@@ -85,7 +85,6 @@ rustPlatform.buildRustPackage rec {
 
   env = {
     OPENSSL_NO_VENDOR = true;
-    TAURI_SKIP_VERSION_CHECK = "1";
   };
 
   postInstall = ''

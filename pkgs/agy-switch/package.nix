@@ -4,7 +4,6 @@
   fetchFromGitHub,
   cmake,
   git,
-  llvmPackages,
   nix-update-script,
   rustPlatform,
   cargo-tauri,
@@ -15,6 +14,7 @@
   wrapGAppsHook4,
   desktop-file-utils,
   python3,
+  jq,
   writableTmpDirAsHomeHook,
   at-spi2-atk,
   cairo,
@@ -52,7 +52,8 @@ let
   ];
 
   darwinFrameworks = lib.optionals stdenv.hostPlatform.isDarwin (
-    with darwin.apple_sdk.frameworks; [
+    with darwin.apple_sdk.frameworks;
+    [
       AppKit
       CoreServices
       Security
@@ -90,6 +91,7 @@ rustPlatform.buildRustPackage rec {
     cmake
     git
     wrapGAppsHook4
+    jq
     desktop-file-utils
     python3
     writableTmpDirAsHomeHook
@@ -108,9 +110,12 @@ rustPlatform.buildRustPackage rec {
   doCheck = false;
 
   postPatch = ''
-    if grep -q '"pubkey":' src-tauri/tauri.conf.json; then
-      sed -i 's#"pubkey": "[^"]*"#"pubkey": ""#' src-tauri/tauri.conf.json
-    fi
+    # Disable updater for Nix build
+    jq '
+      .bundle.createUpdaterArtifacts = false |
+      if .plugins.updater then .plugins.updater = {"active": false, "pubkey": "", "endpoints": []} else . end
+    ' src-tauri/tauri.conf.json > src-tauri/tauri.conf.json.tmp
+    mv src-tauri/tauri.conf.json.tmp src-tauri/tauri.conf.json
 
     libappindicatorSys=$(find "$cargoDepsCopy" -path '*/libappindicator-sys-*/src/lib.rs' -print -quit)
     if [ -n "$libappindicatorSys" ]; then
@@ -130,9 +135,7 @@ rustPlatform.buildRustPackage rec {
   '';
 
   env = {
-    LIBCLANG_PATH = "${lib.getLib llvmPackages.libclang}/lib";
     OPENSSL_NO_VENDOR = true;
-    TAURI_SKIP_VERSION_CHECK = "1";
   };
 
   postInstall = ''

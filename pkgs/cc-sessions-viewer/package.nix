@@ -14,6 +14,7 @@
   libsoup_3,
   webkitgtk_4_1,
   wrapGAppsHook4,
+  jq,
   desktop-file-utils,
   writableTmpDirAsHomeHook,
 }:
@@ -83,6 +84,7 @@ rustPlatform.buildRustPackage {
     nodejs_22
     pkg-config
     wrapGAppsHook4
+    jq
     desktop-file-utils
     writableTmpDirAsHomeHook
   ];
@@ -110,9 +112,11 @@ rustPlatform.buildRustPackage {
 
   postPatch = ''
     # Disable updater for Nix build
-    substituteInPlace src-tauri/tauri.conf.json \
-      --replace-fail '"createUpdaterArtifacts": true' '"createUpdaterArtifacts": false' \
-      --replace-fail '"pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDRDQjAyNzg1NDkyREM2QjcKUldTM3hpMUpoU2V3VFBJMmVOYnl4S1BwMUIxNWFIbEZWQTBqODZrTnRtOVh4NXl1SDgxd1pORzQK"' '"pubkey": ""'
+    jq '
+      .bundle.createUpdaterArtifacts = false |
+      if .plugins.updater then .plugins.updater = {"active": false, "pubkey": "", "endpoints": []} else . end
+    ' src-tauri/tauri.conf.json > src-tauri/tauri.conf.json.tmp
+    mv src-tauri/tauri.conf.json.tmp src-tauri/tauri.conf.json
 
     # Patch libayatana-appindicator path
     libappindicatorSys=$(find $cargoDepsCopy -path '*/libappindicator-sys-*/src/lib.rs' -print -quit)
@@ -124,7 +128,6 @@ rustPlatform.buildRustPackage {
 
   env = {
     OPENSSL_NO_VENDOR = true;
-    TAURI_SKIP_VERSION_CHECK = "1";
   };
 
   postInstall = ''
