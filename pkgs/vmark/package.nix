@@ -81,7 +81,12 @@ let
   };
 in
 rustPlatform.buildRustPackage {
-  inherit pname version src pnpmDeps;
+  inherit
+    pname
+    version
+    src
+    pnpmDeps
+    ;
 
   cargoRoot = "src-tauri";
   buildAndTestSubdir = "src-tauri";
@@ -132,7 +137,6 @@ rustPlatform.buildRustPackage {
 
   env = {
     OPENSSL_NO_VENDOR = true;
-    TAURI_SKIP_VERSION_CHECK = "1";
   };
 
   postInstall = ''
