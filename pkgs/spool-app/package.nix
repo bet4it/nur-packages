@@ -131,8 +131,8 @@ stdenv.mkDerivation {
 
     makeWrapper ${lib.getExe electron} $out/bin/spool-app \
       --add-flags "--no-sandbox" \
-      --add-flags $out/share/spool/resources/app.asar \
       --add-flags "\''${NIXOS_OZONE_WL:+\''${WAYLAND_DISPLAY:+--ozone-platform-hint=auto --enable-features=WaylandWindowDecorations --enable-wayland-ime=true}}" \
+      --add-flags $out/share/spool/resources/app.asar \
       --prefix PATH : "${runtimePath}" \
       --prefix LD_LIBRARY_PATH : "${electronRuntimeLibPath}" \
       --set-default ELECTRON_IS_DEV 0 \
