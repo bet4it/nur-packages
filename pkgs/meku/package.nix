@@ -5,6 +5,7 @@
   fetchFromGitHub,
   pkg-config,
   makeWrapper,
+  dbus,
   fontconfig,
   freetype,
   libGL,
@@ -22,16 +23,16 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "meku";
-  version = "1.0.3";
+  version = "1.0.4";
 
   src = fetchFromGitHub {
     owner = "mebishp";
     repo = "meku";
     rev = "v${version}";
-    hash = "sha256-LG6KdIogdyplBlkJBjqGxZi37Ac/JdZge8ViXUwoWrE=";
+    hash = "sha256-CKHgh6K6vzKzD8bArmw/GojV41TqQ8RQzO5lSV5xNmc=";
   };
 
-  cargoHash = "sha256-35yQjWTPyEsLQJtSqlDIn2m2RtXvXdCOIOI9qZR9404=";
+  cargoHash = "sha256-Fz8oqgzAQkhKoM/x7ve05aCm8p1PBqGVlNyVFt3pezM=";
 
   nativeBuildInputs = [
     pkg-config
@@ -39,6 +40,7 @@ rustPlatform.buildRustPackage rec {
   ];
 
   buildInputs = [
+    dbus
     fontconfig
     freetype
     libGL
@@ -63,6 +65,7 @@ rustPlatform.buildRustPackage rec {
     wrapProgram $out/bin/meku \
       --prefix LD_LIBRARY_PATH : ${
         lib.makeLibraryPath [
+          dbus
           vulkan-loader
           libxkbcommon
           wayland
