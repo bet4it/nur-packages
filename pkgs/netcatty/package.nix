@@ -29,17 +29,17 @@ let
 in
 buildNpmPackage rec {
   pname = "netcatty";
-  version = "1.1.85";
+  version = "1.1.90";
 
   src = fetchFromGitHub {
     owner = "binaricat";
     repo = "Netcatty";
     rev = "v${version}";
-    hash = "sha256-BoAz+TE7lP/E1dCZdzcVm/yQWDiPhQQaQfxr5W+biBY=";
+    hash = "sha256-S8EEi3R5aJt/XCBwvs9LCIiTRY+1tjhAm+DeYbLoLAA=";
   };
 
   nodejs = nodejs_22;
-  npmDepsHash = "sha256-o4+Y1z/OPbfi63M5ucxXvLYcxHfpXKij+/TOm8ddEIc=";
+  npmDepsHash = "sha256-mx25T2G6bTk6N7qujWaQ52NFicoJnWN16y0neRLxCzA=";
 
   npmFlags = [
     "--ignore-scripts"
