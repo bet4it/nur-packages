@@ -16,13 +16,13 @@
 
 let
   pname = "spool";
-  version = "0.5.6";
+  version = "0.5.7";
 
   src = fetchFromGitHub {
     owner = "bet4it";
     repo = "spool";
     rev = "v${version}";
-    hash = "sha256-awoscBq8lWlhwQdLq+kdlnDPjw2FDlSkkq8wJzxwBko=";
+    hash = "sha256-Kr0aFSHWUPPW5P9YaJAe4o3n0nkvPJldpzGILaWv/t8=";
   };
 
   # The CLI transitively depends on @spool-lab/core (which depends on
