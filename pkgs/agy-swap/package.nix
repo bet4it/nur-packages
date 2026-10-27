@@ -11,13 +11,13 @@
 
 buildGo127Module rec {
   pname = "agy-swap";
-  version = "2.13.1";
+  version = "2.18.0";
 
   src = fetchFromGitHub {
     owner = "aklkbqx";
     repo = "agy-swap";
     rev = "v${version}";
-    hash = "sha256-bj6UjSM+eshjzAyYdvMMBaitvGG0ZlVNaYaC1EIX2CI=";
+    hash = "sha256-0dRzWayTnqK2Cg+IAkpRptgzthMkuT7xVrlEmFH45Qc=";
   };
 
   vendorHash = "sha256-BkZLqv16ymOkOGUKmk+x0S3c8jxxZaK0djBFQGZBBPE=";
