@@ -60,16 +60,16 @@ let
 in
 buildGo127Module rec {
   pname = "mayoi";
-  version = "0.11.11";
+  version = "0.12.2";
 
   src = fetchFromGitHub {
     owner = "sorrycc";
     repo = "Mayoi";
     rev = "v${version}";
-    hash = "sha256-R3IOUeiUu/xtxn1EecIW1ktg9rSPtB4e/FfrZgJRO3c=";
+    hash = "sha256-G52NS1gsQ9vsk2yeUMdXSGzOKVBRQ0FluuN8oklj3+4=";
   };
 
-  vendorHash = "sha256-3ec3RV1wRdOP5LnXrJ3WO+XZBAza/lcmlgBodOKggYw=";
+  vendorHash = "sha256-mSRN8Y3+wk+on7Pfu3oATALXHgEY/OIKCjKtwMa5QYo=";
 
   subPackages = [ "cmd/mayoi" ];
 
