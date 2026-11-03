@@ -63,23 +63,23 @@ let
 in
 rustPlatform.buildRustPackage rec {
   pname = "agy-switch";
-  version = "4.10.12";
+  version = "4.10.14";
 
   src = fetchFromGitHub {
     owner = "anglee0323";
     repo = "agy-switch";
     rev = "v${version}";
-    hash = "sha256-6/Pzu80y0lKxHc8sSI8nEMbb7GEtmpGqli1jC5otMTo=";
+    hash = "sha256-ZnA0sGKFaS1bo+8oTVJ5c0XV8xlz8F5ZF3F6e9vqujk=";
   };
 
   cargoRoot = "src-tauri";
   buildAndTestSubdir = "src-tauri";
-  cargoHash = "sha256-pSNIQEkPUNh60TwG0FfuSQV5+oK7R1SJhwZToTZwKG8=";
+  cargoHash = "sha256-c1CTtnqTzFsRe7JkTF1Fe/CmUXYecoMevUVm0FupDkg=";
 
   npmDeps = fetchNpmDeps {
     name = "${pname}-${version}-npm-deps";
     inherit src;
-    hash = "sha256-2H5Td/LBwq8fGzH0wrhD0xbaIdTMmJlDihaZoLS/Qng=";
+    hash = "sha256-3oGz+EhZT/1VnyzmQB+tMagRRT8kt46ePWaiawJEMNk=";
   };
 
   nativeBuildInputs = [
