@@ -1,106 +1,96 @@
 {
   lib,
-  stdenv,
   rustPlatform,
   fetchFromGitHub,
-  fetchPnpmDeps,
   pkg-config,
-  openssl,
+  cmake,
   glib,
   gtk3,
-  libsoup_3,
-  webkitgtk_4_1,
-  librsvg,
-  pnpm_10,
-  nodejs_22,
-  pnpmConfigHook,
-  wrapGAppsHook4,
-  cargo-tauri,
-  perl,
-  systemdLibs,
   libayatana-appindicator,
   desktop-file-utils,
-  glib-networking,
+  makeDesktopItem,
+  copyDesktopItems,
+  fontconfig,
+  freetype,
+  dbus,
+  openssl,
+  libxkbcommon,
+  wayland,
+  libxcb,
+  libX11,
+  libXcursor,
+  libXi,
+  libXrandr,
+  libGL,
+  vulkan-loader,
+  wrapGAppsHook3,
+  nix-update-script,
 }:
 
-let
+rustPlatform.buildRustPackage rec {
   pname = "nyaterm";
-  version = "1.3.2";
+  version = "2.0.1";
 
   src = fetchFromGitHub {
     owner = "nyakang";
     repo = "nyaterm";
     rev = "v${version}";
-    hash = "sha256-1jVErodyQxvm0/VUhdYvzKBEBWskmsefd/w3ZF5P2W4=";
+    hash = "sha256-epVnUWbMCY86hxBD6zSQQ+l0o9GcXKWzgRY23NY6n5A=";
   };
 
-  targetTriple =
-    {
-      x86_64-linux = "x86_64-unknown-linux-gnu";
-      aarch64-linux = "aarch64-unknown-linux-gnu";
-    }
-    .${stdenv.hostPlatform.system} or (throw "unsupported system: ${stdenv.hostPlatform.system}");
+  cargoHash = "sha256-jm+DuN+NfU0zHOzbyKhi2k1RGfH5jyf81xKlnPKPZaM=";
 
-  # Sidecar is a separate crate with its own Cargo.lock and is not a
-  # member of the src-tauri workspace, so it must be vendored on its own.
-  nyaterm-mcp = rustPlatform.buildRustPackage {
-    pname = "nyaterm-mcp";
-    inherit version src;
-
-    cargoRoot = "src-tauri/crates/nyaterm-mcp";
-    buildAndTestSubdir = "src-tauri/crates/nyaterm-mcp";
-    cargoHash = "sha256-kxNgwVqVuaCczaC2gaUK08vAmml9bHL2Q4vdsjWkSPw=";
-
-    doCheck = false;
-  };
-in
-rustPlatform.buildRustPackage {
-  inherit pname version src;
+  cargoBuildFlags = [
+    "-p"
+    "nyaterm-app"
+    "-p"
+    "nyaterm-mcp"
+    "-p"
+    "nyaterm-rdp-helper"
+    "-p"
+    "nyaterm-vnc-helper"
+  ];
 
   nativeBuildInputs = [
     pkg-config
-    pnpm_10
-    pnpmConfigHook
-    nodejs_22
-    wrapGAppsHook4
-    cargo-tauri.hook
-    perl
+    cmake
+    wrapGAppsHook3
+    copyDesktopItems
     desktop-file-utils
   ];
 
   buildInputs = [
-    openssl
     glib
     gtk3
-    libsoup_3
-    webkitgtk_4_1
-    librsvg
-    systemdLibs
     libayatana-appindicator
-    glib-networking
+    fontconfig
+    freetype
+    dbus
+    openssl
+    libxkbcommon
+    wayland
+    libxcb
+    libX11
+    libXcursor
+    libXi
+    libXrandr
   ];
 
-  pnpmDeps = fetchPnpmDeps {
-    inherit pname version src;
-    pnpm = pnpm_10;
-    fetcherVersion = 4;
-    hash = "sha256-8GSbrUWQD3q9BqAFc6qC7RD6NlBi/IdnTO7k7ZySl1M=";
-  };
-
-  cargoRoot = "src-tauri";
-  buildAndTestSubdir = "src-tauri";
-
-  cargoHash = "sha256-0SNwZHaNmDMBcB7F4ZmvweWFi4FIE7qL7uYiFqGvbw8=";
+  appendRunpaths = [
+    (lib.makeLibraryPath [
+      libGL
+      vulkan-loader
+      wayland
+      libxkbcommon
+      libX11
+      libXcursor
+      libXi
+      libXrandr
+      libayatana-appindicator
+    ])
+  ];
 
   postPatch = ''
-    substituteInPlace src-tauri/tauri.conf.json \
-      --replace-fail '"createUpdaterArtifacts": true' '"createUpdaterArtifacts": false'
-
-    # pnpm build would otherwise cargo-build the MCP sidecar against
-    # crates.io. Use the Nix-built binary instead.
-    substituteInPlace package.json \
-      --replace-fail 'pnpm build:mcp-sidecar && tsc && vite build' 'tsc && vite build'
-
     libappindicatorSys=$(find $cargoDepsCopy -path '*/libappindicator-sys-*/src/lib.rs' -print -quit)
     if [ -n "$libappindicatorSys" ]; then
       substituteInPlace "$libappindicatorSys" \
@@ -108,38 +98,55 @@ rustPlatform.buildRustPackage {
     fi
   '';
 
-  preConfigure = ''
-    install -Dm755 ${nyaterm-mcp}/bin/nyaterm-mcp \
-      "src-tauri/binaries/nyaterm-mcp-${targetTriple}"
-  '';
-
   doCheck = false;
 
   postInstall = ''
-    if [ -f $out/share/applications/*.desktop ]; then
-      desktop-file-edit \
-        --set-comment "A modern remote terminal workspace built with Tauri, React, and Rust" \
-        --set-key="Keywords" --set-value="terminal;ssh;sftp;telnet;serial;tauri;rust;workspace;" \
-        --set-key="Categories" --set-value="Development;Network;TerminalEmulator;" \
-        $out/share/applications/*.desktop
-    fi
+    for size in 32x32 64x64 128x128 256x256 512x512; do
+      install -Dm644 "crates/nyaterm-app/resources/icons/$size.png" \
+        "$out/share/icons/hicolor/$size/apps/nyaterm.png"
+    done
   '';
 
-  passthru = {
-    inherit nyaterm-mcp;
+  desktopItems = [
+    (makeDesktopItem {
+      name = "nyaterm";
+      desktopName = "NyaTerm";
+      comment = "Native GPUI terminal and SSH client";
+      exec = "nyaterm %U";
+      icon = "nyaterm";
+      startupWMClass = "nyaterm";
+      terminal = false;
+      categories = [
+        "Development"
+        "TerminalEmulator"
+        "Network"
+      ];
+      mimeTypes = [
+        "x-scheme-handler/nyaterm"
+        "x-scheme-handler/ssh"
+        "x-scheme-handler/telnet"
+      ];
+      startupNotify = true;
+    })
+  ];
 
-    # Custom script: nix-update alone cannot probe the sidecar's
-    # cargoHash, so the three hashes are refreshed by pkgs/nyaterm/update.sh.
-    updateScript = ./update.sh;
+  passthru.updateScript = nix-update-script {
+    extraArgs = [
+      "--url=https://github.com/nyakang/nyaterm"
+      "--use-github-releases"
+    ];
   };
 
   meta = {
-    description = "A modern remote terminal workspace built with Tauri, React, and Rust";
+    description = "A modern remote terminal workspace built with GPUI and Rust";
     homepage = "https://github.com/nyakang/nyaterm";
     changelog = "https://github.com/nyakang/nyaterm/releases/tag/v${version}";
-    license = lib.licenses.mit;
+    license = lib.licenses.asl20;
     maintainers = with lib.maintainers; [ ];
     mainProgram = "nyaterm";
-    platforms = lib.platforms.linux;
+    platforms = [
+      "x86_64-linux"
+      "aarch64-linux"
+    ];
   };
 }
