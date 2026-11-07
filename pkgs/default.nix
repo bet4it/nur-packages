@@ -15,7 +15,6 @@ rec {
   netcatty = pkgs.callPackage ./netcatty/package.nix { };
   nyaterm = pkgs.callPackage ./nyaterm/package.nix { };
   oxideterm = pkgs.callPackage ./oxideterm/package.nix { };
-  rio = pkgs.callPackage ./rio/package.nix { };
   shell360 = pkgs.callPackage ./shell360/package.nix { };
   spool = pkgs.callPackage ./spool/package.nix { };
   spool-app = pkgs.callPackage ./spool-app/package.nix { };
