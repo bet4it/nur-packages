@@ -21,6 +21,7 @@
   libXrandr,
   vulkan-loader,
   openssl,
+  aws-lc,
   dbus,
   nix-update-script,
 }:
@@ -83,6 +84,7 @@ rustPlatform.buildRustPackage rec {
     libXrandr
     vulkan-loader
     openssl
+    aws-lc
     dbus
   ];
 

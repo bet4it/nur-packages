@@ -7,6 +7,7 @@
   protobuf,
   fontconfig,
   openssl,
+  aws-lc,
   sqlite,
   zlib,
   zstd,
@@ -67,6 +68,7 @@ rustPlatform.buildRustPackage rec {
   buildInputs = [
     fontconfig
     openssl
+    aws-lc
     sqlite
     zlib
     zstd

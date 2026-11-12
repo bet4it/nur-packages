@@ -4,6 +4,7 @@
   fetchFromGitHub,
   pkg-config,
   openssl,
+  aws-lc,
   nix-update-script,
 }:
 
@@ -26,6 +27,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
 
   buildInputs = [
     openssl
+    aws-lc
   ];
 
   buildAndTestSubdir = "crates/aionui-app";

@@ -9,6 +9,7 @@
   rustPlatform,
   pkg-config,
   openssl,
+  aws-lc,
   writableTmpDirAsHomeHook,
 }:
 
@@ -95,6 +96,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
 
   buildInputs = [
     openssl
+    aws-lc
   ];
 
   # tesseract-rs needs cmake for its sub-build but stdenv must not run a
