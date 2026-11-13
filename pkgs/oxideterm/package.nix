@@ -8,6 +8,7 @@
   fontconfig,
   openssl,
   aws-lc,
+  oniguruma,
   sqlite,
   zlib,
   zstd,
@@ -69,6 +70,7 @@ rustPlatform.buildRustPackage rec {
     fontconfig
     openssl
     aws-lc
+    oniguruma
     sqlite
     zlib
     zstd
