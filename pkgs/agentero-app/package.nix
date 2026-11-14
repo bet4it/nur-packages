@@ -24,6 +24,7 @@
   openssl,
   sqlite,
   aws-lc,
+  zstd,
   webkitgtk_4_1,
 }:
 
@@ -130,6 +131,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
     openssl
     sqlite
     aws-lc
+    zstd
     webkitgtk_4_1
   ];
 

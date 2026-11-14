@@ -6,6 +6,8 @@
   openssl,
   sqlite,
   aws-lc,
+  zlib,
+  zstd,
   nix-update-script,
 }:
 
@@ -30,6 +32,8 @@ rustPlatform.buildRustPackage (finalAttrs: {
     openssl
     sqlite
     aws-lc
+    zlib
+    zstd
   ];
 
   buildAndTestSubdir = "crates/aionui-app";

@@ -11,6 +11,7 @@
   openssl,
   sqlite,
   aws-lc,
+  zstd,
   writableTmpDirAsHomeHook,
 }:
 
@@ -99,6 +100,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
     openssl
     sqlite
     aws-lc
+    zstd
   ];
 
   # tesseract-rs needs cmake for its sub-build but stdenv must not run a
