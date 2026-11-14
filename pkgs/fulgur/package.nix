@@ -23,6 +23,7 @@
   openssl,
   sqlite,
   aws-lc,
+  rust-jemalloc-sys,
   dbus,
   nix-update-script,
 }:
@@ -87,6 +88,7 @@ rustPlatform.buildRustPackage rec {
     openssl
     sqlite
     aws-lc
+    rust-jemalloc-sys
     dbus
   ];
 
