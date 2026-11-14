@@ -13,6 +13,7 @@
   glib-networking,
   libayatana-appindicator,
   openssl,
+  sqlite,
   webkitgtk_4_1,
   libsoup_3,
   jq,
@@ -64,6 +65,7 @@ rustPlatform.buildRustPackage rec {
     glib-networking
     libayatana-appindicator
     openssl
+    sqlite
     webkitgtk_4_1
     libsoup_3
   ];
