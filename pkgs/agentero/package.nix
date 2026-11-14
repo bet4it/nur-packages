@@ -9,6 +9,7 @@
   rustPlatform,
   pkg-config,
   openssl,
+  sqlite,
   aws-lc,
   writableTmpDirAsHomeHook,
 }:
@@ -96,6 +97,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
 
   buildInputs = [
     openssl
+    sqlite
     aws-lc
   ];
 

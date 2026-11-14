@@ -6,6 +6,7 @@
   fetchPnpmDeps,
   pkg-config,
   openssl,
+  sqlite,
   glib,
   gtk3,
   libsoup_3,
@@ -42,6 +43,7 @@ rustPlatform.buildRustPackage rec {
 
   buildInputs = [
     openssl
+    sqlite
     glib
     gtk3
     libsoup_3

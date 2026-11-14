@@ -4,6 +4,7 @@
   fetchFromGitHub,
   pkg-config,
   openssl,
+  sqlite,
   aws-lc,
   nix-update-script,
 }:
@@ -27,6 +28,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
 
   buildInputs = [
     openssl
+    sqlite
     aws-lc
   ];
 
