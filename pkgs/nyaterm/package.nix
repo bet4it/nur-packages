@@ -14,6 +14,7 @@
   freetype,
   dbus,
   openssl,
+  aws-lc,
   libxkbcommon,
   wayland,
   libxcb,
@@ -67,6 +68,7 @@ rustPlatform.buildRustPackage rec {
     freetype
     dbus
     openssl
+    aws-lc
     libxkbcommon
     wayland
     libxcb

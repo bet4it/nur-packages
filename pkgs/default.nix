@@ -4,7 +4,6 @@ rec {
   agentero-app = pkgs.callPackage ./agentero-app/package.nix { };
   agy-swap = pkgs.callPackage ./agy-swap/package.nix { };
   agy-switch = pkgs.callPackage ./agy-switch/package.nix { };
-  aioncore = pkgs.callPackage ./aioncore/package.nix { };
   cc-session = pkgs.callPackage ./cc-session/package.nix { };
   colamd = pkgs.callPackage ./colamd/package.nix { };
   cc-sessions-viewer = pkgs.callPackage ./cc-sessions-viewer/package.nix { };

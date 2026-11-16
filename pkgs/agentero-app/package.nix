@@ -22,6 +22,9 @@
   libayatana-appindicator,
   libsoup_3,
   openssl,
+  sqlite,
+  aws-lc,
+  zstd,
   webkitgtk_4_1,
 }:
 
@@ -126,6 +129,9 @@ rustPlatform.buildRustPackage (finalAttrs: {
     libayatana-appindicator
     libsoup_3
     openssl
+    sqlite
+    aws-lc
+    zstd
     webkitgtk_4_1
   ];
 

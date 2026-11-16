@@ -9,6 +9,7 @@
   nodejs_22,
   pkg-config,
   openssl,
+  sqlite,
   glib-networking,
   libayatana-appindicator,
   libsoup_3,
@@ -93,6 +94,7 @@ rustPlatform.buildRustPackage {
     glib-networking
     libayatana-appindicator
     openssl
+    sqlite
     webkitgtk_4_1
     libsoup_3
   ];

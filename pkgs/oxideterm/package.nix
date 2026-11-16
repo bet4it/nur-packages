@@ -7,6 +7,8 @@
   protobuf,
   fontconfig,
   openssl,
+  aws-lc,
+  oniguruma,
   sqlite,
   zlib,
   zstd,
@@ -67,6 +69,8 @@ rustPlatform.buildRustPackage rec {
   buildInputs = [
     fontconfig
     openssl
+    aws-lc
+    oniguruma
     sqlite
     zlib
     zstd

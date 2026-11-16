@@ -22,6 +22,7 @@
   librsvg,
   libsoup_3,
   openssl,
+  sqlite,
   pango,
   webkitgtk_4_1,
   desktop-file-utils,
@@ -42,6 +43,7 @@ let
     librsvg
     libsoup_3
     openssl
+    sqlite
     pango
     webkitgtk_4_1
   ];

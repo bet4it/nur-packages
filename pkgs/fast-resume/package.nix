@@ -17,6 +17,8 @@ rustPlatform.buildRustPackage rec {
 
   cargoHash = "sha256-2TaKJfNGbhzB17KUFyJp27DBRt3S8QnpqS8xvdZPjIs=";
 
+  dontCargoUseSystemLibs = true;
+
   meta = {
     description = "Fuzzy finder for coding agent session history";
     homepage = "https://github.com/angristan/fast-resume";

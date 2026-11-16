@@ -28,6 +28,7 @@
   librsvg,
   libsoup_3,
   openssl,
+  sqlite,
   pango,
   webkitgtk_4_1,
   darwin,
@@ -47,6 +48,7 @@ let
     librsvg
     libsoup_3
     openssl
+    sqlite
     pango
     webkitgtk_4_1
   ];
