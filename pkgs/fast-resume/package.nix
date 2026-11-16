@@ -6,16 +6,16 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "fast-resume";
-  version = "2.14.0";
+  version = "2.14.4";
 
   src = fetchFromGitHub {
     owner = "angristan";
     repo = "fast-resume";
     tag = "v${version}";
-    hash = "sha256-J8KCli0q7BiUU1eXbbWfkYWvKaNgMY0GtfG+nwb8qOg=";
+    hash = "sha256-MkhUnRIIWVS70KCuKj0GUhwfT7m/yYok+8ExNmkaSpE=";
   };
 
-  cargoHash = "sha256-2TaKJfNGbhzB17KUFyJp27DBRt3S8QnpqS8xvdZPjIs=";
+  cargoHash = "sha256-bf8kDF6QIvG2ckKO1UGVCw2QCtArCrE0KKkEPrgjvkg=";
 
   dontCargoUseSystemLibs = true;
 
