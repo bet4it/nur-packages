@@ -49,16 +49,16 @@ let
 in
 rustPlatform.buildRustPackage rec {
   pname = "fulgur";
-  version = "0.14.1";
+  version = "0.15.0";
 
   src = fetchFromGitHub {
     owner = "fulgur-app";
     repo = "Fulgur";
     rev = "v${version}";
-    hash = "sha256-DMZsCx7rHKUuAWkclsA0hyR80MtT3ltVfg6+V8rC5Qc=";
+    hash = "sha256-9USvUatVkxM8W+43GAJSVV6S43y9Hg/2pUtezWkNBIM=";
   };
 
-  cargoHash = "sha256-c2QUD96MsAiQ8QG0jFcywBbrbDuOLejrGINg5O5zn10=";
+  cargoHash = "sha256-s0Tf+zAduLcrL11xm/tBkqPby0QUy1XqivadF78ALUM=";
 
   cargoBuildFlags = [ "--ignore-rust-version" ];
 
