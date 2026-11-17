@@ -16,32 +16,33 @@
   libXi,
   libXrandr,
   vulkan-loader,
+  zenity,
   nix-update-script,
 }:
 
 rustPlatform.buildRustPackage rec {
-  pname = "pwrdisk";
-  version = "0.25.0";
+  pname = "ruum";
+  version = "0.1.0";
 
   src = fetchFromGitHub {
-    owner = "pwrdrvr";
-    repo = "PwrDisk";
+    owner = "JsonLee12138";
+    repo = "Ruum";
     tag = "v${version}";
-    hash = "sha256-J84QvYQ/6SUvT4gologpfLLB/sd7XAgBU0wrkDAlVso=";
+    hash = "sha256-b60WwuI9B2wKfkiiI/HoJlCm5QuyCkqXRWDbDarlG+M=";
   };
 
-  cargoHash = "sha256-fQhYftpTq8pO2SlK6+jZMmgJzcy7w99qnG1gvYz+LfI=";
+  cargoHash = "sha256-9TT+HAef7XTN2j0fifoN/G9AWeFYnjco9dqawUAKIeI=";
 
   cargoBuildFlags = [
     "--ignore-rust-version"
     "-p"
-    "disktree-app"
+    "ruum-app"
     "--bin"
-    "pwrdisk"
+    "ruum"
     "-p"
-    "disktree-scan"
+    "ruum-scan"
     "--bin"
-    "disktree-scan"
+    "ruum-scan"
   ];
 
   nativeBuildInputs = [
@@ -64,21 +65,18 @@ rustPlatform.buildRustPackage rec {
     vulkan-loader
   ];
 
-  env = {
-    PWRDISK_SOURCE_SHA = "e6e2117da1b4e7450bfed6b2a67fa2e352f08de6";
-  };
-
   doCheck = false;
 
   postInstall = ''
-    install -Dm644 assets/disktree.svg $out/share/icons/hicolor/scalable/apps/pwrdisk.svg
-    install -Dm644 assets/disktree.svg $out/share/pixmaps/pwrdisk.svg
+    install -Dm644 assets/ruum.svg $out/share/icons/hicolor/scalable/apps/ruum.svg
+    install -Dm644 assets/ruum.svg $out/share/pixmaps/ruum.svg
 
     install -d $out/share/applications
     sed -e "s|@BINDIR@|$out/bin|" -e "s|@VERSION@|${version}|" \
-      packaging/pwrdisk.desktop.in > $out/share/applications/pwrdisk.desktop
+      packaging/ruum.desktop.in > $out/share/applications/ruum.desktop
 
-    wrapProgram $out/bin/pwrdisk \
+    wrapProgram $out/bin/ruum \
+      --prefix PATH : ${lib.makeBinPath [ zenity ]} \
       --prefix LD_LIBRARY_PATH : ${
         lib.makeLibraryPath [
           vulkan-loader
@@ -98,18 +96,18 @@ rustPlatform.buildRustPackage rec {
 
   passthru.updateScript = nix-update-script {
     extraArgs = [
-      "--url=https://github.com/pwrdrvr/PwrDisk"
+      "--url=https://github.com/JsonLee12138/Ruum"
       "--use-github-releases"
     ];
   };
 
   meta = {
-    description = "GPUI treemap explorer for disk usage, in Omarchy's visual language";
-    homepage = "https://github.com/pwrdrvr/PwrDisk";
-    changelog = "https://github.com/pwrdrvr/PwrDisk/releases/tag/v${version}";
-    license = lib.licenses.mit;
+    description = "Cross-platform treemap disk analyzer and cleanup companion";
+    homepage = "https://github.com/JsonLee12138/Ruum";
+    changelog = "https://github.com/JsonLee12138/Ruum/releases/tag/v${version}";
+    license = lib.licenses.gpl3Only;
     maintainers = with lib.maintainers; [ ];
-    mainProgram = "pwrdisk";
+    mainProgram = "ruum";
     platforms = lib.platforms.linux;
   };
 }
