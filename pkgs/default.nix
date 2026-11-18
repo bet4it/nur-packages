@@ -26,5 +26,5 @@ rec {
   gitdesktop = pkgs.callPackage ./gitdesktop/package.nix { };
   horsemd = pkgs.callPackage ./horsemd/package.nix { };
   mayoi = pkgs.callPackage ./mayoi/package.nix { };
-  ruum = pkgs.callPackage ./ruum/package.nix { };
+  pwrdisk = pkgs.callPackage ./pwrdisk/package.nix { };
 }
