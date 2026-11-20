@@ -3,6 +3,7 @@
   stdenv,
   buildNpmPackage,
   fetchFromGitHub,
+  nix-update-script,
   electron,
   makeWrapper,
   copyDesktopItems,
@@ -34,15 +35,11 @@ buildNpmPackage rec {
   src = fetchFromGitHub {
     owner = "marswaveai";
     repo = "ColaMD";
-    rev = "47e94ffba3588eab2d703107363d743880983e29";
-    hash = "sha256-+4rM9lH5H4posV6Vmu5uFhoQZH6YMzgTkFbCB6YRkYE=";
+    rev = "v${version}";
+    hash = "sha256-sFgqYu8MBrmMZzjXBWnw29R5QSHzU+ZO5zQ0TFDVxo4=";
   };
 
-  npmDepsHash = "sha256-xYgFWXcBfnmJDlXIopCyKjf6ibQr2MkyEbgbcLBc2UM=";
-
-  patches = [
-    ./use-app-resources.patch
-  ];
+  npmDepsHash = "sha256-ZsAv2nbWGJNk4irntOLItoAVNIjMVYne2MaK+J4++is=";
 
   env.ELECTRON_SKIP_BINARY_DOWNLOAD = "1";
 
@@ -80,6 +77,10 @@ buildNpmPackage rec {
   postInstall = lib.optionalString stdenv.hostPlatform.isLinux ''
     install -Dm644 resources/icon.png $out/share/icons/hicolor/512x512/apps/colamd.png
   '';
+
+  passthru.updateScript = nix-update-script {
+    extraArgs = [ "--use-github-releases" ];
+  };
 
   meta = {
     description = "A free, elegant Markdown editor for humans and AI agents";
