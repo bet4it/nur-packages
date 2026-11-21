@@ -20,9 +20,13 @@ let
 
   # The helper's IPC layer accepts exactly one non-root UID (`--allow-uid`,
   # a single OnceLock<u32> upstream), so the module requires one.
+  # A user without a static UID (`users.users.<name>.uid` unset) resolves to
+  # null, which must count as unset — otherwise the assertion passes and the
+  # unit silently gets `--allow-uid ''`, which the helper's IPC then rejects.
   allowedUids =
     lib.optional (cfg.uid != null) cfg.uid
-    ++ lib.optional (cfg.user != null) config.users.users.${cfg.user}.uid;
+    ++ lib.optional (cfg.user != null && config.users.users.${cfg.user}.uid or null != null)
+      config.users.users.${cfg.user}.uid;
 
   execUid =
     if lib.length allowedUids == 1 then
