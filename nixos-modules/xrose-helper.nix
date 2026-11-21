@@ -114,16 +114,23 @@ in
         Restart = "on-failure";
         RestartSec = 2;
 
-        # TUN device creation, raw sockets, low ports for the tproxy listener.
+        # TUN device creation, raw sockets, low ports for the tproxy listener;
+        # DAC_OVERRIDE/READ_SEARCH to traverse the user's 0700 home directory
+        # (manifest, config and core paths live under /home/user), without
+        # which the bounding set would leave even root unable to read them.
         AmbientCapabilities = [
           "CAP_NET_ADMIN"
           "CAP_NET_RAW"
           "CAP_NET_BIND_SERVICE"
+          "CAP_DAC_OVERRIDE"
+          "CAP_DAC_READ_SEARCH"
         ];
         CapabilityBoundingSet = [
           "CAP_NET_ADMIN"
           "CAP_NET_RAW"
           "CAP_NET_BIND_SERVICE"
+          "CAP_DAC_OVERRIDE"
+          "CAP_DAC_READ_SEARCH"
         ];
 
         # No PrivateTmp: the helper publishes its control socket at
