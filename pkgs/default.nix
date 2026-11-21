@@ -27,4 +27,5 @@ rec {
   horsemd = pkgs.callPackage ./horsemd/package.nix { };
   mayoi = pkgs.callPackage ./mayoi/package.nix { };
   pwrdisk = pkgs.callPackage ./pwrdisk/package.nix { };
+  xrose = pkgs.callPackage ./xrose/package.nix { };
 }
