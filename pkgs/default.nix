@@ -28,4 +28,6 @@ rec {
   mayoi = pkgs.callPackage ./mayoi/package.nix { };
   pwrdisk = pkgs.callPackage ./pwrdisk/package.nix { };
   bowel = pkgs.callPackage ./bowel/package.nix { };
+  gitty = pkgs.callPackage ./gitty/package.nix { };
+  quinjet = pkgs.callPackage ./quinjet/package.nix { };
 }
