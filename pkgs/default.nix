@@ -30,4 +30,5 @@ rec {
   bowel = pkgs.callPackage ./bowel/package.nix { };
   gitty = pkgs.callPackage ./gitty/package.nix { };
   quinjet = pkgs.callPackage ./quinjet/package.nix { };
+  sniffy = pkgs.callPackage ./sniffy/package.nix { };
 }
