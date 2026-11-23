@@ -16,7 +16,7 @@
 }:
 
 let
-  version = "0.16.1";
+  version = "0.18.1";
 
   # tesseract-rs (via liteparse's `tesseract` feature) builds leptonica +
   # tesseract from source and downloads the source zips + traineddata unless
@@ -77,7 +77,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
     owner = "poco-ai";
     repo = "Agentero";
     rev = "v${finalAttrs.version}";
-    hash = "sha256-+YJuOvnmhfRd4Fwzw2bTFAMSRxboJvEfFNIobhJ+20o=";
+    hash = "sha256-R8dsUyKUPk3G6fWofcRXhc6E9vo60UA1EymZRRwPqqw=";
   };
 
   # Vendor the whole workspace; the CLI depends on agentero_lib (src-tauri).
@@ -86,7 +86,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
   # back to the workspace-root Cargo.lock.
   cargoRoot = "./.";
   buildAndTestSubdir = "cli";
-  cargoHash = "sha256-RK6wKLwNxxd8UotnSxSUg8d+KqF2fMfKHI1S9jfkBig=";
+  cargoHash = "sha256-H93OyBQSW7GybMnRw0ug+DpJ3Nm6qStIkRNJXyzzX8c=";
 
   doCheck = false;
 
