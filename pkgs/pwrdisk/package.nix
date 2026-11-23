@@ -21,16 +21,16 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "pwrdisk";
-  version = "0.25.0";
+  version = "0.26.0";
 
   src = fetchFromGitHub {
     owner = "pwrdrvr";
     repo = "PwrDisk";
     tag = "v${version}";
-    hash = "sha256-J84QvYQ/6SUvT4gologpfLLB/sd7XAgBU0wrkDAlVso=";
+    hash = "sha256-fVXIomAzcpPofOHJ2Dlup960XOk41SotVZu+bMaBUFs=";
   };
 
-  cargoHash = "sha256-fQhYftpTq8pO2SlK6+jZMmgJzcy7w99qnG1gvYz+LfI=";
+  cargoHash = "sha256-+fu0pDavzzSR4SBB8DaA7NT1Y0Q/jcS1DeuVpenwsKM=";
 
   cargoBuildFlags = [
     "--ignore-rust-version"
