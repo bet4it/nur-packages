@@ -30,13 +30,13 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "tizumark";
-  version = "1.2.5";
+  version = "1.2.7";
 
   src = fetchFromGitHub {
     owner = "tizuio";
     repo = "TizuMark";
     rev = "v${version}";
-    hash = "sha256-iES77u6u+M9bya7wjkozT+8EfhBPi8HU5pM8r45byNQ=";
+    hash = "sha256-uSxeoee0DQ3m+zMkzexEuFAlevLEEkvhxrTWZuOG3hA=";
   };
 
   cargoRoot = "src-tauri";
