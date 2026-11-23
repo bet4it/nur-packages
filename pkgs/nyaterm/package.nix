@@ -30,16 +30,16 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "nyaterm";
-  version = "2.0.5";
+  version = "2.0.8";
 
   src = fetchFromGitHub {
     owner = "nyakang";
     repo = "nyaterm";
     rev = "v${version}";
-    hash = "sha256-3/oUKxc1gvNUef01otuCMLG8QAJy8v9qPPATo9pA7Kw=";
+    hash = "sha256-1VyvM1FT07G/odvrUWDm1Rc/72noiGdQVV0yckD7rZg=";
   };
 
-  cargoHash = "sha256-63T454WlmZtNsiI/uTWT8yYu8U+mMpkpjF1/TVcXw98=";
+  cargoHash = "sha256-QHME56D2HHt5s2nd23rTQb/AGyddmkfDFMvPEOY+MG0=";
 
   cargoBuildFlags = [
     "-p"
