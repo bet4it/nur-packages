@@ -10,16 +10,16 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "quinjet";
-  version = "0.0.90";
+  version = "0.0.91";
 
   src = fetchFromGitHub {
     owner = "pulkitxm";
     repo = "quinjet";
     tag = "v${version}";
-    hash = "sha256-Ep1JOflpqnhoH3MXCK8MO8tTa1ArFZ437kzOG9hhId8=";
+    hash = "sha256-/zVz7qng3SP9IYES8AvMhpDNr6k+lNz86fkzYO6ujVg=";
   };
 
-  cargoHash = "sha256-Y77ZeKeo3uxWUZ+qJYkHUwm+iN/vKfXgNYRu7tNhg6U=";
+  cargoHash = "sha256-mAHFYwcdop2kKmKW0ycnRzYuXQpv5PQg+qW8OC1if+Q=";
 
   nativeBuildInputs = [
     installShellFiles
