@@ -30,13 +30,13 @@ let
 in
 buildNpmPackage rec {
   pname = "colamd";
-  version = "2.7.12";
+  version = "2.8.0";
 
   src = fetchFromGitHub {
     owner = "marswaveai";
     repo = "ColaMD";
     rev = "v${version}";
-    hash = "sha256-sFgqYu8MBrmMZzjXBWnw29R5QSHzU+ZO5zQ0TFDVxo4=";
+    hash = "sha256-LcmXSIqK0b5Aj+MQWgRPE1mNXQq2NNk8nukzcjeqHOE=";
   };
 
   npmDepsHash = "sha256-ZsAv2nbWGJNk4irntOLItoAVNIjMVYne2MaK+J4++is=";
