@@ -85,7 +85,7 @@ let
   # by its sha256 checksum. Pre-fetch it so the database build runs offline.
   ecdict = fetchurl {
     url = "https://raw.githubusercontent.com/skywind3000/ECDICT/bc015ed2e24a7abef49fc6dbbb7fe32c1dadaf8b/ecdict.csv";
-    hash = "sha256-HW8X733QF3fIMpg4JzpZfZBUx8461jQZ6UsQ+ccEgVI=";
+    hash = "sha256-GmlH4EeF22NhOpLhSQPNrnlU9+hIYLEOaOXHy7P5w88=";
   };
 in
 rustPlatform.buildRustPackage (finalAttrs: {
