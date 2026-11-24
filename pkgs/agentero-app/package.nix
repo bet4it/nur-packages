@@ -78,6 +78,15 @@ let
     url = "https://github.com/tesseract-ocr/tessdata_best/raw/main/tur.traineddata";
     hash = "sha256-4MMzjcF1A9x9M1pQfJrgGytGz9B1YRceHhrFXYXo5Dg=";
   };
+
+  # Upstream bundles an offline lexicon database compiled from ECDICT at
+  # build time via `pnpm dictionary:stage` (scripts/prepare-dictionary.mjs).
+  # The script caches the downloaded CSV in $TMPDIR/agentero-dictionary-inputs/
+  # by its sha256 checksum. Pre-fetch it so the database build runs offline.
+  ecdict = fetchurl {
+    url = "https://raw.githubusercontent.com/skywind3000/ECDICT/bc015ed2e24a7abef49fc6dbbb7fe32c1dadaf8b/ecdict.csv";
+    hash = "sha256-HW8X733QF3fIMpg4JzpZfZBUx8461jQZ6UsQ+ccEgVI=";
+  };
 in
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "agentero-app";
@@ -177,7 +186,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
       jq '
         del(.build.beforeBuildCommand) |
         .bundle.externalBin = [] |
-        .bundle.resources -= ["adapters/**/*"] |
+        .bundle.resources -= ["adapters/**/*", "cli"] |
         .bundle.createUpdaterArtifacts = false |
         .plugins.updater.endpoints = []
       ' src-tauri/tauri.conf.json | sponge src-tauri/tauri.conf.json
@@ -189,8 +198,8 @@ rustPlatform.buildRustPackage (finalAttrs: {
         --replace-fail "libayatana-appindicator3.so.1" "${libayatana-appindicator}/lib/libayatana-appindicator3.so.1"
     '';
 
-  # Stage pdfium and build the frontend — the things the stripped
-  # beforeBuildCommand did that tauri-build still needs.
+  # Stage pdfium, compile offline dictionary, and build frontend — the
+  # tasks from the stripped beforeBuildCommand needed by tauri-build.
   preBuild = ''
     # 1) Stage pdfium shared library into src-tauri/pdfium/ so tauri-build's
     #    `resources: ["pdfium/*"]` glob matches. This replaces the upstream
@@ -198,7 +207,14 @@ rustPlatform.buildRustPackage (finalAttrs: {
     mkdir -p src-tauri/pdfium
     cp ${pdfium}/lib/libpdfium.so src-tauri/pdfium/libpdfium.so
 
-    # 2) Frontend (`pnpm build` from the stripped beforeBuildCommand).
+    # 2) Stage dictionary inputs and build offline lexicon database
+    #    so tauri-build's `resources: ["dictionary/*"]` glob matches.
+    #    This replaces the upstream `pnpm dictionary:stage`.
+    mkdir -p "$TMPDIR/agentero-dictionary-inputs"
+    cp ${ecdict} "$TMPDIR/agentero-dictionary-inputs/1a6947e04785db63613a92e14903cdae7954f7e84860b10e68e5c7cbb3f9c3cf.csv"
+    node scripts/prepare-dictionary.mjs
+
+    # 3) Frontend (`pnpm build` from the stripped beforeBuildCommand).
     pnpm build
   '';
 
