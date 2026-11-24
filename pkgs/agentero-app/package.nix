@@ -29,7 +29,7 @@
 }:
 
 let
-  version = "0.16.1";
+  version = "0.18.1";
 
   # Prebuilt pdfium pinned to chromium/7897 (what liteparse-pdfium-sys
   # expects). Pointed at via env vars so its build script skips download.
@@ -78,6 +78,15 @@ let
     url = "https://github.com/tesseract-ocr/tessdata_best/raw/main/tur.traineddata";
     hash = "sha256-4MMzjcF1A9x9M1pQfJrgGytGz9B1YRceHhrFXYXo5Dg=";
   };
+
+  # Upstream bundles an offline lexicon database compiled from ECDICT at
+  # build time via `pnpm dictionary:stage` (scripts/prepare-dictionary.mjs).
+  # The script caches the downloaded CSV in $TMPDIR/agentero-dictionary-inputs/
+  # by its sha256 checksum. Pre-fetch it so the database build runs offline.
+  ecdict = fetchurl {
+    url = "https://raw.githubusercontent.com/skywind3000/ECDICT/bc015ed2e24a7abef49fc6dbbb7fe32c1dadaf8b/ecdict.csv";
+    hash = "sha256-GmlH4EeF22NhOpLhSQPNrnlU9+hIYLEOaOXHy7P5w88=";
+  };
 in
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "agentero-app";
@@ -90,7 +99,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
     owner = "poco-ai";
     repo = "Agentero";
     rev = "v${finalAttrs.version}";
-    hash = "sha256-+YJuOvnmhfRd4Fwzw2bTFAMSRxboJvEfFNIobhJ+20o=";
+    hash = "sha256-R8dsUyKUPk3G6fWofcRXhc6E9vo60UA1EymZRRwPqqw=";
   };
 
   # Vendor the whole workspace so the `cli` member (built in preBuild) is
@@ -99,12 +108,12 @@ rustPlatform.buildRustPackage (finalAttrs: {
   # remove it to let cargo fall back to the workspace-root Cargo.lock.
   cargoRoot = "./.";
   buildAndTestSubdir = "src-tauri";
-  cargoHash = "sha256-RK6wKLwNxxd8UotnSxSUg8d+KqF2fMfKHI1S9jfkBig=";
+  cargoHash = "sha256-H93OyBQSW7GybMnRw0ug+DpJ3Nm6qStIkRNJXyzzX8c=";
 
   pnpmDeps = (fetchPnpmDeps.override { pnpm = pnpm_11; }) {
     inherit (finalAttrs) pname version src;
     fetcherVersion = 4;
-    hash = "sha256-ryZNOMF0k/LlRIYP3bus/jFWomjGWteVPy1Tks/Tvfk=";
+    hash = "sha256-FwdJ+witm7VOlyAkZP73nBQ/+Zq7dn9mG+oB6mlsguI=";
   };
   pnpmRoot = ".";
 
@@ -177,7 +186,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
       jq '
         del(.build.beforeBuildCommand) |
         .bundle.externalBin = [] |
-        .bundle.resources -= ["adapters/**/*"] |
+        .bundle.resources -= ["adapters/**/*", "cli"] |
         .bundle.createUpdaterArtifacts = false |
         .plugins.updater.endpoints = []
       ' src-tauri/tauri.conf.json | sponge src-tauri/tauri.conf.json
@@ -189,8 +198,8 @@ rustPlatform.buildRustPackage (finalAttrs: {
         --replace-fail "libayatana-appindicator3.so.1" "${libayatana-appindicator}/lib/libayatana-appindicator3.so.1"
     '';
 
-  # Stage pdfium and build the frontend — the things the stripped
-  # beforeBuildCommand did that tauri-build still needs.
+  # Stage pdfium, compile offline dictionary, and build frontend — the
+  # tasks from the stripped beforeBuildCommand needed by tauri-build.
   preBuild = ''
     # 1) Stage pdfium shared library into src-tauri/pdfium/ so tauri-build's
     #    `resources: ["pdfium/*"]` glob matches. This replaces the upstream
@@ -198,7 +207,14 @@ rustPlatform.buildRustPackage (finalAttrs: {
     mkdir -p src-tauri/pdfium
     cp ${pdfium}/lib/libpdfium.so src-tauri/pdfium/libpdfium.so
 
-    # 2) Frontend (`pnpm build` from the stripped beforeBuildCommand).
+    # 2) Stage dictionary inputs and build offline lexicon database
+    #    so tauri-build's `resources: ["dictionary/*"]` glob matches.
+    #    This replaces the upstream `pnpm dictionary:stage`.
+    mkdir -p "$TMPDIR/agentero-dictionary-inputs"
+    cp ${ecdict} "$TMPDIR/agentero-dictionary-inputs/1a6947e04785db63613a92e14903cdae7954f7e84860b10e68e5c7cbb3f9c3cf.csv"
+    node scripts/prepare-dictionary.mjs
+
+    # 3) Frontend (`pnpm build` from the stripped beforeBuildCommand).
     pnpm build
   '';
 
